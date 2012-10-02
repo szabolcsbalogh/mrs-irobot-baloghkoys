@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 package mrs.irobot.baloghkoys;
-
+import javax.comm.*;
 /**
  *
  * @author baloghsz
