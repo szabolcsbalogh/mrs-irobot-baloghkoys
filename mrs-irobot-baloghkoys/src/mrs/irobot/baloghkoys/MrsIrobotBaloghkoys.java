@@ -19,39 +19,28 @@ public class MrsIrobotBaloghkoys {
      */
     public static void main(String[] args) {
         
-        String driverName = "com.sun.comm.Win32Driver";
-        CommDriver commdriver;
-        try {
-                // TODO code application logic here
-                commdriver = (CommDriver)Class.forName(driverName).newInstance( );
-                commdriver.initialize();
-        } catch (Exception ex) {
-            Logger.getLogger(MrsIrobotBaloghkoys.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        Connector connector = new Connector();
         
         String wantedPortName = "COM5";//"/dev/ttyS0";
         
-        Enumeration portIdentifiers = CommPortIdentifier.getPortIdentifiers();
-        CommPortIdentifier portId = null;  // will be set if port found
-        while (portIdentifiers.hasMoreElements())
-        {
-            CommPortIdentifier pid = (CommPortIdentifier) portIdentifiers.nextElement();
-            System.err.println(pid.getName());
-            if(pid.getPortType() == CommPortIdentifier.PORT_SERIAL &&
-               pid.getName().equals(wantedPortName)) 
-            {
-                portId = pid;
-                break;
-            }
-        }
+        System.err.println("Available ports");
+        connector.printPortNames();
+        connector.openPort( wantedPortName );
         
         GUI gui = new GUI();
         gui.setVisible(true);
         
-        if(portId == null)
-        {
-            System.err.println("Could not find serial port " + wantedPortName);
-            //System.exit(1);
+        byte[] data = {(byte)128,(byte)131,(byte)136,(byte)3};
+        connector.sendByte(data);
+        
+        try {
+            Thread.sleep(5*1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(MrsIrobotBaloghkoys.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        data[2] = 0;
+        connector.sendByte(data);
+        
     }
 }
