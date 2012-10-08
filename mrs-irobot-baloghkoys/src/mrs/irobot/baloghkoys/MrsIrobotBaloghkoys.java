@@ -3,8 +3,8 @@
  * and open the template in the editor.
  */
 package mrs.irobot.baloghkoys;
-import javax.comm.*;
-import java.util.*;
+
+import java.io.IOException;
 
 /**
  *
@@ -30,6 +30,7 @@ public class MrsIrobotBaloghkoys {
         GUI gui = new GUI();
         gui.setVisible(true);
         
+        /*
         byte[] data = {(byte)128,(byte)131,(byte)136,(byte)3};
         connector.sendByte(data);
         
@@ -40,7 +41,21 @@ public class MrsIrobotBaloghkoys {
         }
         
         data[2] = 0;
-        connector.sendByte(data);
+        connector.sendByte(data);*/
+       
+      //  Thread blikanie = new Thread(new Runnable() {
+      //          public void run() {
+                    while( true ){      // blikanie senzorov
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException ex) {
+                            System.err.println(ex.toString());
+                        }
+                        gui.jPanel1.repaint();   
+                    }
+      //          }
+      //  });
+            
         
     }
 }

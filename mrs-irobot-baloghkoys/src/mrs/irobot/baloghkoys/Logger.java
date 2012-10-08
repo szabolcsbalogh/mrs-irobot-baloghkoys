@@ -28,7 +28,7 @@ public class Logger {
         }
         String logText = date()+str+"\r\n";
         appendText(logText);
-        System.out.print(logText);
+        //System.out.print(logText);
         if( GUI.logTextArea != null )
             GUI.logTextArea.append(logText);  
     }
