@@ -5,8 +5,6 @@
 package mrs.irobot.baloghkoys;
 import javax.comm.*;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -14,18 +12,20 @@ import java.util.logging.Logger;
  */
 public class MrsIrobotBaloghkoys {
 
+    static String wantedPortName = "COM3";//"/dev/ttyS0";
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         
+        Logger.log( "iRobot application log started" );
+        
         Connector connector = new Connector();
-        
-        String wantedPortName = "COM5";//"/dev/ttyS0";
-        
-        System.err.println("Available ports");
+            
+        System.out.println("Available ports");
         connector.printPortNames();
         connector.openPort( wantedPortName );
+        Logger.log( "Opening " + wantedPortName );
         
         GUI gui = new GUI();
         gui.setVisible(true);
@@ -36,7 +36,7 @@ public class MrsIrobotBaloghkoys {
         try {
             Thread.sleep(5*1000);
         } catch (InterruptedException ex) {
-            Logger.getLogger(MrsIrobotBaloghkoys.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println(ex.toString());
         }
         
         data[2] = 0;

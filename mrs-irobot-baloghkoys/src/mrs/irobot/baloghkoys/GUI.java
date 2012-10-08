@@ -37,12 +37,15 @@ public class GUI extends javax.swing.JFrame {
         buttonTurnBack = new javax.swing.JButton();
         sliderSpeed = new javax.swing.JSlider();
         jLabel2 = new javax.swing.JLabel();
+        sliderAngle = new javax.swing.JSlider();
+        buttonTurnRightAngle = new javax.swing.JButton();
+        buttonTurnLeftAngle = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jInternalFrame1 = new javax.swing.JInternalFrame();
         jPanel1 = new javax.swing.JPanel();
         jInternalFrame3 = new javax.swing.JInternalFrame();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        logTextArea = new javax.swing.JTextArea();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel1 = new javax.swing.JLabel();
         jInternalFrame2 = new javax.swing.JInternalFrame();
@@ -65,29 +68,63 @@ public class GUI extends javax.swing.JFrame {
         setTitle("iRobot");
         setBounds(new java.awt.Rectangle(0, 0, 800, 600));
         setMinimumSize(new java.awt.Dimension(800, 600));
-        setPreferredSize(new java.awt.Dimension(800, 600));
         setResizable(false);
 
         buttonForward.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/arrow_up.JPG"))); // NOI18N
         buttonForward.setPreferredSize(new java.awt.Dimension(64, 64));
+        buttonForward.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonForwardActionPerformed(evt);
+            }
+        });
 
         buttonStop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/stop.JPG"))); // NOI18N
         buttonStop.setPreferredSize(new java.awt.Dimension(64, 64));
+        buttonStop.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonStopActionPerformed(evt);
+            }
+        });
 
         buttonBackward.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/arrow_down.JPG"))); // NOI18N
         buttonBackward.setPreferredSize(new java.awt.Dimension(64, 64));
+        buttonBackward.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonBackwardActionPerformed(evt);
+            }
+        });
 
         buttonLeft.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/arrow_left.JPG"))); // NOI18N
         buttonLeft.setPreferredSize(new java.awt.Dimension(64, 64));
+        buttonLeft.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonLeftActionPerformed(evt);
+            }
+        });
 
         buttonRight.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/arrow_right.JPG"))); // NOI18N
         buttonRight.setPreferredSize(new java.awt.Dimension(64, 64));
+        buttonRight.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonRightActionPerformed(evt);
+            }
+        });
 
         buttonRotate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/arrow_round.JPG"))); // NOI18N
         buttonRotate.setPreferredSize(new java.awt.Dimension(64, 64));
+        buttonRotate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonRotateActionPerformed(evt);
+            }
+        });
 
         buttonTurnBack.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/arrow_back.JPG"))); // NOI18N
         buttonTurnBack.setPreferredSize(new java.awt.Dimension(64, 64));
+        buttonTurnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonTurnBackActionPerformed(evt);
+            }
+        });
 
         sliderSpeed.setMajorTickSpacing(1);
         sliderSpeed.setMaximum(10);
@@ -96,23 +133,55 @@ public class GUI extends javax.swing.JFrame {
         sliderSpeed.setPaintTicks(true);
         sliderSpeed.setSnapToTicks(true);
         sliderSpeed.setValue(5);
+        sliderSpeed.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                sliderSpeedStateChanged(evt);
+            }
+        });
 
         jLabel2.setText("Speed");
+
+        sliderAngle.setMajorTickSpacing(45);
+        sliderAngle.setMaximum(360);
+        sliderAngle.setMinorTickSpacing(45);
+        sliderAngle.setPaintLabels(true);
+        sliderAngle.setPaintTicks(true);
+        sliderAngle.setValue(45);
+
+        buttonTurnRightAngle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/arrow_turn.jpg"))); // NOI18N
+        buttonTurnRightAngle.setPreferredSize(new java.awt.Dimension(64, 64));
+        buttonTurnRightAngle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonTurnRightAngleActionPerformed(evt);
+            }
+        });
+
+        buttonTurnLeftAngle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/arrow_turn_2.JPG"))); // NOI18N
+        buttonTurnLeftAngle.setPreferredSize(new java.awt.Dimension(64, 64));
+        buttonTurnLeftAngle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonTurnLeftAngleActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(15, 15, 15)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(buttonLeft, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(buttonRotate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(buttonRotate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(buttonTurnLeftAngle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(buttonBackward, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(buttonBackward, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(buttonTurnRightAngle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(buttonStop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -120,39 +189,40 @@ public class GUI extends javax.swing.JFrame {
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(buttonForward, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(buttonTurnBack, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 30, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(buttonTurnBack, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(sliderSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                        .addComponent(sliderSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(sliderAngle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(53, 53, 53)
-                        .addComponent(sliderSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addGap(56, 56, 56)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(10, 10, 10)
+                .addGap(52, 52, 52)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(sliderSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(buttonForward, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonRotate, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonTurnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(buttonStop, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(buttonLeft, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(buttonLeft, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(buttonStop, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(buttonRight, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(buttonBackward, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(200, Short.MAX_VALUE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(buttonBackward, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonTurnRightAngle, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonTurnLeftAngle, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(sliderAngle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(195, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Manual", jPanel3);
@@ -165,7 +235,7 @@ public class GUI extends javax.swing.JFrame {
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 512, Short.MAX_VALUE)
+            .addGap(0, 560, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Automatic", jPanel4);
@@ -181,7 +251,7 @@ public class GUI extends javax.swing.JFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 247, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jInternalFrame1Layout = new javax.swing.GroupLayout(jInternalFrame1.getContentPane());
@@ -198,10 +268,10 @@ public class GUI extends javax.swing.JFrame {
         jInternalFrame3.setTitle("Log");
         jInternalFrame3.setVisible(true);
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jTextArea1.setPreferredSize(null);
-        jScrollPane1.setViewportView(jTextArea1);
+        logTextArea.setColumns(20);
+        logTextArea.setRows(5);
+        logTextArea.setPreferredSize(null);
+        jScrollPane1.setViewportView(logTextArea);
 
         javax.swing.GroupLayout jInternalFrame3Layout = new javax.swing.GroupLayout(jInternalFrame3.getContentPane());
         jInternalFrame3.getContentPane().setLayout(jInternalFrame3Layout);
@@ -211,7 +281,7 @@ public class GUI extends javax.swing.JFrame {
         );
         jInternalFrame3Layout.setVerticalGroup(
             jInternalFrame3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
         );
 
         jLabel1.setText("Cas");
@@ -324,9 +394,9 @@ public class GUI extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jInternalFrame1)
                             .addComponent(jInternalFrame2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jInternalFrame3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(jTabbedPane1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -337,8 +407,59 @@ public class GUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
+        Logger.log("Application terminated by user"); 
         System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
+
+    private void buttonTurnLeftAngleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonTurnLeftAngleActionPerformed
+        // TODO add your handling code here:
+        Logger.log("Manual control: Rotate left "+this.sliderAngle.getValue()+"Deg"); 
+    }//GEN-LAST:event_buttonTurnLeftAngleActionPerformed
+
+    private void buttonRotateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRotateActionPerformed
+        // TODO add your handling code here:
+        Logger.log("Manual control: Rotate left 360Deg"); 
+    }//GEN-LAST:event_buttonRotateActionPerformed
+
+    private void buttonTurnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonTurnBackActionPerformed
+        // TODO add your handling code here:
+        Logger.log("Manual control: Rotate right 180Deg"); 
+    }//GEN-LAST:event_buttonTurnBackActionPerformed
+
+    private void buttonRightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRightActionPerformed
+        // TODO add your handling code here:
+        Logger.log("Manual control: Rotate right 90Deg"); 
+    }//GEN-LAST:event_buttonRightActionPerformed
+
+    private void buttonStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonStopActionPerformed
+        // TODO add your handling code here:
+        Logger.log("Manual control: STOP"); 
+    }//GEN-LAST:event_buttonStopActionPerformed
+
+    private void buttonLeftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLeftActionPerformed
+        // TODO add your handling code here:
+        Logger.log("Manual control: Rotate left 90Deg"); 
+    }//GEN-LAST:event_buttonLeftActionPerformed
+
+    private void buttonForwardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonForwardActionPerformed
+        // TODO add your handling code here:
+        Logger.log("Manual control: Go forward"); 
+    }//GEN-LAST:event_buttonForwardActionPerformed
+
+    private void buttonBackwardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBackwardActionPerformed
+        // TODO add your handling code here:
+        Logger.log("Manual control: Go backward"); 
+    }//GEN-LAST:event_buttonBackwardActionPerformed
+
+    private void buttonTurnRightAngleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonTurnRightAngleActionPerformed
+        // TODO add your handling code here:
+        Logger.log("Manual control: Rotate right "+this.sliderAngle.getValue()+"Deg"); 
+    }//GEN-LAST:event_buttonTurnRightAngleActionPerformed
+
+    private void sliderSpeedStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderSpeedStateChanged
+        // TODO add your handling code here:
+        Logger.log("Manual control: Speed set to "+this.sliderSpeed.getValue() ); 
+    }//GEN-LAST:event_sliderSpeedStateChanged
 
     /**
      * @param args the command line arguments
@@ -383,6 +504,8 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JButton buttonRotate;
     private javax.swing.JButton buttonStop;
     private javax.swing.JButton buttonTurnBack;
+    private javax.swing.JButton buttonTurnLeftAngle;
+    private javax.swing.JButton buttonTurnRightAngle;
     private javax.swing.JMenuItem contentsMenuItem;
     private javax.swing.JMenuItem copyMenuItem;
     private javax.swing.JMenuItem cutMenuItem;
@@ -402,12 +525,13 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextArea jTextArea1;
+    public static javax.swing.JTextArea logTextArea;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem openMenuItem;
     private javax.swing.JMenuItem pasteMenuItem;
     private javax.swing.JMenuItem saveAsMenuItem;
     private javax.swing.JMenuItem saveMenuItem;
+    private javax.swing.JSlider sliderAngle;
     private javax.swing.JSlider sliderSpeed;
     // End of variables declaration//GEN-END:variables
 }

@@ -7,7 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public class Connector /*implements SerialPortEventListener*/ {
+public class Connector {
     
   //static Enumeration ports;
   //String buffer = "";
@@ -28,19 +28,21 @@ public class Connector /*implements SerialPortEventListener*/ {
         while (portIdentifiers.hasMoreElements())
         {
             CommPortIdentifier pid = (CommPortIdentifier) portIdentifiers.nextElement();
-            System.err.println(pid.getName());
+            System.out.println(pid.getName());
         }
         
     }
 
   public Connector(){
-    try{                            // DRIVER FOR WINDOWS
-        commdriver = (CommDriver)Class.forName(driverName).newInstance( );
-        commdriver.initialize();
-    }
-    catch (Exception e2)
-    {
-        e2.printStackTrace();
+    if( !CommPortIdentifier.getPortIdentifiers().hasMoreElements() ){ // pokus o osetrenie linux/windows
+        try{                            // DRIVER FOR WINDOWS
+            commdriver = (CommDriver)Class.forName(driverName).newInstance();
+            commdriver.initialize();
+        }
+        catch (Exception e2)
+        {
+            e2.printStackTrace();
+        }
     }
   }
   
@@ -51,14 +53,11 @@ public class Connector /*implements SerialPortEventListener*/ {
         serPort = (SerialPort) pID.open(wantedPortName, 2000);
         inStream = serPort.getInputStream();
         outStream = serPort.getOutputStream();
-        //serPort.addEventListener((SerialPortEventListener) this);
-        //serPort.notifyOnDataAvailable(true);
         serPort.setSerialPortParams(57600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1,
             SerialPort.PARITY_NONE);
     }catch(Exception e){
             System.err.println("Could not find serial port " + wantedPortName);
             System.err.println("Exception: " + e.toString());
-            //System.exit(1);
     }
   }
 
