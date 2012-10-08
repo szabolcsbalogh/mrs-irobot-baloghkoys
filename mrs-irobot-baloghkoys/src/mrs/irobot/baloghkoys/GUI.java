@@ -5,7 +5,7 @@
 package mrs.irobot.baloghkoys;
 
 import java.awt.Graphics;
-import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -29,6 +29,7 @@ public class GUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 32767));
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel3 = new javax.swing.JPanel();
         buttonForward = new javax.swing.JButton();
@@ -44,6 +45,20 @@ public class GUI extends javax.swing.JFrame {
         buttonTurnRightAngle = new javax.swing.JButton();
         buttonTurnLeftAngle = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
+        toPointRadio = new javax.swing.JRadioButton();
+        fromFileRadio = new javax.swing.JRadioButton();
+        jLabel3 = new javax.swing.JLabel();
+        xTextField = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        yTextField = new javax.swing.JTextField();
+        goPointButton = new javax.swing.JButton();
+        buttonStop1 = new javax.swing.JButton();
+        chooseFileButton = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        fileNameTextArea = new javax.swing.JTextArea();
+        goFileButton = new javax.swing.JButton();
+        sliderSpeed1 = new javax.swing.JSlider();
+        jLabel5 = new javax.swing.JLabel();
         jInternalFrame1 = new javax.swing.JInternalFrame();
         jPanel1 = new javax.swing.JPanel()
         {
@@ -60,6 +75,7 @@ public class GUI extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         jLabel1 = new javax.swing.JLabel();
         jInternalFrame2 = new javax.swing.JInternalFrame();
+        timeLabel = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openMenuItem = new javax.swing.JMenuItem();
@@ -78,7 +94,9 @@ public class GUI extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("iRobot");
         setBounds(new java.awt.Rectangle(0, 0, 800, 600));
+        setMaximumSize(new java.awt.Dimension(800, 600));
         setMinimumSize(new java.awt.Dimension(800, 600));
+        setPreferredSize(new java.awt.Dimension(800, 600));
         setResizable(false);
 
         buttonForward.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/arrow_up.JPG"))); // NOI18N
@@ -236,50 +254,205 @@ public class GUI extends javax.swing.JFrame {
                     .addComponent(buttonTurnLeftAngle, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(sliderAngle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(183, Short.MAX_VALUE))
+                .addContainerGap(90, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Manual", jPanel3);
+
+        toPointRadio.setSelected(true);
+        toPointRadio.setText("Navigation to a point");
+        toPointRadio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toPointRadioActionPerformed(evt);
+            }
+        });
+
+        fromFileRadio.setText("Navigation from a file");
+        fromFileRadio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fromFileRadioActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("x:");
+
+        xTextField.setText("0");
+        xTextField.setEnabled(toPointRadio.isSelected());
+
+        jLabel4.setText("y:");
+
+        yTextField.setText("0");
+        yTextField.setEnabled(toPointRadio.isSelected());
+        yTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                yTextFieldActionPerformed(evt);
+            }
+        });
+
+        goPointButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/arrow_go.jpg"))); // NOI18N
+        goPointButton.setEnabled(toPointRadio.isSelected());
+        goPointButton.setPreferredSize(new java.awt.Dimension(48, 48));
+        goPointButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                goPointButtonActionPerformed(evt);
+            }
+        });
+
+        buttonStop1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/stop.JPG"))); // NOI18N
+        buttonStop1.setPreferredSize(new java.awt.Dimension(64, 64));
+        buttonStop1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonStop1ActionPerformed(evt);
+            }
+        });
+
+        chooseFileButton.setText("Choose a file");
+        chooseFileButton.setEnabled(fromFileRadio.isSelected());
+        chooseFileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chooseFileButtonActionPerformed(evt);
+            }
+        });
+
+        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+
+        fileNameTextArea.setColumns(20);
+        fileNameTextArea.setRows(5);
+        fileNameTextArea.setEnabled(fromFileRadio.isSelected());
+        jScrollPane2.setViewportView(fileNameTextArea);
+
+        goFileButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/arrow_go.jpg"))); // NOI18N
+        goFileButton.setEnabled(fromFileRadio.isSelected());
+        goFileButton.setPreferredSize(new java.awt.Dimension(48, 48));
+        goFileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                goFileButtonActionPerformed(evt);
+            }
+        });
+
+        sliderSpeed1.setMajorTickSpacing(1);
+        sliderSpeed1.setMaximum(10);
+        sliderSpeed1.setMinimum(1);
+        sliderSpeed1.setMinorTickSpacing(1);
+        sliderSpeed1.setPaintTicks(true);
+        sliderSpeed1.setSnapToTicks(true);
+        sliderSpeed1.setValue(5);
+        sliderSpeed1.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                sliderSpeed1StateChanged(evt);
+            }
+        });
+
+        jLabel5.setText("Speed");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 240, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(fromFileRadio)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(toPointRadio)
+                                    .addGroup(jPanel4Layout.createSequentialGroup()
+                                        .addGap(21, 21, 21)
+                                        .addComponent(jLabel3)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(xTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel4)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(yTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(19, 19, 19))
+                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(goPointButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel4Layout.createSequentialGroup()
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(sliderSpeed1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(81, 81, 81))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(21, 21, 21)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(23, 23, 23)
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(buttonStop1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(chooseFileButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(18, 18, 18)
+                                .addComponent(goFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 548, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(toPointRadio)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(yTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(xTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(17, 17, 17)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(sliderSpeed1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(3, 3, 3)
+                .addComponent(goPointButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(fromFileRadio)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(chooseFileButton)
+                    .addComponent(goFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(79, 79, 79)
+                .addComponent(buttonStop1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Automatic", jPanel4);
 
         jInternalFrame1.setTitle("View");
+        jInternalFrame1.setPreferredSize(new java.awt.Dimension(300, 335));
         jInternalFrame1.setVisible(true);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setToolTipText("");
+        jPanel1.setPreferredSize(new java.awt.Dimension(300, 300));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 290, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 304, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jInternalFrame1Layout = new javax.swing.GroupLayout(jInternalFrame1.getContentPane());
         jInternalFrame1.getContentPane().setLayout(jInternalFrame1Layout);
         jInternalFrame1Layout.setHorizontalGroup(
             jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
         );
         jInternalFrame1Layout.setVerticalGroup(
             jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE)
         );
 
         jInternalFrame3.setTitle("Log");
@@ -298,24 +471,27 @@ public class GUI extends javax.swing.JFrame {
         );
         jInternalFrame3Layout.setVerticalGroup(
             jInternalFrame3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
-        jLabel1.setText("Cas");
+        jLabel1.setText("Time:");
 
         jInternalFrame2.setTitle("Status");
+        jInternalFrame2.setMaximumSize(new java.awt.Dimension(233, 339));
         jInternalFrame2.setVisible(true);
 
         javax.swing.GroupLayout jInternalFrame2Layout = new javax.swing.GroupLayout(jInternalFrame2.getContentPane());
         jInternalFrame2.getContentPane().setLayout(jInternalFrame2Layout);
         jInternalFrame2Layout.setHorizontalGroup(
             jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 211, Short.MAX_VALUE)
         );
         jInternalFrame2Layout.setVerticalGroup(
             jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
+
+        timeLabel.setText("actualTime");
 
         fileMenu.setMnemonic('f');
         fileMenu.setText("File");
@@ -390,13 +566,15 @@ public class GUI extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addContainerGap(772, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(timeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jInternalFrame1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jInternalFrame2))
+                                .addComponent(jInternalFrame2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(jInternalFrame3))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -405,18 +583,21 @@ public class GUI extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jInternalFrame1)
-                            .addComponent(jInternalFrame2))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jInternalFrame1, javax.swing.GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)
+                            .addComponent(jInternalFrame2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jInternalFrame3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jTabbedPane1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 1, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(timeLabel))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -477,6 +658,58 @@ public class GUI extends javax.swing.JFrame {
         Logger.log("Manual control: Speed set to "+this.sliderSpeed.getValue() ); 
     }//GEN-LAST:event_sliderSpeedStateChanged
 
+    private void toPointRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toPointRadioActionPerformed
+        // TODO add your handling code here:
+        this.fromFileRadio.setSelected(!this.toPointRadio.isSelected());
+        this.xTextField.setEnabled(this.toPointRadio.isSelected());
+        this.yTextField.setEnabled(this.toPointRadio.isSelected());
+        this.goPointButton.setEnabled(this.toPointRadio.isSelected());
+        
+        this.fileNameTextArea.setEnabled(this.fromFileRadio.isSelected());
+        this.goFileButton.setEnabled(this.fromFileRadio.isSelected());
+        this.chooseFileButton.setEnabled(this.fromFileRadio.isSelected());
+    }//GEN-LAST:event_toPointRadioActionPerformed
+
+    private void fromFileRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fromFileRadioActionPerformed
+        // TODO add your handling code here:       
+        this.toPointRadio.setSelected(!this.fromFileRadio.isSelected());
+        this.xTextField.setEnabled(this.toPointRadio.isSelected());
+        this.yTextField.setEnabled(this.toPointRadio.isSelected());
+        this.goPointButton.setEnabled(this.toPointRadio.isSelected());
+       
+        this.fileNameTextArea.setEnabled(this.fromFileRadio.isSelected());
+        this.goFileButton.setEnabled(this.fromFileRadio.isSelected());
+        this.chooseFileButton.setEnabled(this.fromFileRadio.isSelected());
+    }//GEN-LAST:event_fromFileRadioActionPerformed
+
+    private void goPointButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goPointButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_goPointButtonActionPerformed
+
+    private void yTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_yTextFieldActionPerformed
+
+    private void buttonStop1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonStop1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buttonStop1ActionPerformed
+
+    private void goFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goFileButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_goFileButtonActionPerformed
+
+    private void sliderSpeed1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderSpeed1StateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_sliderSpeed1StateChanged
+
+    private void chooseFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseFileButtonActionPerformed
+        // TODO add your handling code here:
+        JFileChooser jfc = new JFileChooser(); 
+        if(jfc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) { 
+            this.fileNameTextArea.setText(jfc.getSelectedFile().getPath());
+        } 
+    }//GEN-LAST:event_chooseFileButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -519,9 +752,11 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JButton buttonRight;
     private javax.swing.JButton buttonRotate;
     private javax.swing.JButton buttonStop;
+    private javax.swing.JButton buttonStop1;
     private javax.swing.JButton buttonTurnBack;
     private javax.swing.JButton buttonTurnLeftAngle;
     private javax.swing.JButton buttonTurnRightAngle;
+    private javax.swing.JButton chooseFileButton;
     private javax.swing.JMenuItem contentsMenuItem;
     private javax.swing.JMenuItem copyMenuItem;
     private javax.swing.JMenuItem cutMenuItem;
@@ -529,16 +764,25 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
+    private javax.swing.JTextArea fileNameTextArea;
+    private javax.swing.Box.Filler filler1;
+    private javax.swing.JRadioButton fromFileRadio;
+    private javax.swing.JButton goFileButton;
+    private javax.swing.JButton goPointButton;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JInternalFrame jInternalFrame2;
     private javax.swing.JInternalFrame jInternalFrame3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     public javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTabbedPane jTabbedPane1;
     public static javax.swing.JTextArea logTextArea;
@@ -549,5 +793,10 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem saveMenuItem;
     private javax.swing.JSlider sliderAngle;
     private javax.swing.JSlider sliderSpeed;
+    private javax.swing.JSlider sliderSpeed1;
+    public javax.swing.JLabel timeLabel;
+    private javax.swing.JRadioButton toPointRadio;
+    private javax.swing.JTextField xTextField;
+    private javax.swing.JTextField yTextField;
     // End of variables declaration//GEN-END:variables
 }

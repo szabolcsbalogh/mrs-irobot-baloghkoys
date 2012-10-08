@@ -5,6 +5,9 @@
 package mrs.irobot.baloghkoys;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
@@ -45,13 +48,17 @@ public class MrsIrobotBaloghkoys {
        
       //  Thread blikanie = new Thread(new Runnable() {
       //          public void run() {
+                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        
                     while( true ){      // blikanie senzorov
                         try {
                             Thread.sleep(500);
                         } catch (InterruptedException ex) {
                             System.err.println(ex.toString());
                         }
-                        gui.jPanel1.repaint();   
+                        //gui.jPanel1.repaint();  // netreba repaint staci ze editnem timeLabel
+                        Date date = new Date();
+                        gui.timeLabel.setText( dateFormat.format(date) );
                     }
       //          }
       //  });
