@@ -15,7 +15,7 @@ import java.util.Date;
  */
 public class MrsIrobotBaloghkoys {
 
-    static String wantedPortName = "COM3";//"/dev/ttyS0";
+    static String wantedPortName = "COM23";//"/dev/ttyS0";
     /**
      * @param args the command line arguments
      */
@@ -27,13 +27,16 @@ public class MrsIrobotBaloghkoys {
             
         System.out.println("Available ports");
         connector.printPortNames();
-        connector.openPort( wantedPortName );
         Logger.log( "Opening " + wantedPortName );
+        if(!connector.openPort( wantedPortName ) ) {
+            Logger.log("Failed to open " + wantedPortName);
+        }
+        
         
         GUI gui = new GUI();
         gui.setVisible(true);
         
-        /*
+        
         byte[] data = {(byte)128,(byte)131,(byte)136,(byte)3};
         connector.sendByte(data);
         
@@ -44,7 +47,7 @@ public class MrsIrobotBaloghkoys {
         }
         
         data[2] = 0;
-        connector.sendByte(data);*/
+        connector.sendByte(data);
        
       //  Thread blikanie = new Thread(new Runnable() {
       //          public void run() {

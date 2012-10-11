@@ -46,8 +46,9 @@ public class Connector {
     }
   }
   
-  public void openPort( String wantedPortName )
+  public boolean openPort( String wantedPortName )
   {
+    boolean ret = false;
     try{
         pID = javax.comm.CommPortIdentifier.getPortIdentifier(wantedPortName);
         serPort = (SerialPort) pID.open(wantedPortName, 2000);
@@ -55,10 +56,12 @@ public class Connector {
         outStream = serPort.getOutputStream();
         serPort.setSerialPortParams(57600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1,
             SerialPort.PARITY_NONE);
+        ret = true;
     }catch(Exception e){
             System.err.println("Could not find serial port " + wantedPortName);
             System.err.println("Exception: " + e.toString());
     }
+    return ret;
   }
 
   public void sendByte( byte[] data ){
