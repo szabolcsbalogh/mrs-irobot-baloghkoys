@@ -78,7 +78,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="portsComboBoxActionPerformed"/>
       </Events>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value=" new javax.swing.JComboBox(mrs.irobot.baloghkoys.Connector.getPortNames())"/>
       </AuxValues>
     </Component>
     <Component class="javax.swing.JButton" name="okButton">

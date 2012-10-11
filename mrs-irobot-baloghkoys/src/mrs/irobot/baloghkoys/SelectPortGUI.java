@@ -4,6 +4,8 @@
  */
 package mrs.irobot.baloghkoys;
 
+import javax.swing.ComboBoxModel;
+
 /**
  *
  * @author user
@@ -17,6 +19,10 @@ public class SelectPortGUI extends javax.swing.JFrame {
      */
     public SelectPortGUI() {
         initComponents();
+       /* String names[] = mrs.irobot.baloghkoys.Connector.getPortNames();
+        ComboBoxModel model = new ComboBoxModel();
+        this.portsComboBox.set*/
+                
     }
 
     /**
@@ -29,7 +35,7 @@ public class SelectPortGUI extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        portsComboBox = new javax.swing.JComboBox();
+        portsComboBox =  new javax.swing.JComboBox(mrs.irobot.baloghkoys.Connector.getPortNames());
         okButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
         refreshButton = new javax.swing.JButton();
@@ -108,15 +114,19 @@ public class SelectPortGUI extends javax.swing.JFrame {
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         // TODO add your handling code here:
+        mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.wantedPortName = this.portsComboBox.getSelectedItem().toString();
+        this.setVisible(false);
         port = this.portsComboBox.getSelectedItem().toString();
     }//GEN-LAST:event_okButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here::
+        Logger.log("Select Port GUI cancel");
+        System.exit(1);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here
     }//GEN-LAST:event_refreshButtonActionPerformed
 
     /**

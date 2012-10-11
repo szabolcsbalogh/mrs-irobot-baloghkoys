@@ -17,10 +17,10 @@ public class Connector {
   InputStream inStream;
   OutputStream outStream;
   SerialPort serPort;
-
+/*
     public static Enumeration getPortNames() {
         return CommPortIdentifier.getPortIdentifiers();
-     }
+     }*/
     
     public void printPortNames(){
         
@@ -31,6 +31,29 @@ public class Connector {
             System.out.println(pid.getName());
         }
         
+    }
+    
+    public static int getNumberOfPorts(){        
+        int n=0;
+        Enumeration portIdentifiers = CommPortIdentifier.getPortIdentifiers();
+        while (portIdentifiers.hasMoreElements()){
+            CommPortIdentifier pid = (CommPortIdentifier) portIdentifiers.nextElement();     
+            n++;
+        }
+        return n;
+    }
+    
+    public static Object[] getPortNames(){    
+        String[] names = new String[getNumberOfPorts()];
+        int i=0;
+        
+        Enumeration portIdentifiers = CommPortIdentifier.getPortIdentifiers();
+        while (portIdentifiers.hasMoreElements())
+        {
+            CommPortIdentifier pid = (CommPortIdentifier) portIdentifiers.nextElement();
+            names[i++] = pid.getName();
+        }
+        return names;
     }
 
   public Connector(){

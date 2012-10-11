@@ -15,7 +15,19 @@ import java.util.Date;
  */
 public class MrsIrobotBaloghkoys {
 
-    static String wantedPortName = "COM23";//"/dev/ttyS0";
+    static String wantedPortName = ""; //"COM17";//"/dev/ttyS0";
+    
+    static GUI gui = new GUI();
+        
+    static void Sleep(int ms){        
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException ex) {
+            System.err.println(ex.toString());
+        }
+    }
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -25,8 +37,16 @@ public class MrsIrobotBaloghkoys {
         
         Connector connector = new Connector();
             
-        System.out.println("Available ports");
-        connector.printPortNames();
+        //System.out.println("Available ports");
+        //connector.printPortNames();
+        
+        SelectPortGUI portGUI = new SelectPortGUI();
+        portGUI.setVisible(true);
+        
+        while( wantedPortName.isEmpty() ){
+            Sleep(100);
+        }
+                       
         Logger.log( "Opening " + wantedPortName );
         if(!connector.openPort( wantedPortName ) ) {
             Logger.log("Failed to open " + wantedPortName);
@@ -36,39 +56,33 @@ public class MrsIrobotBaloghkoys {
         LowLevelDrv lldrv = new LowLevelDrv(connector);
         lldrv.init();
         
-        GUI gui = new GUI();
+
         gui.setVisible(true);
-        
+                
         
         //byte[] data = {(byte)128,(byte)131,(byte)136,(byte)3};
         //connector.sendByte(data);
         
         lldrv.drive(100, 100);
-        try {
-            Thread.sleep(5*1000);
-        } catch (InterruptedException ex) {
-            Logger.log("No SLEEP function!!!");
-        }
+                Sleep(5000);
+
         lldrv.stop();
         //data[2] = 0;
         //connector.sendByte(data);
        
-      //  Thread blikanie = new Thread(new Runnable() {
-      //          public void run() {
+        Thread blikanie = new Thread(new Runnable() {
+                @Override
+                public void run() {
                     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         
                     while( true ){      // blikanie senzorov
-                        try {
-                            Thread.sleep(500);
-                        } catch (InterruptedException ex) {
-                            System.err.println(ex.toString());
-                        }
+                        Sleep(500);
                         //gui.jPanel1.repaint();  // netreba repaint staci ze editnem timeLabel
                         Date date = new Date();
                         gui.timeLabel.setText( dateFormat.format(date) );
                     }
-      //          }
-      //  });
+                }
+        });
             
         
     }
