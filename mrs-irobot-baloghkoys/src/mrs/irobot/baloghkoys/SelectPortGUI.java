@@ -10,6 +10,8 @@ package mrs.irobot.baloghkoys;
  */
 public class SelectPortGUI extends javax.swing.JFrame {
 
+    public String port = "";
+    
     /**
      * Creates new form SelectPortGUI
      */
@@ -106,6 +108,7 @@ public class SelectPortGUI extends javax.swing.JFrame {
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         // TODO add your handling code here:
+        port = this.portsComboBox.getSelectedItem().toString();
     }//GEN-LAST:event_okButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
@@ -154,7 +157,7 @@ public class SelectPortGUI extends javax.swing.JFrame {
     private javax.swing.JButton cancelButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JButton okButton;
-    private javax.swing.JComboBox portsComboBox;
+    public javax.swing.JComboBox portsComboBox;
     private javax.swing.JButton refreshButton;
     // End of variables declaration//GEN-END:variables
 }

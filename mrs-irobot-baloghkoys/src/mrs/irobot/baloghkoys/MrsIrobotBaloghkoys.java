@@ -32,22 +32,26 @@ public class MrsIrobotBaloghkoys {
             Logger.log("Failed to open " + wantedPortName);
         }
         
+        Logger.log("Starting low level driver.");
+        LowLevelDrv lldrv = new LowLevelDrv(connector);
+        lldrv.init();
         
         GUI gui = new GUI();
         gui.setVisible(true);
         
         
-        byte[] data = {(byte)128,(byte)131,(byte)136,(byte)3};
-        connector.sendByte(data);
+        //byte[] data = {(byte)128,(byte)131,(byte)136,(byte)3};
+        //connector.sendByte(data);
         
+        lldrv.drive(100, 100);
         try {
             Thread.sleep(5*1000);
         } catch (InterruptedException ex) {
-            System.err.println(ex.toString());
+            Logger.log("No SLEEP function!!!");
         }
-        
-        data[2] = 0;
-        connector.sendByte(data);
+        lldrv.stop();
+        //data[2] = 0;
+        //connector.sendByte(data);
        
       //  Thread blikanie = new Thread(new Runnable() {
       //          public void run() {
