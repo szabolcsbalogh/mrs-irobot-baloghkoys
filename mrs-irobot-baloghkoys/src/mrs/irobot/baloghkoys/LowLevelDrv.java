@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package mrs.irobot.baloghkoys;
 
 /**
@@ -9,16 +5,23 @@ package mrs.irobot.baloghkoys;
  * @author Szabi
  */
 public class LowLevelDrv {
-    Connector conn;
+    private Connector conn;
+    public LowLevelSensors sensors;
     
+    /**
+     * Constructor with communication interface of type Connector
+     * @param conn 
+     */
     public LowLevelDrv(Connector conn) {
         this.conn = conn;
+        this.sensors = new LowLevelSensors(conn);
     }
     
     /**
     * Initialize and set safe mode on robot
     */
     public void init() {
+        Logger.log("lldrv:init()");
         byte buf[] = {(byte)128,(byte)131}; // Start, SafeMode
         conn.sendByte(buf);
     }
@@ -34,6 +37,7 @@ public class LowLevelDrv {
         if(no<-1 || no>9) {
             return;
         }
+        Logger.log("lldrv:drive("+no+")");
         byte buf[] = {(byte)136, 0x00};
         conn.sendByte(buf);
     }
@@ -61,11 +65,142 @@ public class LowLevelDrv {
         conn.sendByte(buf);
     }
     
+    /**
+     * Go forward
+     * 
+     * @param velocity average velocity of the drive wheels in mm/s (-500 - 500)
+     */
+    public void go_forward(int velocity) {
+        if(velocity < -500 || velocity > 500) {
+            return;
+        }
+        Logger.log("lldrv:go_forward("+velocity+")");
+        byte buf[] = {(byte)137, 0x00, 0x00, (byte)0x80, 0x00}; // straight
+        buf[1] = (byte)((char)velocity >> 8 & 0xff);
+        buf[2] = (byte)((char)velocity & 0xff);
+        conn.sendByte(buf);
+    }
+    
+    /**
+     * Go backward
+     * 
+     * @param velocity average velocity of the drive wheels in mm/s (-500 - 500)
+     */
+    public void go_backward(int velocity) {
+        if(velocity < -500 || velocity > 500) {
+            return;
+        }
+        Logger.log("lldrv:go_backward("+velocity+")");
+        byte buf[] = {(byte)137, 0x00, 0x00, (byte)0x7F, (byte)0xFF}; // straight
+        buf[1] = (byte)((char)velocity >> 8 & 0xff);
+        buf[2] = (byte)((char)velocity & 0xff);
+        conn.sendByte(buf);
+    }
+    
+    /**
+     * Turn clockwise
+     * 
+     * @param velocity average velocity of the drive wheels in mm/s (-500 - 500)
+     */
+    public void turn_clockwise(int velocity) {
+        if(velocity < -500 || velocity > 500) {
+            return;
+        }
+        Logger.log("lldrv:turn_clockwise("+velocity+")");
+        byte buf[] = {(byte)137, 0x00, 0x00, (byte)0xFF, (byte)0xFF}; // straight
+        buf[1] = (byte)((char)velocity >> 8 & 0xff);
+        buf[2] = (byte)((char)velocity & 0xff);
+        conn.sendByte(buf);
+    }
+    
+    /**
+     * Turn counter-clockwise
+     * 
+     * @param velocity average velocity of the drive wheels in mm/s (-500 - 500)
+     */
+    public void turn_counterclockwise(int velocity) {
+        if(velocity < -500 || velocity > 500) {
+            return;
+        }
+        Logger.log("lldrv:turn_counterclockwise("+velocity+")");
+        byte buf[] = {(byte)137, 0x00, 0x00, (byte)0x00, (byte)0x01}; // straight
+        buf[1] = (byte)((char)velocity >> 8 & 0xff);
+        buf[2] = (byte)((char)velocity & 0xff);
+        conn.sendByte(buf);
+    }
+    
+    /**
+     * Controll wheels directly
+     * 
+     * @param left (signed using two complements) 16-bit speed in mm/s
+     * @param right (signed using two complements) 16-bit speed in mm/s
+     */
+    public void drive_direct(int left, int right) {
+        byte buf[] = {(byte)145, 0x00, 0x00, 0x00, 0x00};
+        buf[1] = (byte)((char)right >> 8 & 0xff);
+        buf[2] = (byte)((char)right & 0xff);
+        buf[3] = (byte)((char)left >> 8 & 0xff);
+        buf[4] = (byte)((char)left & 0xff);
+        Logger.log("lldrv:drive_direct("+left+","+right+")");
+        conn.sendByte(buf);
+    }
+    
+    /**
+     * Stop the robot
+     */
     public void stop() {
         Logger.log("lldrv:stop()");
         byte buf[] = {(byte)145, 0x00, 0x00, 0x00, 0x00};
         conn.sendByte(buf);
     }
+       
+    /**
+     * Set LEDs on Creative
+     * 
+     * @param Advance   Advance led status (1=on, 0=off)
+     * @param Play  Play led status (1=on, 0=off)
+     * @param PowerLedColor Power LED Color 0(green) - 255(red)
+     * @param PowerLedIntensity PowerLedIntensity 0(Off) - 255(FullIntensity)
+     */
+    public void set_leds(boolean Advance, boolean Play, int PowerLedColor, int PowerLedIntensity) {
+        if(PowerLedColor < 0 || PowerLedColor > 255) {
+            return;
+        }
+        if(PowerLedIntensity < 0 || PowerLedIntensity > 255) {
+            return;
+        }
+        byte buf[] = {(byte)139, 0x00, 0x00, 0x00};
+        buf[1] = (byte)((Advance ? 4:0) + (Play ? 2:0));
+        buf[2] = (byte) PowerLedColor;
+        buf[3] = (byte) PowerLedIntensity;
+        Logger.log("lldrv:set_leds("+ Advance+ "," +Play+ ","+PowerLedColor+","+PowerLedIntensity+")");
+        conn.sendByte(buf);
+    }
     
+    /**
+     * Request the OI to send a packet of sensor data bytes
+     * 
+     * @param no Packet id
+     * @see Create Open Interface Sensor Packet
+     * @see Sensors Quick Reference
+     */
+    public byte[] sensor_packet(int no) {
+        //implemented in subclass
+        return sensors.sensor_packet(no);
+    }
+    
+   /**
+     * Request the OI to send a packets of sensor data bytes
+     * !!!not implemented in subclass in time of writing this!!!
+     * USE sensor_packet instead
+     * 
+     * @param no[] Packet id's
+     * @return Response is in order of request
+     * @see Create Open Interface Sensor Packet
+     * @see Sensors Quick Reference
+     */
+    protected byte[] sensor_packets(int[] no) {
+        return sensors.sensor_packets(no);
+    }
     
 }
