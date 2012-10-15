@@ -39,7 +39,7 @@ public class LowLevelSensors {
             reply[i] = conn.receiveByte();
         }
         
-        Logger.log("lldrv:sensors:sensor_packet(" + no + ")");
+        Logger.log("lldrv:sensors:sensor_packet(" + no + ")",1);
         return reply;
     }
     

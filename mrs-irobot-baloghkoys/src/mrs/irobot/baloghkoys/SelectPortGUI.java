@@ -113,20 +113,22 @@ public class SelectPortGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_portsComboBoxActionPerformed
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
-        // TODO add your handling code here:
         mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.wantedPortName = this.portsComboBox.getSelectedItem().toString();
         this.setVisible(false);
         port = this.portsComboBox.getSelectedItem().toString();
     }//GEN-LAST:event_okButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        // TODO add your handling code here::
         Logger.log("Select Port GUI cancel");
         System.exit(1);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
         // TODO add your handling code here
+        this.portsComboBox.removeAllItems();
+        Object[] ports = mrs.irobot.baloghkoys.Connector.getPortNames();
+        for( int i=0; i<ports.length ; i++ )
+            this.portsComboBox.addItem( ports[i] );
     }//GEN-LAST:event_refreshButtonActionPerformed
 
     /**
@@ -167,7 +169,7 @@ public class SelectPortGUI extends javax.swing.JFrame {
     private javax.swing.JButton cancelButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JButton okButton;
-    public javax.swing.JComboBox portsComboBox;
+    private javax.swing.JComboBox portsComboBox;
     private javax.swing.JButton refreshButton;
     // End of variables declaration//GEN-END:variables
 }

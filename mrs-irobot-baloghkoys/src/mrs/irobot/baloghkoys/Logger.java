@@ -19,8 +19,16 @@ public class Logger {
     
     private static boolean logFile = false;
     private static String fileName = null;
+    private static final int GUI_LOG_LEVEL = 0;
+    private static final int STDOUT_LOG_LEVEL = 0;
     String targeds;
+
     
+    /**
+     * Make a log to file, to stdout and to GUI, no priorities
+     * 
+     * @param   str         string to be logged
+     */
     static public void log( String str ){  
         if( !logFile ){
             newLogFile();
@@ -31,6 +39,26 @@ public class Logger {
         System.out.print(logText);
         if( GUI.logTextArea != null )
             GUI.logTextArea.append(logText);  
+    }
+    
+    /**
+     * Make a log to file, to stdout and to GUI
+     * 
+     * @param   str         string to be logged
+     * @param   priority    higher number is higher priority, priority lower than GUI_LOG_LEVEL won't be logged to GUI, priority lower than STDOUT_LOG_LEVEL won't be logged to STDOUT
+     */
+    static public void log( String str, int priority ){  
+        if( !logFile ){
+            newLogFile();
+            logFile = true;
+        }
+        String logText = date()+str+"\r\n";
+        appendText(logText);
+        if( priority >= STDOUT_LOG_LEVEL )
+            System.out.print(logText);
+        if( priority >= GUI_LOG_LEVEL )
+            if( GUI.logTextArea != null )
+                GUI.logTextArea.append(logText);  
     }
     
     

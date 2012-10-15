@@ -21,7 +21,7 @@ public class LowLevelDrv {
     * Initialize and set safe mode on robot
     */
     public void init() {
-        Logger.log("lldrv:init()");
+        Logger.log("lldrv:init()",0);
         byte buf[] = {(byte)128,(byte)131}; // Start, SafeMode
         conn.sendByte(buf);
     }
@@ -37,7 +37,7 @@ public class LowLevelDrv {
         if(no<-1 || no>9) {
             return;
         }
-        Logger.log("lldrv:drive("+no+")");
+        Logger.log("lldrv:drive("+no+")",0);
         byte buf[] = {(byte)136, 0x00};
         conn.sendByte(buf);
     }
@@ -56,7 +56,7 @@ public class LowLevelDrv {
             
         }
         byte buf[] = {(byte)137, 0x00, 0x00, 0x00, 0x00};
-        Logger.log("lldrv:drive("+velocity+","+radius+")");
+        Logger.log("lldrv:drive("+velocity+","+radius+")",0);
         buf[1] = (byte)((char)velocity >> 8 & 0xff);
         buf[2] = (byte)((char)velocity & 0xff);
         buf[3] = (byte)((char)radius >> 8 & 0xff);
@@ -74,7 +74,7 @@ public class LowLevelDrv {
         if(velocity < -500 || velocity > 500) {
             return;
         }
-        Logger.log("lldrv:go_forward("+velocity+")");
+        Logger.log("lldrv:go_forward("+velocity+")",0);
         byte buf[] = {(byte)137, 0x00, 0x00, (byte)0x80, 0x00}; // straight
         buf[1] = (byte)((char)velocity >> 8 & 0xff);
         buf[2] = (byte)((char)velocity & 0xff);
@@ -90,7 +90,7 @@ public class LowLevelDrv {
         if(velocity < -500 || velocity > 500) {
             return;
         }
-        Logger.log("lldrv:go_backward("+velocity+")");
+        Logger.log("lldrv:go_backward("+velocity+")",0);
         byte buf[] = {(byte)137, 0x00, 0x00, (byte)0x7F, (byte)0xFF}; // straight
         buf[1] = (byte)((char)velocity >> 8 & 0xff);
         buf[2] = (byte)((char)velocity & 0xff);
@@ -106,7 +106,7 @@ public class LowLevelDrv {
         if(velocity < -500 || velocity > 500) {
             return;
         }
-        Logger.log("lldrv:turn_clockwise("+velocity+")");
+        Logger.log("lldrv:turn_clockwise("+velocity+")",0);
         byte buf[] = {(byte)137, 0x00, 0x00, (byte)0xFF, (byte)0xFF}; // straight
         buf[1] = (byte)((char)velocity >> 8 & 0xff);
         buf[2] = (byte)((char)velocity & 0xff);
@@ -122,7 +122,7 @@ public class LowLevelDrv {
         if(velocity < -500 || velocity > 500) {
             return;
         }
-        Logger.log("lldrv:turn_counterclockwise("+velocity+")");
+        Logger.log("lldrv:turn_counterclockwise("+velocity+")",0);
         byte buf[] = {(byte)137, 0x00, 0x00, (byte)0x00, (byte)0x01}; // straight
         buf[1] = (byte)((char)velocity >> 8 & 0xff);
         buf[2] = (byte)((char)velocity & 0xff);
@@ -141,7 +141,7 @@ public class LowLevelDrv {
         buf[2] = (byte)((char)right & 0xff);
         buf[3] = (byte)((char)left >> 8 & 0xff);
         buf[4] = (byte)((char)left & 0xff);
-        Logger.log("lldrv:drive_direct("+left+","+right+")");
+        Logger.log("lldrv:drive_direct("+left+","+right+")",0);
         conn.sendByte(buf);
     }
     
@@ -149,7 +149,7 @@ public class LowLevelDrv {
      * Stop the robot
      */
     public void stop() {
-        Logger.log("lldrv:stop()");
+        Logger.log("lldrv:stop()",0);
         byte buf[] = {(byte)145, 0x00, 0x00, 0x00, 0x00};
         conn.sendByte(buf);
     }
@@ -173,7 +173,7 @@ public class LowLevelDrv {
         buf[1] = (byte)((Advance ? 4:0) + (Play ? 2:0));
         buf[2] = (byte) PowerLedColor;
         buf[3] = (byte) PowerLedIntensity;
-        Logger.log("lldrv:set_leds("+ Advance+ "," +Play+ ","+PowerLedColor+","+PowerLedIntensity+")");
+        Logger.log("lldrv:set_leds("+ Advance+ "," +Play+ ","+PowerLedColor+","+PowerLedIntensity+")",0);
         conn.sendByte(buf);
     }
     

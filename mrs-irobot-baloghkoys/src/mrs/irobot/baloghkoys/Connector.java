@@ -1,11 +1,8 @@
 package mrs.irobot.baloghkoys;
 
 import java.io.*;
-import javax.comm.*;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import javax.comm.*;
 
 public class Connector {
     
@@ -81,8 +78,8 @@ public class Connector {
             SerialPort.PARITY_NONE);
         ret = true;
     }catch(Exception e){
-            System.err.println("Could not find serial port " + wantedPortName);
-            System.err.println("Exception: " + e.toString());
+            Logger.log("Could not open serial port "+ wantedPortName+": " + e.toString());
+            System.err.println("Could not open serial port "+ wantedPortName+": " + e.toString());
     }
     return ret;
   }
@@ -91,7 +88,7 @@ public class Connector {
         try {
             outStream.write(data);
         } catch (IOException ex) {
-            Logger.getLogger(Connector.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.log("Send byte error: "+ex.toString());
         }
   }
   
@@ -100,7 +97,7 @@ public class Connector {
         try {
             inStream.read(readBuffer,0,1);
         } catch (IOException ex) {
-            Logger.getLogger(Connector.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.log( "Receive byte error: " +ex.toString() );
         }
         return readBuffer[0];
   }
