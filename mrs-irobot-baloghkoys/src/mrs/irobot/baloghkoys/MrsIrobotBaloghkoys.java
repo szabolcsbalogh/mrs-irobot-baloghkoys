@@ -46,6 +46,7 @@ public class MrsIrobotBaloghkoys {
         Logger.log( "Opening " + wantedPortName,100  );
         if(!connector.openPort( wantedPortName ) ) {
             Logger.log("Failed to open " + wantedPortName);
+            System.exit(1);
         }
         
         Logger.log("Starting low level driver.",1);
@@ -55,9 +56,9 @@ public class MrsIrobotBaloghkoys {
         iRobotImage robotImage = new iRobotImage();
         robotImage.setSensors(llsensors);
 
-        gui.setVisible(true);
         gui.setRobotImage(robotImage);      
-       
+        gui.setLowLevelDrv(lldrv);
+        gui.setVisible(true);
         
         //byte[] data = {(byte)128,(byte)131,(byte)136,(byte)3};
         //connector.sendByte(data);

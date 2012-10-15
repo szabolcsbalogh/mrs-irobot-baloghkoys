@@ -4,8 +4,6 @@
  */
 package mrs.irobot.baloghkoys;
 
-import java.awt.TextArea;
-import java.io.File;
 import java.util.Date;
 import java.io.FileWriter;
 import java.text.DateFormat;
@@ -19,7 +17,7 @@ public class Logger {
     
     private static boolean logFile = false;
     private static String fileName = null;
-    private static final int GUI_LOG_LEVEL = 1;
+    private static final int GUI_LOG_LEVEL = 2;
     private static final int STDOUT_LOG_LEVEL = 1;
 
     

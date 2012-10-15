@@ -60,7 +60,7 @@ public class LowLevelSensors {
         if (no<0 || no > 42) {
             return;
         }
-        Logger.log("lldrv:sensor_packet(" + no + ")"); 
+        Logger.log("lldrv:sensor_packet(" + no + ")",0); 
         */
         Logger.log("lldrv:WARRNING:sensor_packets not implemented yet.");
         //conn.sendByte(buf);
@@ -100,7 +100,7 @@ public class LowLevelSensors {
         b[0] = (t[0]&0x08)==0x08;
         b[1] = (t[0]&0x10)==0x10;
         b[2] = (t[0]&0x04)==0x04;
-        Logger.log("wheel drops: "+t[0]);
+        Logger.log("wheel drops: "+t[0]);   // hadze to haluze 0 -114 mozno kvoli mojmu bluetoothu
         return b;
     }
     
