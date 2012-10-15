@@ -39,7 +39,7 @@ public class LowLevelSensors {
             reply[i] = conn.receiveByte();
         }
         
-        Logger.log("lldrv:sensors:sensor_packet(" + no + ")",1);
+        Logger.log("lldrv:sensors:sensor_packet(" + no + ")",0);
         return reply;
     }
     
@@ -94,6 +94,16 @@ public class LowLevelSensors {
         return t[0];
     }
     
+    public boolean[] get_wheel_drops(){
+        byte t[] = this.sensor_packet(7);
+        boolean b[] = new boolean[3];
+        b[0] = (t[0]&0x08)==0x08;
+        b[1] = (t[0]&0x10)==0x10;
+        b[2] = (t[0]&0x04)==0x04;
+        Logger.log("wheel drops: "+t[0]);
+        return b;
+    }
+    
     /**
      * Wall sensor state
      * 
@@ -142,6 +152,11 @@ public class LowLevelSensors {
     public boolean cliff_right() {
         byte t[] = this.sensor_packet(12);
         return t[0] == 1;
+    }
+    
+    public boolean[] get_cliff_sensors(){
+        boolean[] sensors = { cliff_left(), cliff_front_left(), cliff_front_right(), cliff_right() }; 
+        return sensors;
     }
     
     /**

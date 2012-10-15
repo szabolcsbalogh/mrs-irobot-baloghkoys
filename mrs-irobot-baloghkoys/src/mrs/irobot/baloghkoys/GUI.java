@@ -8,7 +8,6 @@ import java.awt.Graphics;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Level;
 import javax.swing.JFileChooser;
 
 /**
@@ -17,6 +16,10 @@ import javax.swing.JFileChooser;
  */
 public class GUI extends javax.swing.JFrame {
 
+    
+    iRobotImage robotImage = new iRobotImage();
+
+        
     /**
      * Creates new form GUI
      */
@@ -30,13 +33,17 @@ public class GUI extends javax.swing.JFrame {
          public void run() {
              DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
              while( true ){     
-                 mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.Sleep(500);
+                 mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.Sleep(250);
                  Date date = new Date();
                  timeLabel.setText( dateFormat.format(date) );
              }
          }
- });
+        });
         refreshTime.start();  
+    }
+    
+    public void setRobotImage(iRobotImage robotImage) {
+        this.robotImage = robotImage;
     }
 
     /**
@@ -79,10 +86,8 @@ public class GUI extends javax.swing.JFrame {
         sliderSpeed1 = new javax.swing.JSlider();
         jLabel5 = new javax.swing.JLabel();
         jInternalFrame1 = new javax.swing.JInternalFrame();
-        jPanel1 = new javax.swing.JPanel()
-        {
-            mrs.irobot.baloghkoys.iRobotImage robotImage = new mrs.irobot.baloghkoys.iRobotImage();
-
+        viewPanel = new javax.swing.JPanel()
+        {    
             public void paint( Graphics g){
                 g.drawImage( robotImage.getImage(), 0, 0, null);
             }
@@ -122,7 +127,6 @@ public class GUI extends javax.swing.JFrame {
         setBounds(new java.awt.Rectangle(0, 0, 800, 600));
         setMaximumSize(new java.awt.Dimension(800, 600));
         setMinimumSize(new java.awt.Dimension(800, 600));
-        setPreferredSize(new java.awt.Dimension(800, 600));
         setResizable(false);
 
         buttonForward.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/arrow_up.JPG"))); // NOI18N
@@ -457,30 +461,32 @@ public class GUI extends javax.swing.JFrame {
         jInternalFrame1.setPreferredSize(new java.awt.Dimension(300, 335));
         jInternalFrame1.setVisible(true);
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setToolTipText("");
-        jPanel1.setPreferredSize(new java.awt.Dimension(300, 300));
+        viewPanel.setBackground(new java.awt.Color(255, 255, 255));
+        viewPanel.setToolTipText("");
+        viewPanel.setPreferredSize(new java.awt.Dimension(300, 300));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout viewPanelLayout = new javax.swing.GroupLayout(viewPanel);
+        viewPanel.setLayout(viewPanelLayout);
+        viewPanelLayout.setHorizontalGroup(
+            viewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 290, Short.MAX_VALUE)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+        viewPanelLayout.setVerticalGroup(
+            viewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 272, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jInternalFrame1Layout = new javax.swing.GroupLayout(jInternalFrame1.getContentPane());
         jInternalFrame1.getContentPane().setLayout(jInternalFrame1Layout);
         jInternalFrame1Layout.setHorizontalGroup(
             jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
+            .addComponent(viewPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
         );
         jInternalFrame1Layout.setVerticalGroup(
             jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(jInternalFrame1Layout.createSequentialGroup()
+                .addComponent(viewPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 6, Short.MAX_VALUE))
         );
 
         jInternalFrame3.setTitle("Log");
@@ -499,7 +505,7 @@ public class GUI extends javax.swing.JFrame {
         );
         jInternalFrame3Layout.setVerticalGroup(
             jInternalFrame3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
         );
 
         jLabel1.setText("Time:");
@@ -662,7 +668,7 @@ public class GUI extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jInternalFrame3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 1, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -854,7 +860,6 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    public javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
@@ -873,6 +878,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JSlider sliderSpeed1;
     public javax.swing.JLabel timeLabel;
     private javax.swing.JRadioButton toPointRadio;
+    public javax.swing.JPanel viewPanel;
     private javax.swing.JTextField xTextField;
     private javax.swing.JTextField yTextField;
     // End of variables declaration//GEN-END:variables

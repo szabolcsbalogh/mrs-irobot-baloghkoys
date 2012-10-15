@@ -11,6 +11,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
+import mrs.irobot.baloghkoys.LowLevelSensors;
 
 /**
  *
@@ -19,14 +20,19 @@ import javax.swing.ImageIcon;
 public class iRobotImage {
     
         ImageIcon iRobotIcon = new javax.swing.ImageIcon(getClass().getResource("/img/irobot.JPG"));
-        public static boolean[] stairSensors = new boolean[4];
-        public static boolean[] wallSensors  = new boolean[2];
-        public static boolean[] wheelSensors = new boolean[3];
+        private boolean[] cliffSensors = new boolean[4];
+        private boolean[] wallSensors  = new boolean[2];
+        private boolean[] wheelSensors = new boolean[3];
+        private String[]  cliffNames   = {"Left","Left front","Right front","Right"};
+        private String[]  wallNames    = {"Virtual wall","Wall"};
+        private String[]  wheelNames   = {"Left","Center","Right"};
         private boolean blik = true;
         
+        LowLevelSensors lls;
+        
         public iRobotImage(){
-            for( int i=0 ; i<stairSensors.length ; i++ ){
-                stairSensors[i] = false;
+            for( int i=0 ; i<cliffSensors.length ; i++ ){
+                cliffSensors[i] = false;
             }
             for( int i=0 ; i<wallSensors.length ; i++ ){
                 wallSensors[i] = false;
@@ -35,12 +41,43 @@ public class iRobotImage {
                 wheelSensors[i] = false;
             }      
             // pre ukazku:
-            stairSensors[0]=stairSensors[1]=true;
-            wheelSensors[0]=true;
-            wallSensors[0]=true;
+           // cliffSensors[0]=cliffSensors[1]=true;
+           // wheelSensors[0]=true;
+           // wallSensors[0]=true;
         }
         
+        
+    /**
+     * Set LowLevelSensors class instance for displaying sensors actual state
+     * @param lls
+     */
+    public void setSensors( LowLevelSensors lls ){
+        this.lls=lls;
+    }
+        
     public Image getImage() {
+        
+        boolean lastCliffSensors[] = cliffSensors;
+        boolean lastWheelSensors[] = wheelSensors;
+        boolean lastWallSensors[] = wallSensors;
+        
+        cliffSensors  =lls.get_cliff_sensors();
+        wheelSensors  =lls.get_wheel_drops();
+        wallSensors[0]=lls.virtual_wall();
+        wallSensors[1]=lls.wall();
+        
+        for( int i=0; i< cliffNames.length ; i++ )
+            if( cliffSensors[i]!=lastCliffSensors[i] )
+                 Logger.log( cliffNames[i]+" cliff sensor "+(cliffSensors[i]?"triggered":"ok"), 1);
+        
+        for( int i=0; i< wallNames.length ; i++ )
+            if( wallSensors[i]!=lastWallSensors[i] )
+                 Logger.log( wallNames[i]+" sensor "+(wallSensors[i]?"triggered":"ok"), 1);
+        
+        for( int i=0; i< wheelNames.length ; i++ )
+            if( wheelSensors[i]!=lastWheelSensors[i] )
+                 Logger.log( wheelNames[i]+" sensor "+(wheelSensors[i]?"triggered":"ok"), 1);
+        
         int w = iRobotIcon.getIconWidth();
         int h = iRobotIcon.getIconHeight();
 
@@ -50,16 +87,16 @@ public class iRobotImage {
         
         g.setColor(Color.GREEN);
         g.setStroke(new BasicStroke(5F));
-        if (!stairSensors[0]) {
+        if (!cliffSensors[0]) {
             g.drawLine( 14, 103, 26, 80);
         }
-        if (!stairSensors[1]) {
+        if (!cliffSensors[1]) {
             g.drawLine( 97, 19, 121, 13);
         }
-        if (!stairSensors[2]) {
+        if (!cliffSensors[2]) {
             g.drawLine(168, 13, 194, 21);
         }
-        if (!stairSensors[3]) {
+        if (!cliffSensors[3]) {
             g.drawLine(264, 79, 275, 102);
         }
 
@@ -86,17 +123,17 @@ public class iRobotImage {
         if(blik){
             g.setColor(Color.RED);
             g.setStroke(new BasicStroke(5F));
-            if (stairSensors[0]) {
+            if (cliffSensors[0]) {
                 g.drawLine( 14, 103, 26, 80);
             }
-            if (stairSensors[1]) {
+            if (cliffSensors[1]) {
                 g.drawLine( 97, 19, 121, 13);
             }
-            if (stairSensors[2]) {
-                g.drawLine(168, 13, 194, 21);
+            if (cliffSensors[2]) {
+                g.drawLine(168, 13, 194, 21);                
             }
-            if (stairSensors[3]) {
-                g.drawLine(264, 79, 275, 102);
+            if (cliffSensors[3]) {
+                g.drawLine(264, 79, 275, 102);             
             }
 
             g.setStroke(new BasicStroke(10F));
@@ -109,6 +146,7 @@ public class iRobotImage {
             if (wheelSensors[1]) {
                 g.setStroke(new BasicStroke(9F));
                 g.drawLine(143, 47, 150, 47);
+                g.setStroke(new BasicStroke(10F));
             }
 
             if (wallSensors[0]) {

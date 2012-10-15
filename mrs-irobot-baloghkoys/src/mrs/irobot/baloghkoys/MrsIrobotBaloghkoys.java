@@ -51,12 +51,13 @@ public class MrsIrobotBaloghkoys {
         Logger.log("Starting low level driver.",1);
         LowLevelDrv lldrv = new LowLevelDrv(connector);
         lldrv.init();
-        
+        LowLevelSensors llsensors = new LowLevelSensors(connector);
+        iRobotImage robotImage = new iRobotImage();
+        robotImage.setSensors(llsensors);
 
         gui.setVisible(true);
-              
-
-        
+        gui.setRobotImage(robotImage);      
+       
         
         //byte[] data = {(byte)128,(byte)131,(byte)136,(byte)3};
         //connector.sendByte(data);

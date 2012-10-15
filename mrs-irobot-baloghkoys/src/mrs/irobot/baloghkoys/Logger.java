@@ -19,9 +19,8 @@ public class Logger {
     
     private static boolean logFile = false;
     private static String fileName = null;
-    private static final int GUI_LOG_LEVEL = 0;
-    private static final int STDOUT_LOG_LEVEL = 0;
-    String targeds;
+    private static final int GUI_LOG_LEVEL = 1;
+    private static final int STDOUT_LOG_LEVEL = 1;
 
     
     /**
@@ -37,8 +36,9 @@ public class Logger {
         String logText = date()+str+"\r\n";
         appendText(logText);
         System.out.print(logText);
-        if( GUI.logTextArea != null )
-            GUI.logTextArea.append(logText);  
+        if( GUI.logTextArea != null ) {
+            GUI.logTextArea.append(logText);
+        }  
     }
     
     /**
@@ -54,11 +54,14 @@ public class Logger {
         }
         String logText = date()+str+"\r\n";
         appendText(logText);
-        if( priority >= STDOUT_LOG_LEVEL )
+        if( priority >= STDOUT_LOG_LEVEL ) {
             System.out.print(logText);
-        if( priority >= GUI_LOG_LEVEL )
-            if( GUI.logTextArea != null )
-                GUI.logTextArea.append(logText);  
+        }
+        if( priority >= GUI_LOG_LEVEL ) {
+            if( GUI.logTextArea != null ) {
+                GUI.logTextArea.append(logText);
+            }
+        }  
     }
     
     
@@ -73,6 +76,10 @@ public class Logger {
         Date date = new Date();
         fileName = "iRobot_"+dateFormat.format(date)+".log";
         System.out.println( "Logging to "+fileName+" started" );
+        System.out.println(date()+"Logging level is "+STDOUT_LOG_LEVEL+"\r\n");
+        if( GUI.logTextArea != null ) {
+            GUI.logTextArea.append(date()+"Logging level is "+GUI_LOG_LEVEL+"\r\n");
+        } 
     }
     
        
