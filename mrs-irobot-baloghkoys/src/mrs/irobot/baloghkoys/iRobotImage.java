@@ -20,6 +20,7 @@ import mrs.irobot.baloghkoys.LowLevelSensors;
 public class iRobotImage {
     
         ImageIcon iRobotIcon = new javax.swing.ImageIcon(getClass().getResource("/img/irobot.JPG"));
+        ImageIcon[] batteryIcons = new ImageIcon[7];
         private boolean[] cliffSensors = new boolean[4];
         private boolean[] wallSensors  = new boolean[2];
         private boolean[] wheelSensors = new boolean[3];
@@ -27,6 +28,7 @@ public class iRobotImage {
         private String[]  wallNames    = {"Virtual wall","Wall"};
         private String[]  wheelNames   = {"Left","Center","Right"};
         private boolean blik = true;
+        private int chargingImage = 1;
         
         LowLevelSensors lls;
         
@@ -40,10 +42,11 @@ public class iRobotImage {
             for( int i=0 ; i<wheelSensors.length ; i++ ){
                 wheelSensors[i] = false;
             }      
-            // pre ukazku:
-           // cliffSensors[0]=cliffSensors[1]=true;
-           // wheelSensors[0]=true;
-           // wallSensors[0]=true;
+            for( int i=0 ; i<=5 ; i++ ){
+                batteryIcons[i] = new ImageIcon( getClass().getResource("/img/battery/battery_"+i+".jpg") );
+            }
+            batteryIcons[6] = new ImageIcon( getClass().getResource("/img/battery/battery_1_green.jpg") );
+                
         }
         
         
@@ -84,13 +87,38 @@ public class iRobotImage {
             }
         }
         
-        int w = iRobotIcon.getIconWidth();
-        int h = iRobotIcon.getIconHeight();
+        int w  = iRobotIcon.getIconWidth();
+        int h  = iRobotIcon.getIconHeight();
+        int wb = batteryIcons[0].getIconWidth();
+        int hb = batteryIcons[0].getIconHeight();
 
         BufferedImage dimg = new BufferedImage(iRobotIcon.getIconWidth(), iRobotIcon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = dimg.createGraphics();
         g.drawImage(iRobotIcon.getImage(), 0, 0, null);
-                
+        
+        double battery_percent = 0;
+        if( lls.battery_capacity() > 0 )
+            battery_percent = lls.battery_charge()/lls.battery_capacity();
+        int imageNumber = (int) (battery_percent*5+0.5);  
+        if( lls.battery_current() < 0 ) {
+            g.drawImage( batteryIcons[imageNumber].getImage(), w-wb, h-hb-5, null);
+        }else{
+            if( chargingImage <= 1 ) chargingImage = 6;
+            g.drawImage( batteryIcons[chargingImage].getImage(), w-wb, h-hb-5, null);
+            if( chargingImage == 6 ) chargingImage = 1;
+            chargingImage++;
+            chargingImage%=6;
+        }
+                  
+        g.setColor(Color.ORANGE);
+        g.setStroke(new BasicStroke(10F));
+        if(lls.wheel_bump_left()){
+            g.drawLine(31, 195, 43, 195);      
+        }
+        if(lls.wheel_bump_right()) {
+            g.drawLine(248, 195, 260, 195);
+        }
+        
         g.setColor(Color.RED);
         g.setStroke(new BasicStroke(5F));
         if (cliffSensors[0] && blik || (!blik && cliffSensors[0] && !lastCliffSensors[0]) ) {
@@ -105,7 +133,7 @@ public class iRobotImage {
         if (cliffSensors[3] && blik || (!blik && cliffSensors[3] && !lastCliffSensors[3]) ) {
             g.drawLine(264, 79, 275, 102);             
         }
-
+     
         g.setStroke(new BasicStroke(10F));
         if (wheelSensors[0] && blik || (!blik && wheelSensors[0] && !lastWheelSensors[0]) ) {
             g.drawLine(31, 195, 43, 195);
@@ -142,24 +170,24 @@ public class iRobotImage {
         }
 
         g.setStroke(new BasicStroke(10F));
-        if (!wheelSensors[0]) {
+        if (!wheelSensors[0] && !lls.wheel_bump_left()) {
             g.drawLine(31, 195, 43, 195);
         }
-        if (!wheelSensors[2]) {
+        if (!wheelSensors[2] && !lls.wheel_bump_right()) {
             g.drawLine(248, 195, 260, 195);
         }
         if (!wheelSensors[1]) {
             g.setStroke(new BasicStroke(9F));
             g.drawLine(143, 47, 150, 47);
         }
-
+       
         if (!wallSensors[0]) {
             g.drawArc( -5,  0, 295, 305, 95, 70);
         }
         if (!wallSensors[1]) {
             g.drawArc( 0,  -1, 295, 300, 15, 70);
         }
-        
+       
         
         g.dispose();
         blik = !blik;

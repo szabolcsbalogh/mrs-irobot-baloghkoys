@@ -95,13 +95,23 @@ public class LowLevelSensors {
     }
     
     public boolean[] get_wheel_drops(){
-        byte t[] = this.sensor_packet(7);
+        byte t = bumps_and_wheel_drops();
         boolean b[] = new boolean[3];
-        b[0] = (t[0]&0x08)==0x08;
-        b[1] = (t[0]&0x10)==0x10;
-        b[2] = (t[0]&0x04)==0x04;
-        Logger.log("wheel drops: "+t[0]);   // hadze to haluze 0 -114 mozno kvoli mojmu bluetoothu
+        b[0] = (t&0x08)==0x08;
+        b[1] = (t&0x10)==0x10;
+        b[2] = (t&0x04)==0x04;
+        Logger.log("wheel drops: "+t,0);   // hadze to haluze 0 -114 mozno kvoli mojmu bluetoothu
         return b;
+    }
+    
+    public boolean wheel_bump_left(){
+        byte t = bumps_and_wheel_drops();
+        return (t&0x02)==0x02;
+    }
+    
+    public boolean wheel_bump_right(){
+        byte t = bumps_and_wheel_drops();
+        return (t&0x01)==0x01;
     }
     
     /**

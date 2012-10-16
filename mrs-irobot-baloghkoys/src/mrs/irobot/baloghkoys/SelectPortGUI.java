@@ -41,6 +41,7 @@ public class SelectPortGUI extends javax.swing.JFrame {
         refreshButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("iRobot port chooser");
 
         jLabel1.setText("Select port");
 

@@ -168,7 +168,7 @@
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jInternalFrame1" pref="325" max="32767" attributes="0"/>
+                          <Component id="jInternalFrame1" pref="333" max="32767" attributes="0"/>
                           <Component id="jInternalFrame2" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -307,7 +307,6 @@
                 <Property name="minorTickSpacing" type="int" value="50"/>
                 <Property name="paintLabels" type="boolean" value="true"/>
                 <Property name="paintTicks" type="boolean" value="true"/>
-                <Property name="snapToTicks" type="boolean" value="true"/>
                 <Property name="value" type="int" value="100"/>
               </Properties>
               <Events>
@@ -865,7 +864,7 @@
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="viewPanel" alignment="0" pref="290" max="32767" attributes="0"/>
+              <Component id="viewPanel" alignment="0" pref="298" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
@@ -1007,7 +1006,7 @@
                       <Component id="actualSpeedLabel" min="-2" pref="13" max="-2" attributes="0"/>
                       <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="141" max="32767" attributes="0"/>
+                  <EmptySpace pref="149" max="32767" attributes="0"/>
                   <Component id="resetPositionButton" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
               </Group>
