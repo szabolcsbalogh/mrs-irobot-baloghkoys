@@ -6,19 +6,15 @@ import javax.comm.*;
 
 public class Connector {
     
-  //static Enumeration ports;
-  //String buffer = "";
   String driverName = "com.sun.comm.Win32Driver";
   CommDriver commdriver;
   static CommPortIdentifier pID;
   InputStream inStream;
   OutputStream outStream;
   SerialPort serPort;
-/*
-    public static Enumeration getPortNames() {
-        return CommPortIdentifier.getPortIdentifiers();
-     }*/
-    
+  
+  public boolean vitrual_input_data=false;
+  
     public void printPortNames(){
         
         Enumeration portIdentifiers = CommPortIdentifier.getPortIdentifiers();
@@ -93,6 +89,9 @@ public class Connector {
   }
   
   public byte receiveByte(){
+        if( this.vitrual_input_data )
+            return 0x00;
+        
         byte[] readBuffer = new byte[1];
         try {
             inStream.read(readBuffer,0,1);
@@ -100,6 +99,7 @@ public class Connector {
             Logger.log( "Receive byte error: " +ex.toString() );
         }
         return readBuffer[0];
+        
   }
   
   public void flushInStream(){

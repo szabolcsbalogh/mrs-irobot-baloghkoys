@@ -111,7 +111,10 @@ public class GUI extends javax.swing.JFrame {
         jInternalFrame1 = new javax.swing.JInternalFrame();
         viewPanel = new javax.swing.JPanel(){         
             public void paint(Graphics g){        
+                if( robotImage != null )
                 g.drawImage( robotImage.getImage(), 0, 0, null);   
+                else
+                super.paint(g);
             } 
         };
         jInternalFrame3 = new javax.swing.JInternalFrame();
@@ -622,7 +625,7 @@ public class GUI extends javax.swing.JFrame {
         );
         viewPanelLayout.setVerticalGroup(
             viewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 405, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jInternalFrame1Layout = new javax.swing.GroupLayout(jInternalFrame1.getContentPane());
@@ -633,7 +636,7 @@ public class GUI extends javax.swing.JFrame {
         );
         jInternalFrame1Layout.setVerticalGroup(
             jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(viewPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 397, Short.MAX_VALUE)
+            .addComponent(viewPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 401, Short.MAX_VALUE)
         );
 
         jInternalFrame3.setTitle("Log");
@@ -653,7 +656,7 @@ public class GUI extends javax.swing.JFrame {
         );
         jInternalFrame3Layout.setVerticalGroup(
             jInternalFrame3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
         );
 
         jLabel1.setText("Time:");
@@ -711,7 +714,7 @@ public class GUI extends javax.swing.JFrame {
                 .addGroup(jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(actualSpeedLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 248, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 252, Short.MAX_VALUE)
                 .addComponent(resetPositionButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(36, 36, 36))
         );
@@ -811,7 +814,7 @@ public class GUI extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jInternalFrame1, javax.swing.GroupLayout.DEFAULT_SIZE, 432, Short.MAX_VALUE)
+                            .addComponent(jInternalFrame1, javax.swing.GroupLayout.DEFAULT_SIZE, 436, Short.MAX_VALUE)
                             .addComponent(jInternalFrame2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(7, 7, 7)
                         .addComponent(jInternalFrame3))

@@ -31,10 +31,8 @@ public class MrsIrobotBaloghkoys {
         Logger.log( "iRobot application log started", 10 );
         
         Connector connector = new Connector();
-            
-        //System.out.println("Available ports");
-        //connector.printPortNames();
-        
+        connector.vitrual_input_data = true;    
+              
         SelectPortGUI portGUI = new SelectPortGUI();
         portGUI.setVisible(true);
         
