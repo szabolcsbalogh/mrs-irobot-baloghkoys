@@ -8,8 +8,10 @@ import java.awt.Graphics;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import javax.swing.JFileChooser;
 import javax.swing.text.DefaultCaret;
+import mrs.irobot.baloghkoys.MrsIrobotBaloghkoys;
 
 /**
  *
@@ -18,9 +20,9 @@ import javax.swing.text.DefaultCaret;
 public class GUI extends javax.swing.JFrame {
 
     
-    iRobotImage robotImage = new iRobotImage();
-    LowLevelDrv lowLevelDrv = null;
-
+    private iRobotImage robotImage = new iRobotImage();
+    private LowLevelDrv lowLevelDrv = null;
+    private Thread goWaypointsThread;
 
         
     /**
@@ -253,7 +255,7 @@ public class GUI extends javax.swing.JFrame {
                     .addComponent(buttonTurnRightAngle1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonBackward1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(186, Short.MAX_VALUE))
+                .addContainerGap(226, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("LowLevel", jPanel5);
@@ -420,7 +422,7 @@ public class GUI extends javax.swing.JFrame {
                     .addComponent(buttonTurnLeftAngle, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(sliderAngle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(134, Short.MAX_VALUE))
+                .addContainerGap(174, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Manual", jPanel3);
@@ -485,6 +487,7 @@ public class GUI extends javax.swing.JFrame {
 
         fileNameTextArea.setColumns(20);
         fileNameTextArea.setRows(5);
+        fileNameTextArea.setText("C:\\Documents and Settings\\user\\Desktop\\mrs\\mrs-irobot-baloghkoys\\test_waypoints.csv");
         fileNameTextArea.setEnabled(fromFileRadio.isSelected());
         jScrollPane2.setViewportView(fileNameTextArea);
 
@@ -604,7 +607,7 @@ public class GUI extends javax.swing.JFrame {
                 .addComponent(nextWaypointLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(64, 64, 64)
                 .addComponent(buttonStopAutomatic, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addContainerGap(82, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Automatic", jPanel4);
@@ -625,7 +628,7 @@ public class GUI extends javax.swing.JFrame {
         );
         viewPanelLayout.setVerticalGroup(
             viewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 405, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jInternalFrame1Layout = new javax.swing.GroupLayout(jInternalFrame1.getContentPane());
@@ -636,7 +639,7 @@ public class GUI extends javax.swing.JFrame {
         );
         jInternalFrame1Layout.setVerticalGroup(
             jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(viewPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 401, Short.MAX_VALUE)
+            .addComponent(viewPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
         );
 
         jInternalFrame3.setTitle("Log");
@@ -656,7 +659,7 @@ public class GUI extends javax.swing.JFrame {
         );
         jInternalFrame3Layout.setVerticalGroup(
             jInternalFrame3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
         );
 
         jLabel1.setText("Time:");
@@ -714,9 +717,9 @@ public class GUI extends javax.swing.JFrame {
                 .addGroup(jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(actualSpeedLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 252, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 195, Short.MAX_VALUE)
                 .addComponent(resetPositionButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36))
+                .addContainerGap())
         );
 
         timeLabel.setText("actualTime");
@@ -814,12 +817,12 @@ public class GUI extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jInternalFrame1, javax.swing.GroupLayout.DEFAULT_SIZE, 436, Short.MAX_VALUE)
+                            .addComponent(jInternalFrame1, javax.swing.GroupLayout.DEFAULT_SIZE, 354, Short.MAX_VALUE)
                             .addComponent(jInternalFrame2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(7, 7, 7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jInternalFrame3))
-                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jTabbedPane1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 1, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -919,17 +922,41 @@ public class GUI extends javax.swing.JFrame {
 
     private void buttonStopAutomaticActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonStopAutomaticActionPerformed
         this.lowLevelDrv.stop();
+        goWaypointsThread.interrupt();// este neviem ci to bude dobre
+        goWaypointsThread.stop();
         Logger.log("Automatic control: Stop"); 
     }//GEN-LAST:event_buttonStopAutomaticActionPerformed
 
     private void goFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goFileButtonActionPerformed
-        String fileName = this.fileNameTextArea.getText();
-        WaypointFileParser waypointFileParser = new WaypointFileParser( fileName );
-        Object[] waypoints = waypointFileParser.getWaypoints();      
-        if( waypoints.length > 0 ){
-            this.nextWaypointLabel.setText( ((Waypoint)waypoints[0]).toString() );
-            //TODO go to waypoints...
+
+        if( goWaypointsThread==null || !goWaypointsThread.isAlive() ){
+             Logger.log("Starting thread for following waypoints from file",5);
+             goWaypointsThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                       String fileName = mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.gui.fileNameTextArea.getText();
+                       WaypointFileParser waypointFileParser = new WaypointFileParser( fileName );
+                       Iterator waypoints = waypointFileParser.getIterator();
+                       MapGUI mapGUI = new MapGUI();
+                       mapGUI.setVisible(true);
+                       mapGUI.mapImage = new MapImage();
+                       while( waypoints.hasNext() ){
+                           Waypoint wpt = (Waypoint)waypoints.next();
+                           mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.gui.nextWaypointLabel.setText( wpt.toString() );  
+                           //TODO wait to iRobot reach waypoint
+                           mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.Sleep(2000);
+                           mapGUI.mapImage.addWaypoint(wpt);
+                           mapGUI.repaint();         
+                       }
+                       mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.gui.nextWaypointLabel.setText( "finished" );                      
+                    }
+                }
+            );
+            goWaypointsThread.start();  
+        }else{
+            Logger.log("Following waypoints already! Try later");
         }
+        
     }//GEN-LAST:event_goFileButtonActionPerformed
 
     private void sliderSpeedAutomaticStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderSpeedAutomaticStateChanged
@@ -1035,7 +1062,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
-    private javax.swing.JTextArea fileNameTextArea;
+    public javax.swing.JTextArea fileNameTextArea;
     private javax.swing.Box.Filler filler1;
     private javax.swing.JRadioButton fromFileRadio;
     private javax.swing.JButton goFileButton;

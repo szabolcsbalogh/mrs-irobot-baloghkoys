@@ -32,6 +32,10 @@ public class iRobotImage {
         
         LowLevelSensors lls;
         
+        /**
+         * Set all sensor states to false
+         * Reads battery icons from files
+         */
         public iRobotImage(){
             for( int i=0 ; i<cliffSensors.length ; i++ ){
                 cliffSensors[i] = false;
@@ -58,6 +62,10 @@ public class iRobotImage {
         this.lls=lls;
     }
         
+    /**
+     * Draws iRobot with sensor diagnostic
+     * @return Image with iRobot and actual state of its sensors
+     */
     public Image getImage() {
         
         boolean lastCliffSensors[] = cliffSensors;
@@ -109,83 +117,75 @@ public class iRobotImage {
             chargingImage++;
             chargingImage%=6;
         }
-                  
-        g.setColor(Color.ORANGE);
-        g.setStroke(new BasicStroke(10F));
-        if(lls.wheel_bump_left()){
-            g.drawLine(31, 195, 43, 195);      
+                         
+        if(lls.wheel_bump_left()){ 
+            this.drawLeftWheel(g,Color.ORANGE);
         }
         if(lls.wheel_bump_right()) {
-            g.drawLine(248, 195, 260, 195);
+            this.drawRightWheel(g,Color.ORANGE);
         }
         
-        g.setColor(Color.RED);
-        g.setStroke(new BasicStroke(5F));
         if (cliffSensors[0] && blik || (!blik && cliffSensors[0] && !lastCliffSensors[0]) ) {
-            g.drawLine( 14, 103, 26, 80);
+            this.drawLeftCliffSensor(g, Color.RED);
         }
         if (cliffSensors[1] && blik || (!blik && cliffSensors[1] && !lastCliffSensors[1]) ) {
-            g.drawLine( 97, 19, 121, 13);
+            this.drawLeftFrontCliffSensor(g, Color.RED);
         }
         if (cliffSensors[2] && blik || (!blik && cliffSensors[2] && !lastCliffSensors[2]) ) {
-            g.drawLine(168, 13, 194, 21);                
+            this.drawRightFrontCliffSensor(g, Color.RED);
         }
         if (cliffSensors[3] && blik || (!blik && cliffSensors[3] && !lastCliffSensors[3]) ) {
-            g.drawLine(264, 79, 275, 102);             
+            this.drawRightCliffSensor(g, Color.RED);
         }
-     
+        
         g.setStroke(new BasicStroke(10F));
         if (wheelSensors[0] && blik || (!blik && wheelSensors[0] && !lastWheelSensors[0]) ) {
-            g.drawLine(31, 195, 43, 195);
+            this.drawLeftWheel(g,Color.RED);
         }
         if (wheelSensors[1] && blik || (!blik && wheelSensors[1] && !lastWheelSensors[1])) {
-            g.setStroke(new BasicStroke(9F));
-            g.drawLine(143, 47, 150, 47);
-            g.setStroke(new BasicStroke(10F));
+            this.drawCenterWheel(g, Color.RED);
         }
         if (wheelSensors[2] && blik || (!blik && wheelSensors[2] && !lastWheelSensors[2])) {
-            g.drawLine(248, 195, 260, 195);
+            this.drawRightWheel(g,Color.RED);
         }
 
         if (wallSensors[0] && blik || (!blik && wallSensors[0] && !lastWallSensors[0])) {
-            g.drawArc( -5,  0, 295, 305, 95, 70);
+            this.drawLeftWallSensor(g, Color.RED);
         }
         if (wallSensors[1] && blik || (!blik && wallSensors[1] && !lastWallSensors[1])) {
-            g.drawArc( 0,  -1, 295, 300, 15, 70);
+            this.drawRightWallSensor(g, Color.RED);
         }
                         
         g.setColor(Color.GREEN);
         g.setStroke(new BasicStroke(5F));
         if (!cliffSensors[0]) {
-            g.drawLine( 14, 103, 26, 80);
+            this.drawLeftCliffSensor(g, Color.GREEN);
         }
         if (!cliffSensors[1]) {
-            g.drawLine( 97, 19, 121, 13);
+            this.drawLeftFrontCliffSensor(g, Color.GREEN);
         }
         if (!cliffSensors[2]) {
-            g.drawLine(168, 13, 194, 21);
+            this.drawRightFrontCliffSensor(g, Color.GREEN);
         }
         if (!cliffSensors[3]) {
-            g.drawLine(264, 79, 275, 102);
+            this.drawRightCliffSensor(g, Color.GREEN);
         }
 
-        g.setStroke(new BasicStroke(10F));
         if (!wheelSensors[0] && !lls.wheel_bump_left()) {
-            g.drawLine(31, 195, 43, 195);
+            this.drawLeftWheel(g,Color.GREEN);
         }
         if (!wheelSensors[2] && !lls.wheel_bump_right()) {
-            g.drawLine(248, 195, 260, 195);
+            this.drawRightWheel(g,Color.GREEN);
         }
         if (!wheelSensors[1]) {
-            g.setStroke(new BasicStroke(9F));
-            g.drawLine(143, 47, 150, 47);
+            this.drawCenterWheel(g, Color.GREEN);
         }
        
         if (!wallSensors[0]) {
-            g.drawArc( -5,  0, 295, 305, 95, 70);
+            this.drawLeftWallSensor(g, Color.GREEN);
         }
         if (!wallSensors[1]) {
-            g.drawArc( 0,  -1, 295, 300, 15, 70);
+            this.drawRightWallSensor(g, Color.GREEN);
         }
        
         
@@ -193,4 +193,61 @@ public class iRobotImage {
         blik = !blik;
         return new ImageIcon(dimg).getImage();
     }
+    
+    
+    private void drawLeftWheel( Graphics2D g, Color color ){   
+        g.setColor(color);  
+        g.setStroke(new BasicStroke(10F));   
+        g.drawLine(31, 195, 43, 195);  
+    }
+    
+    private void drawRightWheel( Graphics2D g, Color color ){  
+        g.setColor(color);
+        g.setStroke(new BasicStroke(10F)); 
+        g.drawLine(248, 195, 260, 195);
+    }
+    
+    private void drawCenterWheel( Graphics2D g, Color color ){  
+        g.setColor(color);
+        g.setStroke(new BasicStroke(9F));
+        g.drawLine(143, 47, 150, 47);
+    }
+       
+    private void drawLeftWallSensor( Graphics2D g, Color color ){  
+        g.setColor(color);
+        g.setStroke(new BasicStroke(10F));
+        g.drawArc( -5,  0, 295, 305, 95, 70);
+    }
+    
+    private void drawRightWallSensor( Graphics2D g, Color color ){  
+        g.setColor(color);
+        g.setStroke(new BasicStroke(10F));
+        g.drawArc( 0,  -1, 295, 300, 15, 70);
+    }
+    
+    
+    private void drawLeftCliffSensor( Graphics2D g, Color color ){  
+        g.setColor(color);
+        g.setStroke(new BasicStroke(5F));
+        g.drawLine( 14, 103, 26, 80);       
+    }
+    
+    private void drawLeftFrontCliffSensor( Graphics2D g, Color color ){  
+        g.setColor(color);
+        g.setStroke(new BasicStroke(5F));
+        g.drawLine( 97, 19, 121, 13);      
+    }
+       
+    private void drawRightFrontCliffSensor( Graphics2D g, Color color ){  
+        g.setColor(color);
+        g.setStroke(new BasicStroke(5F));
+        g.drawLine(168, 13, 194, 21);       
+    }
+    
+    private void drawRightCliffSensor( Graphics2D g, Color color ){  
+        g.setColor(color);
+        g.setStroke(new BasicStroke(5F));
+        g.drawLine(264, 79, 275, 102);      
+    }
 }
+

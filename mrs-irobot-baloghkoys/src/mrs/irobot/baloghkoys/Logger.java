@@ -62,13 +62,20 @@ public class Logger {
         }  
     }
     
-    
+    /**
+     * Method return String with time stamp to log
+     * @return String with date
+     */
     private static String date(){
         DateFormat dateFormat = new SimpleDateFormat("[yyyy/MM/dd HH:mm:ss]: ");
         Date date = new Date();
         return dateFormat.format(date);  
     }    
     
+    /**
+     * Creates new log file irobot_date.log
+     * Show logging level for each logging output
+     */
     private static void newLogFile(){
         DateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
         Date date = new Date();
@@ -80,7 +87,10 @@ public class Logger {
         } 
     }
     
-       
+       /**
+        * Appends text to log file
+        * @param text text to log
+        */
     private static void appendText( String text )
     {
         try

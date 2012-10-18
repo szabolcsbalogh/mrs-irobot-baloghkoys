@@ -6,6 +6,7 @@ package mrs.irobot.baloghkoys;
 
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  *
@@ -15,17 +16,39 @@ public class WaypointFileParser {
     
     //Waypoint[] waypoints = null;
     ArrayList<Waypoint> waypoints = new ArrayList();
+    int i=0;
     
+    /**
+     * Constructor which read file and parse waypoints in it
+     * @param fileName file with x,y,speed parameters separated with ; and \r\n
+     */
     public WaypointFileParser( String fileName ){
+        Logger.log("Loading waypoints from file "+fileName,5);
         String fileText = readStringFromFile( fileName );
         parseString( fileText );
-        Logger.log("Loaded "+waypoints.size()+" waypoints from file "+fileName,5);
+        Logger.log("Loaded "+waypoints.size()+" waypoints",5);
     }
     
+    /**
+     * Array of Waypoints read from file
+     * @return Object[] you need to cast Object to Waypoint
+     */
     public Object[] getWaypoints(){
         return waypoints.toArray();
     }
     
+    /**
+     * Returns Iterator for waypoints read from file
+     * @return iterator for waypoints
+     */
+    public Iterator<Waypoint> getIterator(){
+        return waypoints.iterator();
+    }
+    
+    /**
+     * Parses string to lines separated by \r\n and use method parseLine to parse waypoint from each line
+     * @param string String with waypoints separated with ; and \r\n
+     */
     private void parseString( String string ){
         
         while( !string.isEmpty() ){
@@ -40,6 +63,12 @@ public class WaypointFileParser {
         }
     }
     
+    /**
+     * Parse one line with 3 parameters separated like this x;y;speed\r\n
+     * and creates new instance of Waypoint
+     * @param line line to parse
+     * @return object Waypoint 
+     */
     private Waypoint parseLine( String line ){
         int x,y,speed;
         String xstr=null,ystr=null,spdstr=null;
@@ -69,6 +98,11 @@ public class WaypointFileParser {
         return null;
     }
     
+    /**
+     * Reads whole string from file
+     * @param fileName file to read 
+     * @return 
+     */
     private String readStringFromFile( String fileName )
     {
         FileReader fr;
