@@ -30,6 +30,8 @@ public class LowLevelSensors {
             return reply;
         }
 
+        buf[1] = (byte)no;
+        
         //send request
         conn.sendByte(buf);
         
@@ -407,7 +409,7 @@ public class LowLevelSensors {
         return (int)(((low & 0xff) << 8) + (high & 0xff));
     }
 
-        /**
+     /**
      * Conversion of 2 bytes to signed 16bit integer
      * TODO: check conversion of 2 bytes to signed integer
      * TODO: should work
