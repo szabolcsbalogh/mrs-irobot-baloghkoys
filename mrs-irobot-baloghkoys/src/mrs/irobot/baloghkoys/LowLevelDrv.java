@@ -6,7 +6,8 @@ package mrs.irobot.baloghkoys;
  */
 public class LowLevelDrv {
     private Connector conn;
-    public LowLevelSensors sensors;
+    public LowLevelSensors llsensors;
+    public MidLevelSensors sensors;
     
     /**
      * Constructor with communication interface of type Connector
@@ -14,7 +15,8 @@ public class LowLevelDrv {
      */
     public LowLevelDrv(Connector conn) {
         this.conn = conn;
-        this.sensors = new LowLevelSensors(conn);
+        this.llsensors = new LowLevelSensors(conn);
+        this.sensors = new MidLevelSensors(conn);
     }
     
     /**
@@ -92,8 +94,8 @@ public class LowLevelDrv {
         }
         Logger.log("lldrv:go_backward("+velocity+")",0);
         byte buf[] = {(byte)137, 0x00, 0x00, (byte)0x7F, (byte)0xFF}; // straight
-        buf[1] = (byte)((char)velocity >> 8 & 0xff);
-        buf[2] = (byte)((char)velocity & 0xff);
+        buf[1] = (byte)((char)(-velocity) >> 8 & 0xff);
+        buf[2] = (byte)((char)(-velocity) & 0xff);
         conn.sendByte(buf);
     }
     
@@ -186,7 +188,7 @@ public class LowLevelDrv {
      */
     public byte[] sensor_packet(int no) {
         //implemented in subclass
-        return sensors.sensor_packet(no);
+        return llsensors.sensor_packet(no);
     }
     
    /**
@@ -200,7 +202,7 @@ public class LowLevelDrv {
      * @see Sensors Quick Reference
      */
     protected byte[] sensor_packets(int[] no) {
-        return sensors.sensor_packets(no);
+        return llsensors.sensor_packets(no);
     }
     
 }

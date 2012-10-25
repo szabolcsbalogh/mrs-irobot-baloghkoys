@@ -44,6 +44,7 @@ public class GUI extends javax.swing.JFrame {
                  mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.Sleep(250);
                  Date date = new Date();
                  timeLabel.setText( dateFormat.format(date) );
+                 actualSpeedLabel.setText(String.format("%d mm/s",lowLevelDrv.sensors.requested_velocity()));
              }
          }
         });

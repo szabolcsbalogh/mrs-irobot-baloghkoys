@@ -12,7 +12,7 @@ public class MrsIrobotBaloghkoys {
 
     static String wantedPortName = ""; //"COM17";//"/dev/ttyS0";
         
-    static GUI gui = new GUI();
+    static GUI gui;
     
     static void Sleep(int ms){        
         try {
@@ -31,12 +31,12 @@ public class MrsIrobotBaloghkoys {
         Logger.log( "iRobot application log started", 10 );
         
         Connector connector = new Connector();
-        connector.vitrual_input_data = true;    
+        connector.vitrual_input_data = false;    
               
         SelectPortGUI portGUI = new SelectPortGUI();
         portGUI.setVisible(true);
         
-            
+
         while( wantedPortName.isEmpty() ){
             Sleep(100);
         }
@@ -50,10 +50,11 @@ public class MrsIrobotBaloghkoys {
         Logger.log("Starting low level driver.",1);
         LowLevelDrv lldrv = new LowLevelDrv(connector);
         lldrv.init();
-        LowLevelSensors llsensors = new LowLevelSensors(connector);
         iRobotImage robotImage = new iRobotImage();
-        robotImage.setSensors(llsensors);
+        robotImage.setSensors(lldrv.sensors);
 
+        //gui should be initialized after lldrv init, because of thread for update in it
+        gui = new GUI();
         gui.setRobotImage(robotImage);      
         gui.setLowLevelDrv(lldrv);
         gui.setVisible(true);

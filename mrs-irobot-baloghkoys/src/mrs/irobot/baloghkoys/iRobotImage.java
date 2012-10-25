@@ -11,7 +11,6 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
-import mrs.irobot.baloghkoys.LowLevelSensors;
 
 /**
  *
@@ -30,7 +29,7 @@ public class iRobotImage {
         private boolean blik = true;
         private int chargingImage = 1;
         
-        LowLevelSensors lls;
+        MidLevelSensors mls;
         
         /**
          * Set all sensor states to false
@@ -58,8 +57,8 @@ public class iRobotImage {
      * Set LowLevelSensors class instance for displaying sensors actual state
      * @param lls
      */
-    public void setSensors( LowLevelSensors lls ){
-        this.lls=lls;
+    public void setSensors( MidLevelSensors mls ){
+        this.mls=mls;
     }
         
     /**
@@ -72,10 +71,12 @@ public class iRobotImage {
         boolean lastWheelSensors[] = wheelSensors;
         boolean lastWallSensors[] = wallSensors;
         
-        cliffSensors  =lls.get_cliff_sensors();
-        wheelSensors  =lls.get_wheel_drops();
-        wallSensors[0]=lls.virtual_wall();
-        wallSensors[1]=lls.wall();
+        mls.query();
+        
+        cliffSensors  =mls.get_cliff_sensors();
+        wheelSensors  =mls.get_wheel_drops();
+        wallSensors[0]=mls.virtual_wall();
+        wallSensors[1]=mls.wall();
                
         for( int i=0; i< cliffNames.length ; i++ ) {
             if( cliffSensors[i]!=lastCliffSensors[i] ) {
@@ -105,10 +106,10 @@ public class iRobotImage {
         g.drawImage(iRobotIcon.getImage(), 0, 0, null);
         
         double battery_percent = 0;
-        if( lls.battery_capacity() > 0 )
-            battery_percent = lls.battery_charge()/lls.battery_capacity();
+        if( mls.battery_capacity() > 0 )
+            battery_percent = mls.battery_charge()/mls.battery_capacity(); 
         int imageNumber = (int) (battery_percent*5+0.5);  
-        if( lls.battery_current() < 0 ) {
+        if( mls.battery_current() < 0 ) {
             g.drawImage( batteryIcons[imageNumber].getImage(), w-wb, h-hb-5, null);
         }else{
             if( chargingImage <= 1 ) chargingImage = 6;
@@ -117,11 +118,10 @@ public class iRobotImage {
             chargingImage++;
             chargingImage%=6;
         }
-                         
-        if(lls.wheel_bump_left()){ 
+        if(mls.wheel_bump_left()){ 
             this.drawLeftWheel(g,Color.ORANGE);
         }
-        if(lls.wheel_bump_right()) {
+        if(mls.wheel_bump_right()) {
             this.drawRightWheel(g,Color.ORANGE);
         }
         
@@ -171,10 +171,10 @@ public class iRobotImage {
             this.drawRightCliffSensor(g, Color.GREEN);
         }
 
-        if (!wheelSensors[0] && !lls.wheel_bump_left()) {
+        if (!wheelSensors[0] && !mls.wheel_bump_left()) {
             this.drawLeftWheel(g,Color.GREEN);
         }
-        if (!wheelSensors[2] && !lls.wheel_bump_right()) {
+        if (!wheelSensors[2] && !mls.wheel_bump_right()) {
             this.drawRightWheel(g,Color.GREEN);
         }
         if (!wheelSensors[1]) {
