@@ -8,6 +8,7 @@ import java.util.Date;
 import java.io.FileWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Formatter;
 
 /**
  *
@@ -103,6 +104,22 @@ public class Logger {
         {
             System.err.println("Error: " + e.getMessage());
         }
+    }
+    
+    /**
+     * For printing bytes as hex string
+     * @param bytes bytes
+     * @return String
+     */
+    public static String bytesToHexString(byte[] bytes) {  
+        StringBuilder sb = new StringBuilder(bytes.length * 2);  
+      
+        Formatter formatter = new Formatter(sb);  
+        for (byte b : bytes) {  
+            formatter.format("%02x", b);  
+        }  
+      
+        return sb.toString();  
     }
     
 }
