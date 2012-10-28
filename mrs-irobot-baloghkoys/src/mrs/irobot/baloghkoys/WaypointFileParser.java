@@ -71,7 +71,7 @@ public class WaypointFileParser {
      */
     private Waypoint parseLine( String line ){
         int x,y,speed;
-        String xstr=null,ystr=null,spdstr=null;
+        String xstr=null,ystr=null,spdstr=null,notes=null;
         
         Logger.log("WaypointFileParser: parsing line: "+line,0);
         try{
@@ -79,7 +79,9 @@ public class WaypointFileParser {
             line = line.substring(line.indexOf(";")+1);
             ystr = line.substring(0, line.indexOf(";"));
             line = line.substring(line.indexOf(";")+1);
-            spdstr = line;
+            spdstr = line.substring(0, line.indexOf(";"));
+            line = line.substring(line.indexOf(";")+1);
+            notes = line;
         }catch(Exception e){
             Logger.log("Failed to parse line, wrong file format" );          
             Logger.log("Exception: "+e.toString() );
@@ -88,7 +90,7 @@ public class WaypointFileParser {
             x = Integer.parseInt(xstr);
             y = Integer.parseInt(ystr);
             speed = Integer.parseInt(spdstr);
-            Waypoint wpt =  new Waypoint(x,y,speed);
+            Waypoint wpt =  new Waypoint(x,y,speed,notes);
             Logger.log("Waypoint successfully parsed: "+wpt.toString(),2 );
             return wpt;
         }catch(Exception e){
