@@ -143,12 +143,12 @@ public class MidLevelSensors {
         return last_reply[1] == 1;
     }
     
-    public boolean wheel_bump_left(){
+    public boolean bump_left(){
         byte t = bumps_and_wheel_drops();
         return (t&0x02)==0x02;
     }
     
-    public boolean wheel_bump_right(){
+    public boolean bump_right(){
         byte t = bumps_and_wheel_drops();
         return (t&0x01)==0x01;
     }
@@ -173,5 +173,7 @@ public class MidLevelSensors {
         return this.bytesToSignedInt(last_reply[44], last_reply[45]);
     }
     
-    
+    public int distance() {
+        return this.bytesToSignedInt( last_reply[12], last_reply[13] );
+    }
 }

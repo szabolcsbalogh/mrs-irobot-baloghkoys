@@ -75,8 +75,8 @@ public class iRobotImage {
         
         cliffSensors  =mls.get_cliff_sensors();
         wheelSensors  =mls.get_wheel_drops();
-        wallSensors[0]=mls.virtual_wall();
-        wallSensors[1]=mls.wall();
+        wallSensors[0]=mls.bump_left();//mls.virtual_wall();
+        wallSensors[1]=mls.bump_right();//mls.wall();
                
         for( int i=0; i< cliffNames.length ; i++ ) {
             if( cliffSensors[i]!=lastCliffSensors[i] ) {
@@ -107,9 +107,9 @@ public class iRobotImage {
         
         double battery_percent = 0;
         if( mls.battery_capacity() > 0 )
-            battery_percent = mls.battery_charge()/mls.battery_capacity(); 
+            battery_percent = mls.battery_charge()/mls.battery_capacity();         
         int imageNumber = (int) (battery_percent*5+0.5);  
-        if( mls.battery_current() < 0 ) {
+        if( mls.battery_current() <= 0 ) {
             g.drawImage( batteryIcons[imageNumber].getImage(), w-wb, h-hb-5, null);
         }else{
             if( chargingImage <= 1 ) chargingImage = 6;
@@ -118,13 +118,14 @@ public class iRobotImage {
             chargingImage++;
             chargingImage%=6;
         }
+/*
         if(mls.wheel_bump_left()){ 
             this.drawLeftWheel(g,Color.ORANGE);
         }
         if(mls.wheel_bump_right()) {
             this.drawRightWheel(g,Color.ORANGE);
         }
-        
+*/        
         if (cliffSensors[0] && blik || (!blik && cliffSensors[0] && !lastCliffSensors[0]) ) {
             this.drawLeftCliffSensor(g, Color.RED);
         }
@@ -155,7 +156,7 @@ public class iRobotImage {
         if (wallSensors[1] && blik || (!blik && wallSensors[1] && !lastWallSensors[1])) {
             this.drawRightWallSensor(g, Color.RED);
         }
-                        
+        
         g.setColor(Color.GREEN);
         g.setStroke(new BasicStroke(5F));
         if (!cliffSensors[0]) {
@@ -171,10 +172,10 @@ public class iRobotImage {
             this.drawRightCliffSensor(g, Color.GREEN);
         }
 
-        if (!wheelSensors[0] && !mls.wheel_bump_left()) {
+        if (!wheelSensors[0]) {
             this.drawLeftWheel(g,Color.GREEN);
         }
-        if (!wheelSensors[2] && !mls.wheel_bump_right()) {
+        if (!wheelSensors[2]) {
             this.drawRightWheel(g,Color.GREEN);
         }
         if (!wheelSensors[1]) {

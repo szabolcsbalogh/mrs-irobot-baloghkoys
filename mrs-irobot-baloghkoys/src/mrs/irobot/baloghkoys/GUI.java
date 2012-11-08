@@ -48,6 +48,7 @@ public class GUI extends javax.swing.JFrame {
                  Date date = new Date();
                  timeLabel.setText( dateFormat.format(date) );
                  actualSpeedLabel.setText(String.format("%d mm/s",lowLevelDrv.sensors.requested_velocity()));
+                 actualOrientationLabel.setText(String.format("%d mm",lowLevelDrv.sensors.distance())); //zatial
              }
          }
         });
