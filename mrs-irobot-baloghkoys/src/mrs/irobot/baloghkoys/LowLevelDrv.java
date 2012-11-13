@@ -205,4 +205,26 @@ public class LowLevelDrv {
         return llsensors.sensor_packets(no);
     }
     
+    public void go_forward(int velocity, int dist) {
+        int sdistance = this.sensors.distance();
+        this.go_forward(velocity);
+        while(this.sensors.distance() < sdistance + dist) {
+            this.sensors.query();
+        }
+        this.stop();
+    }
+    
+    public void turn(int velocity, int ang) {
+        int sangle = this.sensors.angle();
+        if(ang > 0) { 
+            this.turn_clockwise(velocity);
+        } else {
+            this.turn_counterclockwise(velocity);
+        }
+        while(this.sensors.angle() < sangle + ang) {
+            this.sensors.query();
+        }
+        this.stop();
+    }
+    
 }
