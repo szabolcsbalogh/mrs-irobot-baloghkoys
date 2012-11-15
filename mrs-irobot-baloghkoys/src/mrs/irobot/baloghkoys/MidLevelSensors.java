@@ -176,4 +176,13 @@ public class MidLevelSensors {
     public int distance() {
         return this.bytesToSignedInt( last_reply[12], last_reply[13] );
     }
+    
+    /**
+     * temporary method
+     * TODO return double
+     * @return nothing
+     */
+    public int angle(){
+        return 0;
+    }
 }

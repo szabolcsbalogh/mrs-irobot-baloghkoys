@@ -36,7 +36,6 @@ public class MrsIrobotBaloghkoys {
         SelectPortGUI portGUI = new SelectPortGUI();
         portGUI.setVisible(true);
         
-
         while( wantedPortName.isEmpty() ){
             Sleep(100);
         }
@@ -59,16 +58,9 @@ public class MrsIrobotBaloghkoys {
         gui.setLowLevelDrv(lldrv);
         gui.setVisible(true);
         
-        //byte[] data = {(byte)128,(byte)131,(byte)136,(byte)3};
-        //connector.sendByte(data);
-        
         lldrv.drive(100, 100);
-        Sleep(5000);
-
+        Sleep(1000);
         lldrv.stop();
-        //data[2] = 0;
-        //connector.sendByte(data);
-       
-        
+
     }
 }

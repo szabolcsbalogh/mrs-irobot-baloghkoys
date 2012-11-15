@@ -22,9 +22,10 @@ import javax.swing.ImageIcon;
  */
 public class MapImage {
     
+    private int SCALE = 13;
+    
     public final int WIDTH = 640;
     public final int HEIGHT = 480;
-    public final int SCALE = 13;
     
     private final int TICK_SIZE = 8;
     private final double ROBOT_SCALE = 0.5;
@@ -43,6 +44,8 @@ public class MapImage {
     private BufferedImage image;
     private ImageIcon iRobotIcon;
     private boolean showiRobot;
+    private boolean rescaling = false;
+    private boolean adding = false;
     
     private ArrayList<Waypoint> waypoints;
                    
@@ -118,7 +121,7 @@ public class MapImage {
      * if robotPosition waypoint notes=="R"
      * Sets robot position in map
      */
-    public void addWaypoint( Waypoint w ){
+    public void addWaypoint( Waypoint w, boolean add ){
         if( w.getNotes().equals("W")){
             Graphics2D g = image.createGraphics();
             g.setStroke(new BasicStroke(1F,BasicStroke.CAP_SQUARE,BasicStroke.JOIN_BEVEL));
@@ -143,7 +146,22 @@ public class MapImage {
             lastRobotX = x;
             lastRobotY = y;
         }
-        waypoints.add(w);
+        if( add ) {
+            waypoints.add(w);
+        }
+    }
+    
+    /**
+     * if ordinary waypoint notes=="W"
+     * Draws line from last waypoint to new waypoint to the map 
+     * if robotPosition waypoint notes=="R"
+     * Sets robot position in map
+     */
+    public void addWaypoint( Waypoint w ){
+        while( rescaling );
+        adding = true;
+        addWaypoint( w, true );
+        adding = false;
     }
     
     public Waypoint getActualWaypoint(){
@@ -234,5 +252,19 @@ public class MapImage {
         }
         g.dispose();    
         g.drawImage(image, null, 0, 0);
+    }
+    
+    public void setScale(int SCALE) {
+        while( adding );
+        this.rescaling = true;
+        this.SCALE = SCALE;
+        // TODO redraw whole image
+        image = new BufferedImage( WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB );
+        Iterator<Waypoint> i = waypoints.iterator();
+        while( i.hasNext() ){
+            this.addWaypoint( i.next(), false );
+        }
+        this.drawGrid();
+        this.rescaling = false;
     }
 }
