@@ -949,13 +949,13 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
         int angle = this.sliderAngle.getValue();
         int speed    = this.sliderSpeedManual.getValue();
         Logger.log("Manual control: Rotate left "+angle+"Deg by "+speed+"mm/h"); 
-        this.lowLevelDrv.turn(speed, angle); //TODO turn opposite direction
+        this.lowLevelDrv.turn(speed, -angle);
     }//GEN-LAST:event_buttonTurnLeftAngleActionPerformed
 
     private void buttonRotateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRotateActionPerformed
         int speed    = this.sliderSpeedManual.getValue();       
-        Logger.log("Manual control: Rotate right 360Deg by "+speed+"mm/s"); 
-        this.lowLevelDrv.turn( speed, 360 ); 
+        Logger.log("Manual control: Rotate left 360Deg by "+speed+"mm/s"); 
+        this.lowLevelDrv.turn( speed, -360 ); 
     }//GEN-LAST:event_buttonRotateActionPerformed
 
     private void buttonTurnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonTurnBackActionPerformed
@@ -965,9 +965,9 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
     }//GEN-LAST:event_buttonTurnBackActionPerformed
 
     private void buttonRightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRightActionPerformed
-        int speed    = this.sliderSpeedManual.getValue();       
-        Logger.log("Manual control: Rotate right 90Deg by "+speed+"mm/s"); 
-        this.lowLevelDrv.turn( speed, 90 ); 
+        Logger.log("Manual control: Rotate right 90Deg"); 
+        int speed    = this.sliderSpeedManual.getValue();
+        this.lowLevelDrv.turn(speed, 90);
     }//GEN-LAST:event_buttonRightActionPerformed
 
     private void buttonStopManualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonStopManualActionPerformed
@@ -976,23 +976,23 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
     }//GEN-LAST:event_buttonStopManualActionPerformed
 
     private void buttonLeftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLeftActionPerformed
-        int speed    = this.sliderSpeedManual.getValue();       
-        Logger.log("Manual control: Rotate left 90Deg by "+speed+"mm/s"); 
-        this.lowLevelDrv.turn( speed, -90 );  
+        Logger.log("Manual control: Rotate left 90Deg"); 
+        int speed    = this.sliderSpeedManual.getValue();
+        this.lowLevelDrv.turn(speed, -90);
     }//GEN-LAST:event_buttonLeftActionPerformed
 
     private void buttonForwardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonForwardActionPerformed
-        int distance = this.sliderDistance.getValue();
+        int distance = this.sliderDistance.getValue(); // [cm]
         int speed    = this.sliderSpeedManual.getValue();
         Logger.log("Manual control: Go forward "+distance+"cm by "+speed+"mm/s"); 
-        this.lowLevelDrv.go_forward( speed, distance );
+        this.lowLevelDrv.go_forward( speed, distance*10 ); // distance is in mm
     }//GEN-LAST:event_buttonForwardActionPerformed
 
     private void buttonBackwardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBackwardActionPerformed
-        int distance = this.sliderDistance.getValue();
+        int distance = this.sliderDistance.getValue();  // [cm]
         int speed    = this.sliderSpeedManual.getValue();
         Logger.log("Manual control: Go backward "+distance+"cm by "+speed+"mm/s"); 
-        this.lowLevelDrv.go_forward( speed, -distance );
+        this.lowLevelDrv.go_forward( speed, -distance*10 ); // distance is in mm
     }//GEN-LAST:event_buttonBackwardActionPerformed
 
     private void buttonTurnRightAngleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonTurnRightAngleActionPerformed

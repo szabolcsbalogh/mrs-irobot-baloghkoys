@@ -206,19 +206,17 @@ public class LowLevelDrv {
     }
     
     public void go_forward(int velocity, int dist) {
+        int direction = (velocity<0||dist<0 ? -1:1);
         int sdistance = this.sensors.distance();
-        if( dist > 0 ) {
-            this.go_forward(velocity);
-        }
-        else if( dist < 0 ) {
-            this.go_backward(velocity);
-        }
-        else{
-            System.err.println("Go forward by zero speed!");
-            return;
-        }
-        while(this.sensors.distance() < sdistance + dist) {
-            this.sensors.query();
+        this.go_forward(Math.abs(velocity)*direction);
+        if(direction == 1) {
+            while(this.sensors.distance() < sdistance + Math.abs(dist)) {
+                this.sensors.query();
+            }
+        }else{
+            while(this.sensors.distance() > sdistance - Math.abs(dist)) {
+                this.sensors.query();
+            }
         }
         this.stop();
     }
@@ -227,11 +225,14 @@ public class LowLevelDrv {
         int sangle = this.sensors.angle();
         if(ang > 0) { 
             this.turn_clockwise(velocity);
+            while(this.sensors.angle() > sangle - ang) {
+                this.sensors.query();
+            }
         } else {
             this.turn_counterclockwise(velocity);
-        }
-        while(this.sensors.angle() < sangle + ang) {
-            this.sensors.query();
+            while(this.sensors.angle() < sangle - ang) {
+                this.sensors.query();
+            }
         }
         this.stop();
     }

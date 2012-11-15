@@ -9,8 +9,10 @@ package mrs.irobot.baloghkoys;
  */
 public class MidLevelSensors {
     private Connector conn;
-    byte last_reply[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; //60x 0x00
-    boolean lock = true;
+    private byte last_reply[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; //60x 0x00
+    private int _distance = 0;
+    private int _angle = 0;
+    private boolean lock = true;
     
     /**
      * Constructor
@@ -64,6 +66,9 @@ public class MidLevelSensors {
         
         this.sensor_wait();
         this.sense();
+        
+        this._distance += this.bytesToSignedInt( last_reply[12], last_reply[13] );
+        this._angle += this.bytesToSignedInt( last_reply[14], last_reply[15] );
         
         this.lock = false;
     }
@@ -174,16 +179,19 @@ public class MidLevelSensors {
     }
     
     public int distance() {
-        return this.bytesToSignedInt( last_reply[12], last_reply[13] );
+        return this._distance;
     }
     
-    /**
-     * temporary method
-     * TODO return double
-     * @return nothing
-     */
-    public int angle(){
-        return 0;
+    public void reset_distance() {
+        this._distance = 0;
+    }
+    
+    public int angle() {
+        return this._angle;
+    }
+    
+    public void reset_angle() {
+        this._angle = 0;
     }
     
     /**
