@@ -48,10 +48,10 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                  mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.Sleep(250);
                  Date date = new Date();
                  timeLabel.setText( dateFormat.format(date) );
-                 actualXpositionLabel.setText(String.format("%d",lowLevelDrv.sensors.get_x_position()));
-                 actualYpositionLabel.setText(String.format("%d",lowLevelDrv.sensors.get_y_position()));
+                 actualXpositionLabel.setText(String.format("%.1f mm",lowLevelDrv.sensors.get_x_position()));
+                 actualYpositionLabel.setText(String.format("%.1f mm",lowLevelDrv.sensors.get_y_position()));
                  actualSpeedLabel.setText(String.format("%d mm/s",lowLevelDrv.sensors.requested_velocity()));
-                 actualOrientationLabel.setText(String.format("%d mm",lowLevelDrv.sensors.angle()));
+                 actualOrientationLabel.setText(String.format("%d Degrees",lowLevelDrv.sensors.angle()));
                  drivenDistanceLabel.setText( String.format("%d mm",lowLevelDrv.sensors.distance()));
              }
          }
@@ -180,6 +180,14 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
         setBounds(new java.awt.Rectangle(0, 0, 800, 600));
         setMinimumSize(new java.awt.Dimension(800, 600));
         setResizable(false);
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                formKeyReleased(evt);
+            }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
+        });
 
         buttonForwardLowLevel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/arrow_up.JPG"))); // NOI18N
         buttonForwardLowLevel.setPreferredSize(new java.awt.Dimension(64, 64));
@@ -282,7 +290,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                     .addComponent(buttonTurnRightAngleLowLevel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonBackwardLowLevel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(173, Short.MAX_VALUE))
+                .addContainerGap(175, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("LowLevel", jPanel5);
@@ -474,7 +482,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                 .addComponent(jLabel16)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(sliderDistance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Manual", jPanel3);
@@ -708,7 +716,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
         viewPanel.setLayout(viewPanelLayout);
         viewPanelLayout.setHorizontalGroup(
             viewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 290, Short.MAX_VALUE)
+            .addGap(0, 284, Short.MAX_VALUE)
         );
         viewPanelLayout.setVerticalGroup(
             viewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -719,7 +727,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
         jInternalFrame1.getContentPane().setLayout(jInternalFrame1Layout);
         jInternalFrame1Layout.setHorizontalGroup(
             jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(viewPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
+            .addComponent(viewPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE)
         );
         jInternalFrame1Layout.setVerticalGroup(
             jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -761,6 +769,11 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
         resetPositionButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/X_icon.jpg"))); // NOI18N
         resetPositionButton.setEnabled(toPointRadio.isSelected());
         resetPositionButton.setPreferredSize(new java.awt.Dimension(48, 48));
+        resetPositionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetPositionButtonActionPerformed(evt);
+            }
+        });
 
         jLabel14.setText("Actual speed      :");
 
@@ -1220,6 +1233,22 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
         } 
     }//GEN-LAST:event_saveWaypointsButtonActionPerformed
 
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+        this.keyPressed(evt);
+    }//GEN-LAST:event_formKeyPressed
+
+    private void formKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
+        this.keyReleased(evt);
+    }//GEN-LAST:event_formKeyReleased
+
+    private void resetPositionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetPositionButtonActionPerformed
+
+        lowLevelDrv.sensors.query();
+        lowLevelDrv.sensors.reset_angle();
+        lowLevelDrv.sensors.reset_distance();
+        lowLevelDrv.sensors.reset_xy();
+    }//GEN-LAST:event_resetPositionButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1384,13 +1413,15 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
     }
     
     private boolean goto_waypoint( Waypoint wpt ){
-        int deltaX = this.lowLevelDrv.sensors.get_x_position()-wpt.getX();
-        int deltaY = this.lowLevelDrv.sensors.get_y_position()-wpt.getY();
+        double deltaX = this.lowLevelDrv.sensors.get_x_position()-wpt.getX();
+        double deltaY = this.lowLevelDrv.sensors.get_y_position()-wpt.getY();
         int distance = (int)Math.sqrt(deltaX*deltaX + deltaY*deltaY);
-        double deltaAngle = Math.atan2( deltaX, deltaY );
+        double deltaAngle = Math.atan2( deltaX, deltaY )/Math.PI*180.0;
         //TODO sanitize deltaAngle special cases
+        System.out.print(String.format("%d %d\n",wpt.getSpeed(),(int)deltaAngle));
         this.lowLevelDrv.turn( wpt.getSpeed(), (int)deltaAngle ); //TODO deltaAngle double
         //TODO wait until movement complete
+        System.out.print(String.format("%d %d\n",wpt.getSpeed(),distance));
         this.lowLevelDrv.go_forward( wpt.getSpeed(), distance);
         Logger.log("Going to waypoint "+wpt.toString()+"completed");
         return true;

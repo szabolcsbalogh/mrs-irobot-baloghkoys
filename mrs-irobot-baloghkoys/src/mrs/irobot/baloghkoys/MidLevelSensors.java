@@ -12,6 +12,8 @@ public class MidLevelSensors {
     private byte last_reply[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; //60x 0x00
     private int _distance = 0;
     private int _angle = 0;
+    private double _x = 0.0;
+    private double _y = 0.0;
     private boolean lock = true;
     
     /**
@@ -58,8 +60,9 @@ public class MidLevelSensors {
      * Query the robot to send data
      */
     public void query() {
+        int __angle;
         if(this.lock) {
-            Logger.log("midlvldrv: query request under lock!");
+            //Logger.log("midlvldrv: query request under lock!");
             return;
         }
         this.lock = true;
@@ -69,6 +72,8 @@ public class MidLevelSensors {
         
         this._distance += this.bytesToSignedInt( last_reply[12], last_reply[13] );
         this._angle += this.bytesToSignedInt( last_reply[14], last_reply[15] );
+        this._x += Math.cos(Math.PI * (double)this._angle / 180.0) * (double)this.bytesToSignedInt( last_reply[12], last_reply[13] );
+        this._y += Math.sin(Math.PI * (double)this._angle / 180.0) * (double)this.bytesToSignedInt( last_reply[12], last_reply[13] );
         
         this.lock = false;
     }
@@ -198,17 +203,20 @@ public class MidLevelSensors {
      * temporary method
      * @return nothing
      */
-    public int get_x_position(){
-        return 0;
+    public double get_x_position(){
+        return this._x;
     }
     
     /**
      * temporary method
      * @return nothing
      */
-    public int get_y_position(){
-        return 0;
+    public double get_y_position(){
+        return this._y;
     }
     
-    
+    public void reset_xy() {
+        this._x = 0.0;
+        this._y = 0.0;
+    }
 }

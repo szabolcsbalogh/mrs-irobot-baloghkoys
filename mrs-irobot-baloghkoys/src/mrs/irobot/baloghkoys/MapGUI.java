@@ -152,6 +152,7 @@ public class MapGUI extends javax.swing.JFrame {
 
     private void scaleSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_scaleSliderStateChanged
         mapImage.setScale( this.scaleSlider.getValue() );
+        this.jPanel1.repaint();
     }//GEN-LAST:event_scaleSliderStateChanged
 
     /**

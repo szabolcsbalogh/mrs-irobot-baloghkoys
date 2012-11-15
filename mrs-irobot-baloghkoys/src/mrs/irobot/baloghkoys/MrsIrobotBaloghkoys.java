@@ -49,6 +49,10 @@ public class MrsIrobotBaloghkoys {
         Logger.log("Starting low level driver.",1);
         LowLevelDrv lldrv = new LowLevelDrv(connector);
         lldrv.init();
+        lldrv.sensors.query();
+        lldrv.sensors.reset_angle();
+        lldrv.sensors.reset_distance();
+        lldrv.sensors.reset_xy();
         iRobotImage robotImage = new iRobotImage();
         robotImage.setSensors(lldrv.sensors);
 
@@ -58,9 +62,5 @@ public class MrsIrobotBaloghkoys {
         gui.setLowLevelDrv(lldrv);
         gui.setVisible(true);
         
-        lldrv.drive(100, 100);
-        Sleep(1000);
-        lldrv.stop();
-
     }
 }
