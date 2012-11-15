@@ -48,6 +48,8 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                  mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.Sleep(250);
                  Date date = new Date();
                  timeLabel.setText( dateFormat.format(date) );
+                 actualXpositionLabel.setText(String.format("%d",lowLevelDrv.sensors.get_x_position()));
+                 actualYpositionLabel.setText(String.format("%d",lowLevelDrv.sensors.get_y_position()));
                  actualSpeedLabel.setText(String.format("%d mm/s",lowLevelDrv.sensors.requested_velocity()));
                  actualOrientationLabel.setText(String.format("%d mm",lowLevelDrv.sensors.angle()));
                  drivenDistanceLabel.setText( String.format("%d mm",lowLevelDrv.sensors.distance()));
@@ -951,15 +953,21 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
     }//GEN-LAST:event_buttonTurnLeftAngleActionPerformed
 
     private void buttonRotateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRotateActionPerformed
-       Logger.log("Manual control: Rotate left 360Deg"); 
+        int speed    = this.sliderSpeedManual.getValue();       
+        Logger.log("Manual control: Rotate right 360Deg by "+speed+"mm/s"); 
+        this.lowLevelDrv.turn( speed, 360 ); 
     }//GEN-LAST:event_buttonRotateActionPerformed
 
     private void buttonTurnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonTurnBackActionPerformed
-        Logger.log("Manual control: Rotate right 180Deg"); 
+        int speed    = this.sliderSpeedManual.getValue();       
+        Logger.log("Manual control: Rotate right 180Deg by "+speed+"mm/s"); 
+        this.lowLevelDrv.turn( speed, 180 ); 
     }//GEN-LAST:event_buttonTurnBackActionPerformed
 
     private void buttonRightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRightActionPerformed
-       Logger.log("Manual control: Rotate right 90Deg"); 
+        int speed    = this.sliderSpeedManual.getValue();       
+        Logger.log("Manual control: Rotate right 90Deg by "+speed+"mm/s"); 
+        this.lowLevelDrv.turn( speed, 90 ); 
     }//GEN-LAST:event_buttonRightActionPerformed
 
     private void buttonStopManualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonStopManualActionPerformed
@@ -968,8 +976,9 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
     }//GEN-LAST:event_buttonStopManualActionPerformed
 
     private void buttonLeftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLeftActionPerformed
-        
-        Logger.log("Manual control: Rotate left 90Deg"); 
+        int speed    = this.sliderSpeedManual.getValue();       
+        Logger.log("Manual control: Rotate left 90Deg by "+speed+"mm/s"); 
+        this.lowLevelDrv.turn( speed, -90 );  
     }//GEN-LAST:event_buttonLeftActionPerformed
 
     private void buttonForwardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonForwardActionPerformed
@@ -983,7 +992,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
         int distance = this.sliderDistance.getValue();
         int speed    = this.sliderSpeedManual.getValue();
         Logger.log("Manual control: Go backward "+distance+"cm by "+speed+"mm/s"); 
-        this.lowLevelDrv.go_forward( -speed, distance );
+        this.lowLevelDrv.go_forward( speed, -distance );
     }//GEN-LAST:event_buttonBackwardActionPerformed
 
     private void buttonTurnRightAngleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonTurnRightAngleActionPerformed
@@ -994,7 +1003,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
     }//GEN-LAST:event_buttonTurnRightAngleActionPerformed
 
     private void sliderSpeedManualStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderSpeedManualStateChanged
-        Logger.log("Manual control: Speed set to "+this.sliderSpeedManual.getValue() ); 
+        Logger.log("Manual control: Speed set to "+this.sliderSpeedManual.getValue(),1 ); 
     }//GEN-LAST:event_sliderSpeedManualStateChanged
 
     private void toPointRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toPointRadioActionPerformed
@@ -1040,7 +1049,9 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
         }
         int speed = this.sliderSpeedAutomatic.getValue();
         Waypoint wpt = new Waypoint(x,y,speed,"W");
+        Logger.log("Going to waypoint: "+wpt.toString());
         waypoints.add(wpt);
+        goto_waypoint(wpt);
         mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.gui.nextWaypointLabel.setText( wpt.toString() );                             
     }//GEN-LAST:event_goPointButtonActionPerformed
 
@@ -1078,6 +1089,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                            //TODO wait to iRobot reach waypoint
                            mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.Sleep(1000);
                            mapGUI.mapImage.addWaypoint(wpt);
+                           goto_waypoint(wpt);
                            mapGUI.repaint();         
                        }
                        mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.gui.nextWaypointLabel.setText( "finished" );                      
@@ -1092,7 +1104,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
     }//GEN-LAST:event_goFileButtonActionPerformed
 
     private void sliderSpeedAutomaticStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderSpeedAutomaticStateChanged
-        
+        Logger.log("Automatic control: Speed set to "+this.sliderSpeedAutomatic.getValue(),1 );        
     }//GEN-LAST:event_sliderSpeedAutomaticStateChanged
 
     private void chooseFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseFileButtonActionPerformed
@@ -1118,7 +1130,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
     }//GEN-LAST:event_buttonBackwardLowLevelActionPerformed
 
     private void sliderSpeedLowLevelStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderSpeedLowLevelStateChanged
-        
+        Logger.log("LowLevel control: Speed set to "+this.sliderSpeedLowLevel.getValue(),1 ); 
     }//GEN-LAST:event_sliderSpeedLowLevelStateChanged
 
     private void buttonTurnRightAngleLowLevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonTurnRightAngleLowLevelActionPerformed
@@ -1369,5 +1381,18 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
         buttonPressed = "";
         Logger.log("Button "+keyText+" released", 0);
         this.lowLevelDrv.stop();            //TODO something more smart
+    }
+    
+    private boolean goto_waypoint( Waypoint wpt ){
+        int deltaX = this.lowLevelDrv.sensors.get_x_position()-wpt.getX();
+        int deltaY = this.lowLevelDrv.sensors.get_y_position()-wpt.getY();
+        int distance = (int)Math.sqrt(deltaX*deltaX + deltaY*deltaY);
+        double deltaAngle = Math.atan2( deltaX, deltaY );
+        //TODO sanitize deltaAngle special cases
+        this.lowLevelDrv.turn( wpt.getSpeed(), (int)deltaAngle ); //TODO deltaAngle double
+        //TODO wait until movement complete
+        this.lowLevelDrv.go_forward( wpt.getSpeed(), distance);
+        Logger.log("Going to waypoint "+wpt.toString()+"completed");
+        return true;
     }
 }

@@ -185,4 +185,22 @@ public class MidLevelSensors {
     public int angle(){
         return 0;
     }
+    
+    /**
+     * temporary method
+     * @return nothing
+     */
+    public int get_x_position(){
+        return 0;
+    }
+    
+    /**
+     * temporary method
+     * @return nothing
+     */
+    public int get_y_position(){
+        return 0;
+    }
+    
+    
 }
