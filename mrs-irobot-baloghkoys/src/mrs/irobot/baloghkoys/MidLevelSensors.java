@@ -3,6 +3,8 @@
  */
 package mrs.irobot.baloghkoys;
 
+import java.util.Arrays;
+
 /**
  *
  * @author Szabi
@@ -23,6 +25,15 @@ public class MidLevelSensors {
     public MidLevelSensors(Connector conn) {
         this.conn = conn;
         this.lock = false;
+    }
+    
+    /**
+     * Constructor
+     * @param last_reply - set last reply manually
+     */
+    public MidLevelSensors(byte[] last_reply) {
+        this.last_reply = Arrays.copyOf( last_reply, last_reply.length);
+        // locknute, nebude queriovat    
     }
     
     /**
@@ -76,6 +87,10 @@ public class MidLevelSensors {
         this._y += Math.sin(Math.PI * (double)this._angle / 180.0) * (double)this.bytesToSignedInt( last_reply[12], last_reply[13] );
         
         this.lock = false;
+    }
+
+    public byte[] getLast_reply() {
+        return Arrays.copyOf(last_reply, last_reply.length );
     }
     
     /**

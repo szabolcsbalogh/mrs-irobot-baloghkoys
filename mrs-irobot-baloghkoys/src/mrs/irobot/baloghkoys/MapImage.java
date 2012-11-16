@@ -10,7 +10,6 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -22,10 +21,10 @@ import javax.swing.ImageIcon;
  */
 public class MapImage {
     
-    private int SCALE = 13;
+    private int SCALE = 10;
     
-    public final int WIDTH = 640;
-    public final int HEIGHT = 480;
+    public final int WIDTH = 800;
+    public final int HEIGHT = 600;
     
     private final int TICK_SIZE = 8;
     private final double ROBOT_SCALE = 0.5;
@@ -48,6 +47,8 @@ public class MapImage {
     private boolean adding = false;
     
     private ArrayList<Waypoint> waypoints;
+    
+    private iRobotImage irobotState = new iRobotImage();
                    
     public MapImage( boolean showiRobot ){
         image = new BufferedImage( WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB );
@@ -83,11 +84,24 @@ public class MapImage {
     public Image getImageWithRobot(){
         BufferedImage imageWithRobot = new BufferedImage( WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB );
         Graphics2D g = imageWithRobot.createGraphics();
-        int width  = (int) (iRobotIcon.getIconWidth()*ROBOT_SCALE);
-        int heigth = (int) (iRobotIcon.getIconHeight()*ROBOT_SCALE);
+        //int width  = (int) (iRobotIcon.getIconWidth()*ROBOT_SCALE);
+        //int heigth = (int) (iRobotIcon.getIconHeight()*ROBOT_SCALE);
         g.drawImage( getImageWithoutRobot(), 0, 0, null);
-        g.drawImage( transformIcon( iRobotIcon, robotAngle, ROBOT_SCALE ), 
-                     scaleX(robotX)-width/2, scaleY(robotY)-heigth/2, null);
+        //g.drawImage( transformIcon( iRobotIcon, robotAngle, ROBOT_SCALE ), 
+        //             scaleX(robotX)-width/2, scaleY(robotY)-heigth/2, null);
+        byte[] sensors_state = null;
+        int i= waypoints.size();
+        while( sensors_state == null && i>1 ){
+            sensors_state = waypoints.get(i-1).getReply();    
+            i--;
+        }
+        if( sensors_state != null ){
+            irobotState.setSensors( new MidLevelSensors( sensors_state ) );
+            Image iRobotSensorsState = transformIcon( new ImageIcon(irobotState.getImage()), robotAngle, 0.5 );
+            int width = iRobotSensorsState.getWidth(null);
+            int height = iRobotSensorsState.getHeight(null);
+            g.drawImage( iRobotSensorsState ,scaleX(robotX)-width/2, scaleY(robotY)-height/2, null);
+        }
         g.dispose();    
         g.drawImage(imageWithRobot, null, 0, 0);
         return imageWithRobot;
@@ -122,7 +136,7 @@ public class MapImage {
      * Sets robot position in map
      */
     public void addWaypoint( Waypoint w, boolean add ){
-        if( w.getNotes().equals("W")){
+        if( w.isOrdinary() ){
             Graphics2D g = image.createGraphics();
             g.setStroke(new BasicStroke(1F,BasicStroke.CAP_SQUARE,BasicStroke.JOIN_BEVEL));
             g.setColor(Color.BLUE);
@@ -133,7 +147,7 @@ public class MapImage {
             g.drawImage(image, null, 0, 0);
             lastX = x;
             lastY = y;
-        }else if( w.getNotes().equals("R")){
+        }else{
             setRobotPosition( w.getX(), w.getY(), w.getOrientation() );  
             Graphics2D g = image.createGraphics();
             g.setStroke(new BasicStroke(2F,BasicStroke.CAP_BUTT,BasicStroke.JOIN_MITER));

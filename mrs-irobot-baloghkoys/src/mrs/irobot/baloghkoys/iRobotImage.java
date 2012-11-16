@@ -71,7 +71,7 @@ public class iRobotImage {
         boolean lastWheelSensors[] = wheelSensors;
         boolean lastWallSensors[] = wallSensors;
         
-        mls.query();
+        mls.query(); 
         
         cliffSensors  =mls.get_cliff_sensors();
         wheelSensors  =mls.get_wheel_drops();
@@ -110,10 +110,10 @@ public class iRobotImage {
             battery_percent = mls.battery_charge()/mls.battery_capacity();         
         int imageNumber = (int) (battery_percent*5+0.5);  
         if( mls.battery_current() <= 0 ) {
-            g.drawImage( batteryIcons[imageNumber].getImage(), w-wb, h-hb-5, null);
+            g.drawImage( batteryIcons[imageNumber].getImage(), w/2-wb/2, h/2-hb/2, null);
         }else{
             if( chargingImage <= 1 ) chargingImage = 6;
-            g.drawImage( batteryIcons[chargingImage].getImage(), w-wb, h-hb-5, null);
+            g.drawImage( batteryIcons[chargingImage].getImage(), w/2-wb/2, h/2-hb/2, null);
             if( chargingImage == 6 ) chargingImage = 1;
             chargingImage++;
             chargingImage%=6;

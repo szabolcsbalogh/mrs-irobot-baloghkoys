@@ -218,7 +218,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
         sliderSpeedLowLevel.setMinorTickSpacing(50);
         sliderSpeedLowLevel.setPaintLabels(true);
         sliderSpeedLowLevel.setPaintTicks(true);
-        sliderSpeedLowLevel.setValue(100);
+        sliderSpeedLowLevel.setValue(200);
         sliderSpeedLowLevel.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 sliderSpeedLowLevelStateChanged(evt);
@@ -274,14 +274,13 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel10))
                     .addComponent(sliderSpeedLowLevel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(29, 29, 29)
                 .addComponent(buttonForwardLowLevel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -290,7 +289,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                     .addComponent(buttonTurnRightAngleLowLevel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonBackwardLowLevel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(175, Short.MAX_VALUE))
+                .addContainerGap(173, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("LowLevel", jPanel5);
@@ -357,6 +356,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
         sliderSpeedManual.setPaintLabels(true);
         sliderSpeedManual.setPaintTicks(true);
         sliderSpeedManual.setSnapToTicks(true);
+        sliderSpeedManual.setValue(200);
         sliderSpeedManual.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 sliderSpeedManualStateChanged(evt);
@@ -456,7 +456,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel13)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel11))
                     .addComponent(sliderSpeedManual, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(27, 27, 27)
@@ -482,12 +482,11 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                 .addComponent(jLabel16)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(sliderDistance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Manual", jPanel3);
 
-        toPointRadio.setSelected(true);
         toPointRadio.setText("Navigation to a point");
         toPointRadio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -495,6 +494,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
             }
         });
 
+        fromFileRadio.setSelected(true);
         fromFileRadio.setText("Navigation from a file");
         fromFileRadio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -573,6 +573,8 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
         sliderSpeedAutomatic.setPaintLabels(true);
         sliderSpeedAutomatic.setPaintTicks(true);
         sliderSpeedAutomatic.setSnapToTicks(true);
+        sliderSpeedAutomatic.setToolTipText("");
+        sliderSpeedAutomatic.setValue(200);
         sliderSpeedAutomatic.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 sliderSpeedAutomaticStateChanged(evt);
@@ -716,7 +718,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
         viewPanel.setLayout(viewPanelLayout);
         viewPanelLayout.setHorizontalGroup(
             viewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 284, Short.MAX_VALUE)
+            .addGap(0, 290, Short.MAX_VALUE)
         );
         viewPanelLayout.setVerticalGroup(
             viewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -727,7 +729,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
         jInternalFrame1.getContentPane().setLayout(jInternalFrame1Layout);
         jInternalFrame1Layout.setHorizontalGroup(
             jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(viewPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE)
+            .addComponent(viewPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
         );
         jInternalFrame1Layout.setVerticalGroup(
             jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -747,7 +749,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
         jInternalFrame3.getContentPane().setLayout(jInternalFrame3Layout);
         jInternalFrame3Layout.setHorizontalGroup(
             jInternalFrame3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
         );
         jInternalFrame3Layout.setVerticalGroup(
             jInternalFrame3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -767,7 +769,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
         jLabel8.setText("Actual orientation:");
 
         resetPositionButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/X_icon.jpg"))); // NOI18N
-        resetPositionButton.setEnabled(toPointRadio.isSelected());
+        resetPositionButton.setEnabled(true);
         resetPositionButton.setPreferredSize(new java.awt.Dimension(48, 48));
         resetPositionButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -787,28 +789,31 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                 .addContainerGap()
                 .addGroup(jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jInternalFrame2Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(actualXpositionLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jInternalFrame2Layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(actualYpositionLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE))
-                    .addGroup(jInternalFrame2Layout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(actualOrientationLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE))
-                    .addGroup(jInternalFrame2Layout.createSequentialGroup()
-                        .addComponent(jLabel14)
-                        .addGap(10, 10, 10)
-                        .addComponent(actualSpeedLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE))
-                    .addGroup(jInternalFrame2Layout.createSequentialGroup()
-                        .addComponent(resetPositionButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jInternalFrame2Layout.createSequentialGroup()
                         .addComponent(jLabel17)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(drivenDistanceLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE)))
+                        .addGap(26, 26, 26)
+                        .addComponent(drivenDistanceLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jInternalFrame2Layout.createSequentialGroup()
+                        .addGroup(jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel14))
+                        .addGap(18, 18, 18)
+                        .addGroup(jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(actualSpeedLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jInternalFrame2Layout.createSequentialGroup()
+                                .addComponent(actualOrientationLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(jInternalFrame2Layout.createSequentialGroup()
+                        .addGroup(jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(resetPositionButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jInternalFrame2Layout.createSequentialGroup()
+                                .addGroup(jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel7))
+                                .addGap(24, 24, 24)
+                                .addGroup(jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(actualXpositionLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(actualYpositionLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jInternalFrame2Layout.setVerticalGroup(
@@ -1061,7 +1066,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
             return;
         }
         int speed = this.sliderSpeedAutomatic.getValue();
-        Waypoint wpt = new Waypoint(x,y,speed,"W");
+        Waypoint wpt = new Waypoint(x,y,speed,null);
         Logger.log("Going to waypoint: "+wpt.toString());
         waypoints.add(wpt);
         goto_waypoint(wpt);
@@ -1102,8 +1107,8 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                            //TODO wait to iRobot reach waypoint
                            mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.Sleep(1000);
                            mapGUI.mapImage.addWaypoint(wpt);
-                           goto_waypoint(wpt);
-                           mapGUI.repaint();         
+                           mapGUI.repaint();     
+                           goto_waypoint(wpt);    
                        }
                        mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.gui.nextWaypointLabel.setText( "finished" );                      
                     }
@@ -1242,7 +1247,6 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
     }//GEN-LAST:event_formKeyReleased
 
     private void resetPositionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetPositionButtonActionPerformed
-
         lowLevelDrv.sensors.query();
         lowLevelDrv.sensors.reset_angle();
         lowLevelDrv.sensors.reset_distance();
@@ -1419,8 +1423,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
         double deltaAngle = Math.atan2( deltaX, deltaY )/Math.PI*180.0;
         //TODO sanitize deltaAngle special cases
         System.out.print(String.format("%d %d\n",wpt.getSpeed(),(int)deltaAngle));
-        this.lowLevelDrv.turn( wpt.getSpeed(), (int)deltaAngle ); //TODO deltaAngle double
-        //TODO wait until movement complete
+        this.lowLevelDrv.turn( wpt.getSpeed(), (int)deltaAngle, waypoints ); 
         System.out.print(String.format("%d %d\n",wpt.getSpeed(),distance));
         this.lowLevelDrv.go_forward( wpt.getSpeed(), distance);
         Logger.log("Going to waypoint "+wpt.toString()+"completed");

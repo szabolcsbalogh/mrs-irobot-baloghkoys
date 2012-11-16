@@ -90,7 +90,13 @@ public class WaypointFileParser {
             x = Integer.parseInt(xstr);
             y = Integer.parseInt(ystr);
             speed = Integer.parseInt(spdstr);
-            Waypoint wpt =  new Waypoint(x,y,speed,notes);
+            Waypoint wpt = null;
+            if( notes.equals(" ") ) {
+                wpt =  new Waypoint(x,y,speed,null);
+            }
+            else {
+                wpt =  new Waypoint(x,y,speed,notes.getBytes());//TODO TOTO NIE JE KOREKTNE
+            } 
             Logger.log("Waypoint successfully parsed: "+wpt.toString(),2 );
             return wpt;
         }catch(Exception e){

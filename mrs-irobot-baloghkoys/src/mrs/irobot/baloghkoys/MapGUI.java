@@ -21,7 +21,6 @@ public class MapGUI extends javax.swing.JFrame {
      */
     public MapGUI(boolean showSaveButton ) {
         initComponents();
-     //   this.jPanel2.setVisible(showSaveButton);
         this.saveWaypointsButton.setVisible(showSaveButton);
     }
 
@@ -36,16 +35,17 @@ public class MapGUI extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel(){
             public void paint(Graphics g){
-                if( mapImage != null ){              
+                super.paint(g);
+                if( mapImage != null ){
                     g.drawImage( mapImage.getImage(), 0, 0, null);
                     Waypoint wpt = mapImage.getActualWaypoint();
                     if( nextWaypointLabel != null && wpt != null ){
                         nextWaypointLabel.setText( wpt.toString() );
                     }
                 }
-                else                            
-                super.paint(g);            
-            }     
+                else
+                super.paint(g);
+            }
         };
         jPanel2 = new javax.swing.JPanel();
         saveWaypointsButton = new javax.swing.JButton();
@@ -63,7 +63,7 @@ public class MapGUI extends javax.swing.JFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 418, Short.MAX_VALUE)
+            .addGap(0, 506, Short.MAX_VALUE)
         );
 
         saveWaypointsButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Save.gif"))); // NOI18N
@@ -86,7 +86,7 @@ public class MapGUI extends javax.swing.JFrame {
         scaleSlider.setMinorTickSpacing(1);
         scaleSlider.setPaintTicks(true);
         scaleSlider.setSnapToTicks(true);
-        scaleSlider.setValue(13);
+        scaleSlider.setValue(10);
         scaleSlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 scaleSliderStateChanged(evt);
@@ -99,12 +99,15 @@ public class MapGUI extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
-                    .addComponent(scaleSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(nextWaypointLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 432, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(nextWaypointLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(scaleSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 722, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                 .addComponent(saveWaypointsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -133,9 +136,9 @@ public class MapGUI extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();

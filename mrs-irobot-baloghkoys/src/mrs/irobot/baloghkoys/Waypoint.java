@@ -4,6 +4,8 @@
  */
 package mrs.irobot.baloghkoys;
 
+import java.util.Arrays;
+
 /**
  *
  * @author juko
@@ -25,16 +27,19 @@ public class Waypoint {
     private int speed_orientation;
     /**
      * notes for the waypoint
-     * "R" means iRobot position then third parameter is considered as orientation
-     * "W" means ordinary waypoint then third parameter is considered as desired speed
-     */
-    private String notes;
-    
-    public Waypoint(int x, int y, int speed_orientation, String notes) {
+     * data means iRobot waypoint position with sensors state and third parameter is considered as orientation
+     * null means ordinary waypoint then third parameter is considered as desired speed
+     */    
+    private byte[] irobot_reply = null;
+
+    public Waypoint(int x, int y, int speed_orientation, byte[] irobot_reply) {
         this.x = x;
         this.y = y;
         this.speed_orientation = speed_orientation;
-        this.notes = notes;
+        if( irobot_reply != null )
+            this.irobot_reply = Arrays.copyOf( irobot_reply, irobot_reply.length);        
+        else
+            this.irobot_reply = null;
     }
 
     public int getX() {
@@ -53,25 +58,25 @@ public class Waypoint {
         return speed_orientation;
     }    
     
-    public String getNotes(){
-        return notes;
+    public byte[] getReply(){
+        return irobot_reply;
     }
     
     @Override
     public String toString(){
-        if( notes.equals("W"))
+        if( irobot_reply == null)
             return "x: "+x+" y: "+y+" speed: "+speed_orientation+"mm/s Waypoint";
-        else if( notes.equals("R"))
-            return "x: "+x+" y: "+y+" orientation: "+speed_orientation+"degrees iRobot position";
         else
-            return "x: "+x+" y: "+y+" speed_orientation: "+speed_orientation+"mm/s or degrees notes: "+notes;
+            return "x: "+x+" y: "+y+" orientation: "+speed_orientation+"degrees iRobot position";
     }
     
     public String toFile(){
-        return x+";"+y+";"+speed_orientation+";"+notes+"\r\n";
+        if(irobot_reply != null)
+            return x+";"+y+";"+speed_orientation+";"+Arrays.toString(irobot_reply) +"\r\n"; 
+        return x+";"+y+";"+speed_orientation+"; \r\n"; 
     }
     
     public boolean isOrdinary(){
-        return notes.equals("W");
+        return irobot_reply == null;
     }
 }
