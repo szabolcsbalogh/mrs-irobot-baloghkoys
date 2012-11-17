@@ -41,7 +41,7 @@ public class WaypointFileParser {
      * Returns Iterator for waypoints read from file
      * @return iterator for waypoints
      */
-    public Iterator<Waypoint> getIterator(){
+    public Iterator<Waypoint> iterator(){
         return waypoints.iterator();
     }
     
@@ -55,7 +55,7 @@ public class WaypointFileParser {
             String line = "";
             if( string.indexOf("\r\n") > 0 ){
                 line = string.substring(0, string.indexOf("\r\n"));
-                Waypoint wpt = parseLine( line );
+                Waypoint wpt = parseLine( line, ";" );
                 waypoints.add(wpt);
                 string = string.substring( string.indexOf("\r\n")+2);
             }else
@@ -69,19 +69,28 @@ public class WaypointFileParser {
      * @param line line to parse
      * @return object Waypoint 
      */
-    private Waypoint parseLine( String line ){
+    private Waypoint parseLine( String line, String delimeter ){
         int x,y,speed;
-        String xstr=null,ystr=null,spdstr=null,notes=null;
+        String xstr=null,ystr=null,spdstr=null,sensors_str=null;
+        byte[] sensors=null;
         
         Logger.log("WaypointFileParser: parsing line: "+line,0);
         try{
-            xstr = line.substring(0, line.indexOf(";"));
-            line = line.substring(line.indexOf(";")+1);
-            ystr = line.substring(0, line.indexOf(";"));
-            line = line.substring(line.indexOf(";")+1);
-            spdstr = line.substring(0, line.indexOf(";"));
-            line = line.substring(line.indexOf(";")+1);
-            notes = line;
+            String[] parse = line.split( delimeter );
+            xstr = parse[0];
+            ystr = parse[1];
+            spdstr = parse[2];
+            sensors_str = parse[3];
+            
+            if( !sensors_str.equals(" ") ) {
+                sensors_str = sensors_str.substring(1, sensors_str.length()-1 );
+                String[] parse2 = sensors_str.split(", ");            
+                sensors = new byte[parse2.length];
+                for( int i=0; i< parse2.length ; i++ )
+                    sensors[i] = Byte.parseByte(parse2[i]);
+            }else{
+                sensors = null;
+            }
         }catch(Exception e){
             Logger.log("Failed to parse line, wrong file format" );          
             Logger.log("Exception: "+e.toString() );
@@ -91,12 +100,7 @@ public class WaypointFileParser {
             y = Integer.parseInt(ystr);
             speed = Integer.parseInt(spdstr);
             Waypoint wpt = null;
-            if( notes.equals(" ") ) {
-                wpt =  new Waypoint(x,y,speed,null);
-            }
-            else {
-                wpt =  new Waypoint(x,y,speed,notes.getBytes());//TODO TOTO NIE JE KOREKTNE
-            } 
+            wpt =  new Waypoint(x,y,speed,sensors);
             Logger.log("Waypoint successfully parsed: "+wpt.toString(),2 );
             return wpt;
         }catch(Exception e){

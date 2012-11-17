@@ -22,12 +22,12 @@ import javax.swing.ImageIcon;
 public class MapImage {
     
     private int SCALE = 10;
+    private double ROBOT_SCALE = 0.5;
     
     public final int WIDTH = 800;
     public final int HEIGHT = 600;
     
     private final int TICK_SIZE = 8;
-    private final double ROBOT_SCALE = 0.5;
     
     private int lastX = WIDTH/2;
     private int lastY = HEIGHT/2;
@@ -97,7 +97,7 @@ public class MapImage {
         }
         if( sensors_state != null ){
             irobotState.setSensors( new MidLevelSensors( sensors_state ) );
-            Image iRobotSensorsState = transformIcon( new ImageIcon(irobotState.getImage()), robotAngle, 0.5 );
+            Image iRobotSensorsState = transformIcon( new ImageIcon(irobotState.getImageTransparent()), robotAngle, ROBOT_SCALE );
             int width = iRobotSensorsState.getWidth(null);
             int height = iRobotSensorsState.getHeight(null);
             g.drawImage( iRobotSensorsState ,scaleX(robotX)-width/2, scaleY(robotY)-height/2, null);
@@ -138,7 +138,7 @@ public class MapImage {
     public void addWaypoint( Waypoint w, boolean add ){
         if( w.isOrdinary() ){
             Graphics2D g = image.createGraphics();
-            g.setStroke(new BasicStroke(1F,BasicStroke.CAP_SQUARE,BasicStroke.JOIN_BEVEL));
+            g.setStroke(new BasicStroke(2F,BasicStroke.CAP_SQUARE,BasicStroke.JOIN_BEVEL));
             g.setColor(Color.BLUE);
             int x =  w.getX()/SCALE+WIDTH/2;
             int y = -w.getY()/SCALE+HEIGHT/2;
@@ -150,7 +150,7 @@ public class MapImage {
         }else{
             setRobotPosition( w.getX(), w.getY(), w.getOrientation() );  
             Graphics2D g = image.createGraphics();
-            g.setStroke(new BasicStroke(2F,BasicStroke.CAP_BUTT,BasicStroke.JOIN_MITER));
+            g.setStroke(new BasicStroke(3F,BasicStroke.CAP_BUTT,BasicStroke.JOIN_MITER));
             g.setColor(Color.RED);
             int x =  w.getX()/SCALE+WIDTH/2;
             int y = -w.getY()/SCALE+HEIGHT/2;
@@ -272,6 +272,7 @@ public class MapImage {
         while( adding );
         this.rescaling = true;
         this.SCALE = SCALE;
+        this.ROBOT_SCALE = 5.0/SCALE;
         // TODO redraw whole image
         image = new BufferedImage( WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB );
         Iterator<Waypoint> i = waypoints.iterator();

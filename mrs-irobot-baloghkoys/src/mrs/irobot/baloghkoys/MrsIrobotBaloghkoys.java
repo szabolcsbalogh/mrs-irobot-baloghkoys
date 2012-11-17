@@ -29,7 +29,7 @@ public class MrsIrobotBaloghkoys {
     public static void main(String[] args) {
         
         Logger.log( "iRobot application log started", 10 );
-        
+         
         Connector connector = new Connector();
         connector.vitrual_input_data = false;    
               

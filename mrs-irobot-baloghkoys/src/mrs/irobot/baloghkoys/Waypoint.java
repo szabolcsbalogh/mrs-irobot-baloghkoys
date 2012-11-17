@@ -32,6 +32,13 @@ public class Waypoint {
      */    
     private byte[] irobot_reply = null;
 
+    public Waypoint(int x, int y, int speed_orientation) {
+        this.x = x;
+        this.y = y;
+        this.speed_orientation = speed_orientation;
+        this.irobot_reply = null;
+    }
+    
     public Waypoint(int x, int y, int speed_orientation, byte[] irobot_reply) {
         this.x = x;
         this.y = y;
@@ -41,7 +48,7 @@ public class Waypoint {
         else
             this.irobot_reply = null;
     }
-
+    
     public int getX() {
         return x;
     }
@@ -78,5 +85,21 @@ public class Waypoint {
     
     public boolean isOrdinary(){
         return irobot_reply == null;
+    }
+    
+    public boolean equals( Waypoint wpt ){
+        if( wpt == null ){
+            return false;
+        }
+        if( this.x == wpt.x && this.y == wpt.y && this.speed_orientation == wpt.speed_orientation && 
+            this.irobot_reply.length == wpt.irobot_reply.length){
+            for( int i=0; i<this.irobot_reply.length; i++ ) {
+                if( this.irobot_reply[i] != wpt.irobot_reply[i] ) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;        
     }
 }

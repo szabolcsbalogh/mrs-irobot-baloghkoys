@@ -226,20 +226,27 @@ public class LowLevelDrv {
     
     public void go_forward(int velocity, int dist, ArrayList<Waypoint> waypointslog) {
         int direction = (velocity<0||dist<0 ? -1:1);
-        int sdistance = this.sensors.distance();
+        int sdistance = this.sensors.distance();        
+        Waypoint lastWpt = null;
         this.go_forward(Math.abs(velocity)*direction);
         if(direction == 1) {
             while(this.sensors.distance() < sdistance + Math.abs(dist)) {
                 this.sensors.query();
                 Waypoint wpt = new Waypoint( (int)sensors.get_x_position(), (int)sensors.get_y_position(), sensors.angle(), sensors.getLast_reply());
-                waypointslog.add(wpt);
+                if( !wpt.equals(lastWpt) ) {
+                    waypointslog.add(wpt);
+                }
+                lastWpt = wpt;
                 
             }
         }else{
             while(this.sensors.distance() > sdistance - Math.abs(dist)) {
                 this.sensors.query();
                 Waypoint wpt = new Waypoint( (int)sensors.get_x_position(), (int)sensors.get_y_position(), sensors.angle(), sensors.getLast_reply());
-                waypointslog.add(wpt);
+                if( !wpt.equals(lastWpt) ) {
+                    waypointslog.add(wpt);
+                }
+                lastWpt = wpt;
             }
         }
         this.stop();
@@ -263,19 +270,26 @@ public class LowLevelDrv {
     
     public void turn(int velocity, int ang, ArrayList<Waypoint> waypointslog ) {
         int sangle = this.sensors.angle();
+        Waypoint lastWpt = null;
         if(ang > 0) { 
             this.turn_clockwise(velocity);
             while(this.sensors.angle() > sangle - ang) {
                 this.sensors.query();
                 Waypoint wpt = new Waypoint( (int)sensors.get_x_position(), (int)sensors.get_y_position(), sensors.angle(), sensors.getLast_reply());
-                waypointslog.add(wpt);
+                if( !wpt.equals(lastWpt) ) {
+                    waypointslog.add(wpt);
+                }
+                lastWpt = wpt;
             }
         } else {
             this.turn_counterclockwise(velocity);
             while(this.sensors.angle() < sangle - ang) {
                 this.sensors.query();                
                 Waypoint wpt = new Waypoint( (int)sensors.get_x_position(), (int)sensors.get_y_position(), sensors.angle(), sensors.getLast_reply());
-                waypointslog.add(wpt);
+                if( !wpt.equals(lastWpt) ) {
+                    waypointslog.add(wpt);
+                }
+                lastWpt = wpt;
             }
         }
         this.stop();

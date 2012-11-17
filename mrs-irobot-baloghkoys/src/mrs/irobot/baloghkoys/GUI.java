@@ -57,14 +57,17 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
          }
         });
         refreshTime.start();  
-        this.setFocusable(true);
-        this.jPanel3.addKeyListener(this);
-        this.jPanel4.addKeyListener(this);
-        this.jPanel5.addKeyListener(this);
+        this.setFocusable(true);        
+        this.jInternalFrame1.setFocusable(true);
+        this.jInternalFrame2.setFocusable(true);
+        this.jInternalFrame3.setFocusable(true);
+        this.jTabbedPane1.setFocusable(true);
+       
         this.jInternalFrame1.addKeyListener(this);
         this.jInternalFrame2.addKeyListener(this);
         this.jInternalFrame3.addKeyListener(this);
         this.jTabbedPane1.addKeyListener(this);
+       
         this.addKeyListener(this);
     }
     
@@ -133,6 +136,16 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
         nextWaypointLabel = new javax.swing.JLabel();
         saveWaypointsButton = new javax.swing.JButton();
         replayFileButton = new javax.swing.JButton();
+        buttonStopAutomatic1 = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        sliderSpeedVacuum = new javax.swing.JSlider();
+        vacuumButton = new javax.swing.JButton();
+        buttonStopVacuuming = new javax.swing.JButton();
+        vacuumSqareRadio = new javax.swing.JRadioButton();
+        vacuumSquareSide = new javax.swing.JTextField();
+        jLabel20 = new javax.swing.JLabel();
         jInternalFrame1 = new javax.swing.JInternalFrame();
         viewPanel = new javax.swing.JPanel(){         
             public void paint(Graphics g){        
@@ -181,13 +194,15 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
         setMinimumSize(new java.awt.Dimension(800, 600));
         setResizable(false);
         addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                formKeyReleased(evt);
-            }
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 formKeyPressed(evt);
             }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                formKeyReleased(evt);
+            }
         });
+
+        jTabbedPane1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
 
         buttonForwardLowLevel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/arrow_up.JPG"))); // NOI18N
         buttonForwardLowLevel.setPreferredSize(new java.awt.Dimension(64, 64));
@@ -289,7 +304,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                     .addComponent(buttonTurnRightAngleLowLevel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonBackwardLowLevel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(173, Short.MAX_VALUE))
+                .addContainerGap(174, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("LowLevel", jPanel5);
@@ -482,12 +497,13 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                 .addComponent(jLabel16)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(sliderDistance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Manual", jPanel3);
 
         toPointRadio.setText("Navigation to a point");
+        toPointRadio.setFocusPainted(false);
         toPointRadio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 toPointRadioActionPerformed(evt);
@@ -533,7 +549,8 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
             }
         });
 
-        buttonStopAutomatic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/stop.JPG"))); // NOI18N
+        buttonStopAutomatic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/stop_small.jpg"))); // NOI18N
+        buttonStopAutomatic.setEnabled(fromFileRadio.isSelected());
         buttonStopAutomatic.setPreferredSize(new java.awt.Dimension(64, 64));
         buttonStopAutomatic.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -608,6 +625,15 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
             }
         });
 
+        buttonStopAutomatic1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/stop_small.jpg"))); // NOI18N
+        buttonStopAutomatic1.setEnabled(toPointRadio.isSelected());
+        buttonStopAutomatic1.setPreferredSize(new java.awt.Dimension(64, 64));
+        buttonStopAutomatic1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonStopAutomatic1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -638,12 +664,13 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(nextWaypointLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel2)
+                                    .addComponent(chooseFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel4Layout.createSequentialGroup()
                                         .addComponent(replayFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(goFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(chooseFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(buttonStopAutomatic, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addComponent(goFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(buttonStopAutomatic, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -652,6 +679,8 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                                 .addComponent(saveWaypointsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(goPointButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(buttonStopAutomatic1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -684,7 +713,8 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(goPointButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(saveWaypointsButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(saveWaypointsButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonStopAutomatic1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(7, 7, 7)
                 .addComponent(fromFileRadio)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -698,13 +728,106 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(goFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(replayFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(buttonStopAutomatic, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                    .addComponent(replayFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonStopAutomatic, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(102, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Automatic", jPanel4);
+
+        jLabel18.setText("Speed");
+
+        jLabel19.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jLabel19.setText("[mm/h]");
+
+        sliderSpeedVacuum.setMajorTickSpacing(100);
+        sliderSpeedVacuum.setMaximum(500);
+        sliderSpeedVacuum.setMinorTickSpacing(50);
+        sliderSpeedVacuum.setPaintLabels(true);
+        sliderSpeedVacuum.setPaintTicks(true);
+        sliderSpeedVacuum.setValue(200);
+        sliderSpeedVacuum.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                sliderSpeedVacuumStateChanged(evt);
+            }
+        });
+
+        vacuumButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Play.gif"))); // NOI18N
+        vacuumButton.setEnabled(fromFileRadio.isSelected());
+        vacuumButton.setPreferredSize(new java.awt.Dimension(48, 48));
+        vacuumButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                vacuumButtonActionPerformed(evt);
+            }
+        });
+
+        buttonStopVacuuming.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/stop_small.jpg"))); // NOI18N
+        buttonStopVacuuming.setEnabled(fromFileRadio.isSelected());
+        buttonStopVacuuming.setPreferredSize(new java.awt.Dimension(64, 64));
+        buttonStopVacuuming.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonStopVacuumingActionPerformed(evt);
+            }
+        });
+
+        vacuumSqareRadio.setSelected(true);
+        vacuumSqareRadio.setText("Vacuum square");
+
+        vacuumSquareSide.setText("500");
+        vacuumSquareSide.setEnabled(vacuumSqareRadio.isSelected());
+
+        jLabel20.setText("mm");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(sliderSpeedVacuum, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(buttonStopVacuuming, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(vacuumButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 15, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(vacuumSqareRadio)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(vacuumSquareSide, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel20)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel19))
+                    .addComponent(sliderSpeedVacuum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(vacuumSqareRadio)
+                    .addComponent(vacuumSquareSide, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel20))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(vacuumButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonStopVacuuming, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 339, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Vacuum", jPanel1);
+
+        jTabbedPane1.setSelectedIndex(2);
 
         jInternalFrame1.setTitle("View");
         jInternalFrame1.setPreferredSize(new java.awt.Dimension(300, 335));
@@ -942,11 +1065,11 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jInternalFrame1, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
+                            .addComponent(jInternalFrame1, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
                             .addComponent(jInternalFrame2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jInternalFrame3))
-                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 493, Short.MAX_VALUE))
+                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 1, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -989,6 +1112,8 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
     }//GEN-LAST:event_buttonRightActionPerformed
 
     private void buttonStopManualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonStopManualActionPerformed
+        goWaypointsThread.interrupt();// este neviem ci to bude dobre
+        goWaypointsThread.stop();
         this.lowLevelDrv.stop();
         Logger.log("Manual control: STOP"); 
     }//GEN-LAST:event_buttonStopManualActionPerformed
@@ -1024,53 +1149,65 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
         Logger.log("Manual control: Speed set to "+this.sliderSpeedManual.getValue(),1 ); 
     }//GEN-LAST:event_sliderSpeedManualStateChanged
 
-    private void toPointRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toPointRadioActionPerformed
-        this.fromFileRadio.setSelected(!this.toPointRadio.isSelected());
+    private void checkboxes(){
         this.xTextField.setEnabled(this.toPointRadio.isSelected());
         this.yTextField.setEnabled(this.toPointRadio.isSelected());
         this.goPointButton.setEnabled(this.toPointRadio.isSelected());
         this.saveWaypointsButton.setEnabled(this.toPointRadio.isSelected());
+        this.buttonStopAutomatic1.setEnabled(this.toPointRadio.isSelected());
         
         this.fileNameTextArea.setEnabled(this.fromFileRadio.isSelected());
         this.goFileButton.setEnabled(this.fromFileRadio.isSelected());
         this.replayFileButton.setEnabled(this.fromFileRadio.isSelected());
         this.chooseFileButton.setEnabled(this.fromFileRadio.isSelected());
+        this.buttonStopAutomatic.setEnabled(this.fromFileRadio.isSelected());
+    }
+    
+    private void toPointRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toPointRadioActionPerformed
+       this.fromFileRadio.setSelected(!this.toPointRadio.isSelected());
+        checkboxes();
     }//GEN-LAST:event_toPointRadioActionPerformed
 
     private void fromFileRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fromFileRadioActionPerformed
         this.toPointRadio.setSelected(!this.fromFileRadio.isSelected());
-        this.xTextField.setEnabled(this.toPointRadio.isSelected());
-        this.yTextField.setEnabled(this.toPointRadio.isSelected());
-        this.goPointButton.setEnabled(this.toPointRadio.isSelected());
-        this.saveWaypointsButton.setEnabled(this.toPointRadio.isSelected());
-       
-        this.fileNameTextArea.setEnabled(this.fromFileRadio.isSelected());
-        this.goFileButton.setEnabled(this.fromFileRadio.isSelected());
-        this.replayFileButton.setEnabled(this.fromFileRadio.isSelected());
-        this.chooseFileButton.setEnabled(this.fromFileRadio.isSelected());
+        checkboxes();
     }//GEN-LAST:event_fromFileRadioActionPerformed
 
     private void goPointButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goPointButtonActionPerformed
-        int x=0,y=0;
         
-        try{
-            x = Integer.parseInt(this.xTextField.getText());
-        }catch( Exception e ){           
-            JOptionPane.showMessageDialog(null, "Unable to parse X parameter: \""+this.xTextField.getText()+"\"", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
+        if( goWaypointsThread==null || !goWaypointsThread.isAlive() ){
+             Logger.log("Starting thread for going to point",5);
+             goWaypointsThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                        int x=0,y=0;                                    
+                        try{
+                            x = Integer.parseInt(xTextField.getText());
+                        }catch( Exception e ){           
+                            JOptionPane.showMessageDialog(null, "Unable to parse X parameter: \""+xTextField.getText()+"\"", "Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        try{
+                            y = Integer.parseInt(yTextField.getText());
+                        }catch( Exception e ){           
+                            JOptionPane.showMessageDialog(null, "Unable to parse Y parameter: \""+yTextField.getText()+"\"", "Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        int speed = sliderSpeedAutomatic.getValue();
+                        Waypoint wpt = new Waypoint(x,y,speed,null);
+                        Logger.log("Going to waypoint: "+wpt.toString());
+                        waypoints.add(wpt);
+                        mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.gui.nextWaypointLabel.setText( wpt.toString() );                                                 
+                        goto_waypoint(wpt);
+                        mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.gui.nextWaypointLabel.setText( "finished" );                      
+                    }
+                }
+            );
+            goWaypointsThread.start();  
+        }else{
+            Logger.log("Following waypoints already! Try later");
         }
-        try{
-            y = Integer.parseInt(this.yTextField.getText());
-        }catch( Exception e ){           
-            JOptionPane.showMessageDialog(null, "Unable to parse Y parameter: \""+this.yTextField.getText()+"\"", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        int speed = this.sliderSpeedAutomatic.getValue();
-        Waypoint wpt = new Waypoint(x,y,speed,null);
-        Logger.log("Going to waypoint: "+wpt.toString());
-        waypoints.add(wpt);
-        goto_waypoint(wpt);
-        mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.gui.nextWaypointLabel.setText( wpt.toString() );                             
+        
     }//GEN-LAST:event_goPointButtonActionPerformed
 
     private void yTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yTextFieldActionPerformed
@@ -1078,9 +1215,9 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
     }//GEN-LAST:event_yTextFieldActionPerformed
 
     private void buttonStopAutomaticActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonStopAutomaticActionPerformed
-        this.lowLevelDrv.stop();
         goWaypointsThread.interrupt();// este neviem ci to bude dobre
         goWaypointsThread.stop();
+        this.lowLevelDrv.stop();        
         Logger.log("Automatic control: Stop"); 
     }//GEN-LAST:event_buttonStopAutomaticActionPerformed
 
@@ -1093,7 +1230,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                 public void run() {
                        String fileName = mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.gui.fileNameTextArea.getText();
                        WaypointFileParser waypointFileParser = new WaypointFileParser( fileName );
-                       Iterator waypoints = waypointFileParser.getIterator();
+                       Iterator waypoints = waypointFileParser.iterator();
                        MapGUI mapGUI = new MapGUI(true);
                        mapGUI.setVisible(true);
                        mapGUI.mapImage = new MapImage(true);
@@ -1104,8 +1241,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                            if( !wpt.isOrdinary() )
                                break;
                            mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.gui.nextWaypointLabel.setText( wpt.toString() );  
-                           //TODO wait to iRobot reach waypoint
-                           mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.Sleep(1000);
+                           //mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.Sleep(1000);
                            mapGUI.mapImage.addWaypoint(wpt);
                            mapGUI.repaint();     
                            goto_waypoint(wpt);    
@@ -1169,15 +1305,15 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
            public void run() {
                   String fileName = mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.gui.fileNameTextArea.getText();
                   WaypointFileParser waypointFileParser = new WaypointFileParser( fileName );
-                  Iterator waypoints = waypointFileParser.getIterator();
+                  Iterator waypoints = waypointFileParser.iterator();
                   MapGUI mapGUI = new MapGUI(false);
                   mapGUI.setVisible(true);
                   mapGUI.mapImage = new MapImage(true);
                   while( waypoints.hasNext() ){
                       Waypoint wpt = (Waypoint)waypoints.next();
                       //mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.gui.nextWaypointLabel.setText( wpt.toString() );  
-                      //TODO wait to iRobot reach waypoint
-                      mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.Sleep(500);
+                      //wait to iRobot reach waypoint
+                      mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.Sleep(1000);
                       mapGUI.mapImage.addWaypoint(wpt);
                       mapGUI.repaint();         
                   }
@@ -1253,6 +1389,68 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
         lowLevelDrv.sensors.reset_xy();
     }//GEN-LAST:event_resetPositionButtonActionPerformed
 
+    private void buttonStopAutomatic1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonStopAutomatic1ActionPerformed
+        goWaypointsThread.interrupt();// este neviem ci to bude dobre
+        goWaypointsThread.stop();        
+        this.lowLevelDrv.stop();  //TODO to asi nebude fungovat, lebo robot bude chciet pokracovat v goto_waypoint()
+        Logger.log("Automatic control: Stop"); 
+
+    }//GEN-LAST:event_buttonStopAutomatic1ActionPerformed
+
+    private void sliderSpeedVacuumStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderSpeedVacuumStateChanged
+        Logger.log("Vacuum control: Speed set to "+this.sliderSpeedVacuum.getValue(),1 );        
+    }//GEN-LAST:event_sliderSpeedVacuumStateChanged
+
+    private void vacuumButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vacuumButtonActionPerformed
+
+        if( goWaypointsThread==null || !goWaypointsThread.isAlive() ){
+             Logger.log("Starting thread for vacuuming waypoints",5);
+             goWaypointsThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                       int speed = sliderSpeedVacuum.getValue();
+                       int square_side;
+                       try{
+                           square_side = Integer.parseInt( vacuumSquareSide.getText() );
+                       }catch( Exception e ){
+                            JOptionPane.showMessageDialog(null, "Unable to parse square side parameter: \""+vacuumSquareSide.getText()+"\"", "Error", JOptionPane.ERROR_MESSAGE);
+                            return;                           
+                       }
+                       ArrayList<Waypoint> generated_waypoints = WaypointGenerator.vacuumSquare( square_side, speed);
+                       Iterator<Waypoint> waypoints = generated_waypoints.iterator();
+                       MapGUI mapGUI = new MapGUI(true);
+                       mapGUI.setVisible(true);
+                       mapGUI.mapImage = new MapImage(true);
+                       while( waypoints.hasNext() ){
+                           Waypoint wpt = waypoints.next();
+                           while( !wpt.isOrdinary() && waypoints.hasNext() ) {
+                               wpt = waypoints.next();
+                           }
+                           if( !wpt.isOrdinary() ) {
+                               break;
+                           }
+                           mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.gui.nextWaypointLabel.setText( wpt.toString() );  
+                           mapGUI.mapImage.addWaypoint(wpt);
+                           mapGUI.repaint();     
+                           goto_waypoint(wpt);    
+                       }
+                       mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.gui.nextWaypointLabel.setText( "finished" );                      
+                    }
+                }
+            );
+            goWaypointsThread.start();  
+        }else{
+            Logger.log("Following waypoints already! Try later");
+        }
+    }//GEN-LAST:event_vacuumButtonActionPerformed
+
+    private void buttonStopVacuumingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonStopVacuumingActionPerformed
+        goWaypointsThread.interrupt();// este neviem ci to bude dobre
+        goWaypointsThread.stop();
+        this.lowLevelDrv.stop();
+        Logger.log("Vacuum control: Stop"); 
+    }//GEN-LAST:event_buttonStopVacuumingActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1301,8 +1499,10 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
     private javax.swing.JButton buttonRight;
     private javax.swing.JButton buttonRotate;
     private javax.swing.JButton buttonStopAutomatic;
+    private javax.swing.JButton buttonStopAutomatic1;
     private javax.swing.JButton buttonStopLowLevel;
     private javax.swing.JButton buttonStopManual;
+    private javax.swing.JButton buttonStopVacuuming;
     private javax.swing.JButton buttonTurnBack;
     private javax.swing.JButton buttonTurnLeftAngle;
     private javax.swing.JButton buttonTurnLeftAngleLowLevel;
@@ -1335,7 +1535,10 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1343,6 +1546,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
@@ -1365,8 +1569,12 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
     private javax.swing.JSlider sliderSpeedAutomatic;
     private javax.swing.JSlider sliderSpeedLowLevel;
     private javax.swing.JSlider sliderSpeedManual;
+    private javax.swing.JSlider sliderSpeedVacuum;
     public javax.swing.JLabel timeLabel;
     private javax.swing.JRadioButton toPointRadio;
+    private javax.swing.JButton vacuumButton;
+    private javax.swing.JRadioButton vacuumSqareRadio;
+    private javax.swing.JTextField vacuumSquareSide;
     public javax.swing.JPanel viewPanel;
     private javax.swing.JTextField xTextField;
     private javax.swing.JTextField yTextField;
@@ -1375,7 +1583,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
     @Override
     public void keyTyped(KeyEvent ke) {
         String keyText = KeyEvent.getKeyText( ke.getKeyCode() );
-        System.err.println("Pressed: "+keyText);
+        //System.err.println("Pressed: "+keyText);
     }
 
     /**
@@ -1385,6 +1593,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
     
     @Override
     public void keyPressed(KeyEvent ke) {
+        int speed=0;
         String keyText = KeyEvent.getKeyText( ke.getKeyCode() );
         if( !buttonPressed.isEmpty() )
             return;
@@ -1402,6 +1611,20 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                 break;
             case "Right":
                 buttonTurnRightAngleLowLevel.doClick();
+                break;
+            case "Q":
+                speed = this.sliderSpeedLowLevel.getValue();
+                speed += 25;          
+                if( speed > this.sliderSpeedLowLevel.getMaximum() )
+                    speed = this.sliderSpeedLowLevel.getMaximum();
+                this.sliderSpeedLowLevel.setValue(speed);
+                break;
+            case "A":
+                speed = this.sliderSpeedLowLevel.getValue();
+                speed -= 25;
+                if( speed < this.sliderSpeedLowLevel.getMinimum() )
+                    speed = this.sliderSpeedLowLevel.getMinimum();
+                this.sliderSpeedLowLevel.setValue(speed);
                 break;
         }
     }
@@ -1421,12 +1644,11 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
         double deltaY = this.lowLevelDrv.sensors.get_y_position()-wpt.getY();
         int distance = (int)Math.sqrt(deltaX*deltaX + deltaY*deltaY);
         double deltaAngle = Math.atan2( deltaX, deltaY )/Math.PI*180.0;
-        //TODO sanitize deltaAngle special cases
         System.out.print(String.format("%d %d\n",wpt.getSpeed(),(int)deltaAngle));
         this.lowLevelDrv.turn( wpt.getSpeed(), (int)deltaAngle, waypoints ); 
         System.out.print(String.format("%d %d\n",wpt.getSpeed(),distance));
         this.lowLevelDrv.go_forward( wpt.getSpeed(), distance);
-        Logger.log("Going to waypoint "+wpt.toString()+"completed");
+        Logger.log("Moving to waypoint "+wpt.toString()+" completed");
         return true;
     }
 }

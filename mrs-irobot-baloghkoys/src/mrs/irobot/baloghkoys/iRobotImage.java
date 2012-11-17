@@ -9,7 +9,12 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
+import java.awt.image.FilteredImageSource;
+import java.awt.image.ImageFilter;
+import java.awt.image.ImageProducer;
+import java.awt.image.RGBImageFilter;
 import javax.swing.ImageIcon;
 
 /**
@@ -17,48 +22,107 @@ import javax.swing.ImageIcon;
  * @author user
  */
 public class iRobotImage {
-    
-        ImageIcon iRobotIcon = new javax.swing.ImageIcon(getClass().getResource("/img/irobot.JPG"));
-        ImageIcon[] batteryIcons = new ImageIcon[7];
-        private boolean[] cliffSensors = new boolean[4];
-        private boolean[] wallSensors  = new boolean[2];
-        private boolean[] wheelSensors = new boolean[3];
-        private String[]  cliffNames   = {"Left","Left front","Right front","Right"};
-        private String[]  wallNames    = {"Virtual wall","Wall"};
-        private String[]  wheelNames   = {"Left","Center","Right"};
-        private boolean blik = true;
-        private int chargingImage = 1;
-        
-        MidLevelSensors mls;
-        
-        /**
-         * Set all sensor states to false
-         * Reads battery icons from files
-         */
-        public iRobotImage(){
-            for( int i=0 ; i<cliffSensors.length ; i++ ){
-                cliffSensors[i] = false;
-            }
-            for( int i=0 ; i<wallSensors.length ; i++ ){
-                wallSensors[i] = false;
-            }
-            for( int i=0 ; i<wheelSensors.length ; i++ ){
-                wheelSensors[i] = false;
-            }      
-            for( int i=0 ; i<=5 ; i++ ){
-                batteryIcons[i] = new ImageIcon( getClass().getResource("/img/battery/battery_"+i+".jpg") );
-            }
-            batteryIcons[6] = new ImageIcon( getClass().getResource("/img/battery/battery_1_green.jpg") );
-                
+
+    ImageIcon iRobotIcon = new javax.swing.ImageIcon(getClass().getResource("/img/irobot.JPG"));
+    ImageIcon[] batteryIcons = new ImageIcon[7];
+    private boolean[] cliffSensors = new boolean[4];
+    private boolean[] wallSensors  = new boolean[2];
+    private boolean[] wheelSensors = new boolean[3];
+    private String[]  cliffNames   = {"Left","Left front","Right front","Right"};
+    private String[]  wallNames    = {"Virtual wall","Wall"};
+    private String[]  wheelNames   = {"Left","Center","Right"};
+    private boolean blik = true;
+    private int chargingImage = 1;
+
+    MidLevelSensors mls;
+
+    /**
+     * Set all sensor states to false
+     * Reads battery icons from files
+     */
+    public iRobotImage(){
+        for( int i=0 ; i<cliffSensors.length ; i++ ){
+            cliffSensors[i] = false;
         }
-        
-        
+        for( int i=0 ; i<wallSensors.length ; i++ ){
+            wallSensors[i] = false;
+        }
+        for( int i=0 ; i<wheelSensors.length ; i++ ){
+            wheelSensors[i] = false;
+        }      
+        for( int i=0 ; i<=5 ; i++ ){
+            batteryIcons[i] = new ImageIcon( getClass().getResource("/img/battery/battery_"+i+".jpg") );
+        }
+        batteryIcons[6] = new ImageIcon( getClass().getResource("/img/battery/battery_1_green.jpg") );
+
+    }
+
+    
     /**
      * Set LowLevelSensors class instance for displaying sensors actual state
      * @param lls
      */
     public void setSensors( MidLevelSensors mls ){
         this.mls=mls;
+    }
+
+   /** 
+    * Convert Image to BufferedImage. 
+    * 
+    * @param image Image to be converted to BufferedImage. 
+    * @return BufferedImage corresponding to provided Image. 
+    */  
+   private static BufferedImage imageToBufferedImage(final Image image)  
+   {  
+      final BufferedImage bufferedImage =  
+         new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);  
+      final Graphics2D g2 = bufferedImage.createGraphics();  
+      g2.drawImage(image, 0, 0, null);  
+      g2.dispose();  
+      return bufferedImage;  
+    }  
+    
+   /**
+    * Makes choosen color of image transparent
+    * @param img image to make some color transparent
+    * @param color color to be transparent
+    * @return image with transparent color
+    */
+    private static Image makeColorTransparent(final Image img, final Color color)  
+    {  
+        final BufferedImage im = imageToBufferedImage( img );
+        final ImageFilter filter = new RGBImageFilter()  
+        {  
+           // the color we are looking for (white)... Alpha bits are set to opaque  
+           public int markerRGB = color.getRGB() | 0xFFFFFFFF;  
+
+           public final int filterRGB(final int x, final int y, final int rgb)  
+           {  
+              if ((rgb | 0xFF000000) == markerRGB)  
+              {  
+                 // Mark the alpha bits as zero - transparent  
+                 return 0x00FFFFFF & rgb;  
+              }  
+              else  
+              {  
+                 // nothing to do  
+                 return rgb;  
+              }  
+           }  
+        };  
+  
+        final ImageProducer ip = new FilteredImageSource(im.getSource(), filter);  
+        return Toolkit.getDefaultToolkit().createImage(ip);  
+    }  
+    
+    
+    /**
+     * Draws iRobot with sensor diagnostic and background is transparent
+     * @return Image with iRobot and actual state of its sensors with transparent backgound
+     */
+    public Image getImageTransparent(){
+        Image img = this.getImage();
+        return makeColorTransparent( img, new Color( 255, 255, 255 ) );
     }
         
     /**
