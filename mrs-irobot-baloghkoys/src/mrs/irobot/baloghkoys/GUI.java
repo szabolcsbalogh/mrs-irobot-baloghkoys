@@ -29,6 +29,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
     private Thread goWaypointsThread;
     private ArrayList<Waypoint> waypoints = new ArrayList();
         
+    private Waypoint lastGotoWaypoint = new Waypoint(0,0,0);
     /**
      * Creates new form GUI
      */
@@ -304,7 +305,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                     .addComponent(buttonTurnRightAngleLowLevel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonBackwardLowLevel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(174, Short.MAX_VALUE))
+                .addContainerGap(130, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("LowLevel", jPanel5);
@@ -497,7 +498,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                 .addComponent(jLabel16)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(sliderDistance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Manual", jPanel3);
@@ -571,7 +572,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
 
         fileNameTextArea.setColumns(20);
         fileNameTextArea.setRows(5);
-        fileNameTextArea.setText("C:\\Documents and Settings\\user\\Desktop\\mrs\\mrs-irobot-baloghkoys\\test_waypoints_replay.csv");
+        fileNameTextArea.setText("C:\\Documents and Settings\\user\\Desktop\\mrs\\mrs-irobot-baloghkoys\\awaypoints_stvorec_50cm.txt");
         fileNameTextArea.setEnabled(fromFileRadio.isSelected());
         jScrollPane2.setViewportView(fileNameTextArea);
 
@@ -730,7 +731,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                     .addComponent(goFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(replayFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonStopAutomatic, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(102, Short.MAX_VALUE))
+                .addContainerGap(58, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Automatic", jPanel4);
@@ -822,7 +823,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(vacuumButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonStopVacuuming, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 339, Short.MAX_VALUE))
+                .addGap(0, 295, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Vacuum", jPanel1);
@@ -876,7 +877,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
         );
         jInternalFrame3Layout.setVerticalGroup(
             jInternalFrame3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)
         );
 
         jLabel1.setText("Time:");
@@ -1230,21 +1231,28 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                 public void run() {
                        String fileName = mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.gui.fileNameTextArea.getText();
                        WaypointFileParser waypointFileParser = new WaypointFileParser( fileName );
-                       Iterator waypoints = waypointFileParser.iterator();
+                       Iterator iterator_waypoints = waypointFileParser.iterator();
                        MapGUI mapGUI = new MapGUI(true);
                        mapGUI.setVisible(true);
                        mapGUI.mapImage = new MapImage(true);
-                       while( waypoints.hasNext() ){
-                           Waypoint wpt = (Waypoint)waypoints.next();
-                           while( !wpt.isOrdinary() && waypoints.hasNext() )
-                               wpt = (Waypoint)waypoints.next();
+                       lastGotoWaypoint=new Waypoint(0,0,0);
+                       int waypoints_index = 0;
+                       while( iterator_waypoints.hasNext() ){
+                           Waypoint wpt = (Waypoint)iterator_waypoints.next();
+                           while( !wpt.isOrdinary() && iterator_waypoints.hasNext() )
+                               wpt = (Waypoint)iterator_waypoints.next();
                            if( !wpt.isOrdinary() )
                                break;
                            mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.gui.nextWaypointLabel.setText( wpt.toString() );  
                            //mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.Sleep(1000);
                            mapGUI.mapImage.addWaypoint(wpt);
                            mapGUI.repaint();     
-                           goto_waypoint(wpt);    
+                           goto_waypoint(wpt);
+                           while( waypoints_index < waypoints.size() ){
+                               mapGUI.mapImage.addWaypoint( waypoints.get(waypoints_index++) );
+                           }
+                           
+                           
                        }
                        mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.gui.nextWaypointLabel.setText( "finished" );                      
                     }
@@ -1313,7 +1321,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                       Waypoint wpt = (Waypoint)waypoints.next();
                       //mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.gui.nextWaypointLabel.setText( wpt.toString() );  
                       //wait to iRobot reach waypoint
-                      mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.Sleep(1000);
+                      mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.Sleep(100);
                       mapGUI.mapImage.addWaypoint(wpt);
                       mapGUI.repaint();         
                   }
@@ -1421,6 +1429,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                        MapGUI mapGUI = new MapGUI(true);
                        mapGUI.setVisible(true);
                        mapGUI.mapImage = new MapImage(true);
+                       lastGotoWaypoint=new Waypoint(0,0,0);
                        while( waypoints.hasNext() ){
                            Waypoint wpt = waypoints.next();
                            while( !wpt.isOrdinary() && waypoints.hasNext() ) {
@@ -1639,14 +1648,21 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
         this.lowLevelDrv.stop();            //TODO something more smart
     }
     
-    private boolean goto_waypoint( Waypoint wpt ){
-        double deltaX = this.lowLevelDrv.sensors.get_x_position()-wpt.getX();
-        double deltaY = this.lowLevelDrv.sensors.get_y_position()-wpt.getY();
+    private boolean goto_waypoint( Waypoint wpt ){        
+        //double deltaX = this.lowLevelDrv.sensors.get_x_position()-wpt.getX();
+        //double deltaY = this.lowLevelDrv.sensors.get_y_position()-wpt.getY();
+        double deltaX = lastGotoWaypoint.getX()-wpt.getX();
+        double deltaY = lastGotoWaypoint.getY()-wpt.getY();
+        lastGotoWaypoint = wpt;
         int distance = (int)Math.sqrt(deltaX*deltaX + deltaY*deltaY);
-        double deltaAngle = Math.atan2( deltaX, deltaY )/Math.PI*180.0;
-        System.out.print(String.format("%d %d\n",wpt.getSpeed(),(int)deltaAngle));
+        double deltaAngle = 180.0-Math.atan2( deltaX, deltaY )/Math.PI*180.0; // nejakym sposobom to bolo obrazene
+        if( deltaAngle > Math.abs(360.0-deltaAngle) )
+            deltaAngle = Math.abs(360.0-deltaAngle); // otocenie o mensiu cast uhola napr 90 stupnov namiesto 270;
+        Logger.log(String.format("Rotating %d Degrees by speed %d mm/s",(int)deltaAngle,wpt.getSpeed()),2);
+        //System.out.print(String.format("%d %d\n",wpt.getSpeed(),(int)deltaAngle));
         this.lowLevelDrv.turn( wpt.getSpeed(), (int)deltaAngle, waypoints ); 
-        System.out.print(String.format("%d %d\n",wpt.getSpeed(),distance));
+        Logger.log(String.format("Moving forward %d mm by speed %d mm/s",(int)distance,wpt.getSpeed()),2);
+        //System.out.print(String.format("%d %d\n",wpt.getSpeed(),distance));
         this.lowLevelDrv.go_forward( wpt.getSpeed(), distance);
         Logger.log("Moving to waypoint "+wpt.toString()+" completed");
         return true;

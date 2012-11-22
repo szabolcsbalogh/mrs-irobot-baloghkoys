@@ -35,6 +35,7 @@ public class MrsIrobotBaloghkoys {
               
         SelectPortGUI portGUI = new SelectPortGUI();
         portGUI.setVisible(true);
+        portGUI.portsComboBox.setSelectedItem("COM8");
         
         while( wantedPortName.isEmpty() ){
             Sleep(100);

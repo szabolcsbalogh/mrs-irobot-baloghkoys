@@ -21,13 +21,13 @@ import javax.swing.ImageIcon;
  */
 public class MapImage {
     
-    private int SCALE = 10;
+    private int SCALE = 5;
     private double ROBOT_SCALE = 0.5;
     
-    public final int WIDTH = 800;
-    public final int HEIGHT = 600;
+    public final int WIDTH = 1600;
+    public final int HEIGHT = 1200;
     
-    private final int TICK_SIZE = 8;
+    private final int TICK_SIZE = 16;
     
     private int lastX = WIDTH/2;
     private int lastY = HEIGHT/2;
@@ -67,6 +67,13 @@ public class MapImage {
             return getImageWithRobot();
         else
             return getImageWithoutRobot();
+    }
+    
+    public Image getImage(int width, int height){
+        if( showiRobot && !robotPositionUnknown )
+            return getImageWithRobot().getScaledInstance(width, height, 0);
+        else
+            return getImageWithoutRobot().getScaledInstance(width, height, 0);
     }
     
     /**
@@ -252,10 +259,11 @@ public class MapImage {
      */
     private void drawGrid(){
         Graphics2D g = image.createGraphics();
+        g.setColor(Color.GRAY);      
         g.setStroke(new BasicStroke(1F));
-        g.setColor(Color.GRAY);
-        g.drawLine(0, HEIGHT/2, WIDTH, HEIGHT/2);
         g.drawLine(WIDTH/2, 0, WIDTH/2, HEIGHT);
+        g.setStroke(new BasicStroke(2F));
+        g.drawLine(0, HEIGHT/2, WIDTH, HEIGHT/2);  
         
         int step = 1000/SCALE;
         for(int i=0;i<WIDTH/step+1;i++){  

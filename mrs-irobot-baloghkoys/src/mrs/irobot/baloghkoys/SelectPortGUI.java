@@ -170,7 +170,7 @@ public class SelectPortGUI extends javax.swing.JFrame {
     private javax.swing.JButton cancelButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JButton okButton;
-    private javax.swing.JComboBox portsComboBox;
+    public javax.swing.JComboBox portsComboBox;
     private javax.swing.JButton refreshButton;
     // End of variables declaration//GEN-END:variables
 }

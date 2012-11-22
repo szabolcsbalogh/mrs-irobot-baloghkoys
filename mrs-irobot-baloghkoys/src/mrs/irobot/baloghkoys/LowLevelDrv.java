@@ -254,6 +254,7 @@ public class LowLevelDrv {
     
     public void turn(int velocity, int ang) {
         int sangle = this.sensors.angle();
+        if( ang == 0 ) return;
         if(ang > 0) { 
             this.turn_clockwise(velocity);
             while(this.sensors.angle() > sangle - ang) {
@@ -270,6 +271,7 @@ public class LowLevelDrv {
     
     public void turn(int velocity, int ang, ArrayList<Waypoint> waypointslog ) {
         int sangle = this.sensors.angle();
+        if( ang == 0 ) return;
         Waypoint lastWpt = null;
         if(ang > 0) { 
             this.turn_clockwise(velocity);

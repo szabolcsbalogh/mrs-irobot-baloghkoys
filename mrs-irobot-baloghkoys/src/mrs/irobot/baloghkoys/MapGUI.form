@@ -22,15 +22,19 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jPanel2" alignment="0" max="32767" attributes="0"/>
           <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jPanel2" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <Component id="jPanel1" max="32767" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -39,7 +43,7 @@
   <SubComponents>
     <Container class="javax.swing.JPanel" name="jPanel1">
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JPanel(){&#xa;    public void paint(Graphics g){&#xa;        super.paint(g);&#xa;        if( mapImage != null ){              &#xa;            g.drawImage( mapImage.getImage(), 0, 0, null);&#xa;            Waypoint wpt = mapImage.getActualWaypoint();&#xa;            if( nextWaypointLabel != null &amp;&amp; wpt != null ){&#xa;                nextWaypointLabel.setText( wpt.toString() );&#xa;            }&#xa;        }&#xa;        else                            &#xa;        super.paint(g);            &#xa;    }     &#xa;}"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JPanel(){&#xa;    public void paint(Graphics g){&#xa;        super.paint(g);&#xa;        if( mapImage != null ){              &#xa;            g.drawImage( mapImage.getImage(this.getWidth(),this.getHeight()), 0, 0, null);&#xa;            Waypoint wpt = mapImage.getActualWaypoint();&#xa;            if( nextWaypointLabel != null &amp;&amp; wpt != null ){&#xa;                nextWaypointLabel.setText( wpt.toString() );&#xa;            }&#xa;        }&#xa;        else                            &#xa;        super.paint(g);            &#xa;    }     &#xa;}"/>
       </AuxValues>
 
       <Layout>
@@ -50,7 +54,7 @@
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="506" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="611" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
@@ -67,10 +71,10 @@
                           <Component id="jLabel1" min="-2" pref="129" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="nextWaypointLabel" max="32767" attributes="0"/>
-                          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
-                          <Component id="scaleSlider" pref="722" max="32767" attributes="0"/>
+                          <Component id="scaleSlider" pref="702" max="32767" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -86,9 +90,9 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="saveWaypointsButton" min="-2" max="-2" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="nextWaypointLabel" alignment="0" max="32767" attributes="0"/>
-                              <Component id="jLabel1" alignment="0" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="nextWaypointLabel" alignment="3" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="scaleSlider" min="-2" max="-2" attributes="0"/>
@@ -137,7 +141,7 @@
             <Property name="minorTickSpacing" type="int" value="1"/>
             <Property name="paintTicks" type="boolean" value="true"/>
             <Property name="snapToTicks" type="boolean" value="true"/>
-            <Property name="value" type="int" value="10"/>
+            <Property name="value" type="int" value="5"/>
           </Properties>
           <Events>
             <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="scaleSliderStateChanged"/>
