@@ -305,7 +305,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                     .addComponent(buttonTurnRightAngleLowLevel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonBackwardLowLevel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(130, Short.MAX_VALUE))
+                .addContainerGap(134, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("LowLevel", jPanel5);
@@ -731,7 +731,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                     .addComponent(goFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(replayFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonStopAutomatic, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addContainerGap(62, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Automatic", jPanel4);
@@ -774,8 +774,13 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
         vacuumSqareRadio.setSelected(true);
         vacuumSqareRadio.setText("Vacuum square");
 
-        vacuumSquareSide.setText("500");
+        vacuumSquareSide.setText("1000");
         vacuumSquareSide.setEnabled(vacuumSqareRadio.isSelected());
+        vacuumSquareSide.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                vacuumSquareSideActionPerformed(evt);
+            }
+        });
 
         jLabel20.setText("mm");
 
@@ -823,7 +828,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(vacuumButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonStopVacuuming, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 295, Short.MAX_VALUE))
+                .addGap(0, 299, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Vacuum", jPanel1);
@@ -1070,7 +1075,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                             .addComponent(jInternalFrame2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jInternalFrame3))
-                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 453, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 1, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1229,6 +1234,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
              goWaypointsThread = new Thread(new Runnable() {
                 @Override
                 public void run() {
+                       //waypoints = new ArrayList();
                        String fileName = mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.gui.fileNameTextArea.getText();
                        WaypointFileParser waypointFileParser = new WaypointFileParser( fileName );
                        Iterator iterator_waypoints = waypointFileParser.iterator();
@@ -1236,7 +1242,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                        mapGUI.setVisible(true);
                        mapGUI.mapImage = new MapImage(true);
                        lastGotoWaypoint=new Waypoint(0,0,0);
-                       int waypoints_index = 0;
+                       int waypoints_index = waypoints.size();
                        while( iterator_waypoints.hasNext() ){
                            Waypoint wpt = (Waypoint)iterator_waypoints.next();
                            while( !wpt.isOrdinary() && iterator_waypoints.hasNext() )
@@ -1250,6 +1256,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                            goto_waypoint(wpt);
                            while( waypoints_index < waypoints.size() ){
                                mapGUI.mapImage.addWaypoint( waypoints.get(waypoints_index++) );
+                               mapGUI.repaint();     
                            }
                            
                            
@@ -1395,6 +1402,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
         lowLevelDrv.sensors.reset_angle();
         lowLevelDrv.sensors.reset_distance();
         lowLevelDrv.sensors.reset_xy();
+        Logger.log("Actual data reseted to zeros");
     }//GEN-LAST:event_resetPositionButtonActionPerformed
 
     private void buttonStopAutomatic1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonStopAutomatic1ActionPerformed
@@ -1413,9 +1421,10 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
 
         if( goWaypointsThread==null || !goWaypointsThread.isAlive() ){
              Logger.log("Starting thread for vacuuming waypoints",5);
-             goWaypointsThread = new Thread(new Runnable() {
+             goWaypointsThread = new Thread(new Runnable() {                 
                 @Override
                 public void run() {
+                       //waypoints = new ArrayList();
                        int speed = sliderSpeedVacuum.getValue();
                        int square_side;
                        try{
@@ -1425,15 +1434,16 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                             return;                           
                        }
                        ArrayList<Waypoint> generated_waypoints = WaypointGenerator.vacuumSquare( square_side, speed);
-                       Iterator<Waypoint> waypoints = generated_waypoints.iterator();
+                       Iterator<Waypoint> waypoints_iterator = generated_waypoints.iterator();
                        MapGUI mapGUI = new MapGUI(true);
                        mapGUI.setVisible(true);
                        mapGUI.mapImage = new MapImage(true);
                        lastGotoWaypoint=new Waypoint(0,0,0);
-                       while( waypoints.hasNext() ){
-                           Waypoint wpt = waypoints.next();
-                           while( !wpt.isOrdinary() && waypoints.hasNext() ) {
-                               wpt = waypoints.next();
+                       int waypoints_index = waypoints.size();
+                       while( waypoints_iterator.hasNext() ){
+                           Waypoint wpt = waypoints_iterator.next();
+                           while( !wpt.isOrdinary() && waypoints_iterator.hasNext() ) {
+                               wpt = waypoints_iterator.next();
                            }
                            if( !wpt.isOrdinary() ) {
                                break;
@@ -1441,7 +1451,11 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                            mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.gui.nextWaypointLabel.setText( wpt.toString() );  
                            mapGUI.mapImage.addWaypoint(wpt);
                            mapGUI.repaint();     
-                           goto_waypoint(wpt);    
+                           goto_waypoint(wpt);                               
+                           while( waypoints_index < waypoints.size() ){
+                               mapGUI.mapImage.addWaypoint( waypoints.get(waypoints_index++) );
+                               mapGUI.repaint();     
+                           }
                        }
                        mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.gui.nextWaypointLabel.setText( "finished" );                      
                     }
@@ -1459,6 +1473,10 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
         this.lowLevelDrv.stop();
         Logger.log("Vacuum control: Stop"); 
     }//GEN-LAST:event_buttonStopVacuumingActionPerformed
+
+    private void vacuumSquareSideActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vacuumSquareSideActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_vacuumSquareSideActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1648,22 +1666,28 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
         this.lowLevelDrv.stop();            //TODO something more smart
     }
     
+    private int lastAngle = 0;
+    
     private boolean goto_waypoint( Waypoint wpt ){        
         //double deltaX = this.lowLevelDrv.sensors.get_x_position()-wpt.getX();
         //double deltaY = this.lowLevelDrv.sensors.get_y_position()-wpt.getY();
-        double deltaX = lastGotoWaypoint.getX()-wpt.getX();
-        double deltaY = lastGotoWaypoint.getY()-wpt.getY();
-        lastGotoWaypoint = wpt;
-        int distance = (int)Math.sqrt(deltaX*deltaX + deltaY*deltaY);
-        double deltaAngle = 180.0-Math.atan2( deltaX, deltaY )/Math.PI*180.0; // nejakym sposobom to bolo obrazene
-        if( deltaAngle > Math.abs(360.0-deltaAngle) )
-            deltaAngle = Math.abs(360.0-deltaAngle); // otocenie o mensiu cast uhola napr 90 stupnov namiesto 270;
-        Logger.log(String.format("Rotating %d Degrees by speed %d mm/s",(int)deltaAngle,wpt.getSpeed()),2);
-        //System.out.print(String.format("%d %d\n",wpt.getSpeed(),(int)deltaAngle));
-        this.lowLevelDrv.turn( wpt.getSpeed(), (int)deltaAngle, waypoints ); 
-        Logger.log(String.format("Moving forward %d mm by speed %d mm/s",(int)distance,wpt.getSpeed()),2);
-        //System.out.print(String.format("%d %d\n",wpt.getSpeed(),distance));
-        this.lowLevelDrv.go_forward( wpt.getSpeed(), distance);
+        double deltaX = wpt.getX()-lastGotoWaypoint.getX();
+        double deltaY = wpt.getY()-lastGotoWaypoint.getY();
+        if( !(deltaX == 0 && deltaY == 0) ){ 
+            lastGotoWaypoint = wpt;
+            int distance = (int)Math.sqrt(deltaX*deltaX + deltaY*deltaY);
+            double deltaAngle = -Math.atan2( deltaX, deltaY )/Math.PI*180.0;
+            System.err.print( "dX "+deltaX+" dY "+deltaY+" Alfa "+deltaAngle);
+            int rotateAngle = -(int)(deltaAngle-lastAngle);
+            lastAngle = (int)deltaAngle;            
+            if( rotateAngle >       Math.abs(360.0-rotateAngle) )
+                rotateAngle = (int) Math.abs(360.0-rotateAngle); // otocenie o mensiu cast uhola napr 90 stupnov namiesto 270;            
+            System.err.println( " rotateAngle "+rotateAngle);            
+            Logger.log(String.format("Rotating %d Degrees by speed %d mm/s",(int)deltaAngle,wpt.getSpeed()/2),2);
+             this.lowLevelDrv.turn( wpt.getSpeed()/2, (int)rotateAngle, waypoints ); 
+            Logger.log(String.format("Moving forward %d mm by speed %d mm/s",(int)distance,wpt.getSpeed()),2);
+            this.lowLevelDrv.go_forward( wpt.getSpeed(), distance);
+        }
         Logger.log("Moving to waypoint "+wpt.toString()+" completed");
         return true;
     }

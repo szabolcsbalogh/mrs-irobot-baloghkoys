@@ -30,10 +30,9 @@ public class WaypointGenerator {
                 y = 0;
             }
             waypoints.add( new Waypoint( x, y, speed ) );
-            if( x + ROBOT_DIAMETER < a_side ) {
-                x += ROBOT_DIAMETER;
-            }
-            else if( (x + ROBOT_DIAMETER > a_side) && (x != a_side) )
+            x += ROBOT_DIAMETER;
+            
+            if( (x > a_side) && (x != a_side) )
                 x = a_side;
             else if( x == a_side ) {
                 break;

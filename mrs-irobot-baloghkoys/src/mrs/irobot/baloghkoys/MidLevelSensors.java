@@ -83,8 +83,8 @@ public class MidLevelSensors {
         
         this._distance += this.bytesToSignedInt( last_reply[12], last_reply[13] );
         this._angle += this.bytesToSignedInt( last_reply[14], last_reply[15] );
-        this._x += Math.cos(Math.PI * (double)this._angle / 180.0) * (double)this.bytesToSignedInt( last_reply[12], last_reply[13] );
-        this._y += Math.sin(Math.PI * (double)this._angle / 180.0) * (double)this.bytesToSignedInt( last_reply[12], last_reply[13] );
+        this._x += -Math.sin(Math.PI * (double)this._angle / 180.0) * (double)this.bytesToSignedInt( last_reply[12], last_reply[13] );
+        this._y += Math.cos(Math.PI * (double)this._angle / 180.0) * (double)this.bytesToSignedInt( last_reply[12], last_reply[13] );
         
         this.lock = false;
     }
