@@ -43,10 +43,12 @@ public class Waypoint {
         this.x = x;
         this.y = y;
         this.speed_orientation = speed_orientation;
-        if( irobot_reply != null )
-            this.irobot_reply = Arrays.copyOf( irobot_reply, irobot_reply.length);        
-        else
+        if( irobot_reply != null ) {
+            this.irobot_reply = Arrays.copyOf( irobot_reply, irobot_reply.length);
+        }        
+        else {
             this.irobot_reply = null;
+        }
     }
     
     public int getX() {
@@ -71,15 +73,18 @@ public class Waypoint {
     
     @Override
     public String toString(){
-        if( irobot_reply == null)
-            return "x: "+x+" y: "+y+" speed: "+speed_orientation+"mm/s Waypoint";
-        else
+        if( irobot_reply == null) {
+            return "x: "+x+" y: "+y+" speed: "+speed_orientation+"mm/s waypoint";
+        }
+        else {
             return "x: "+x+" y: "+y+" orientation: "+speed_orientation+"degrees iRobot position";
+        }
     }
     
     public String toFile(){
-        if(irobot_reply != null)
-            return x+";"+y+";"+speed_orientation+";"+Arrays.toString(irobot_reply) +"\r\n"; 
+        if(irobot_reply != null) {
+            return x+";"+y+";"+speed_orientation+";"+Arrays.toString(irobot_reply) +"\r\n";
+        } 
         return x+";"+y+";"+speed_orientation+"; \r\n"; 
     }
     

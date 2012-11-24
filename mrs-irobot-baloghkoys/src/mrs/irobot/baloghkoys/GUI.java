@@ -1238,7 +1238,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                        String fileName = mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.gui.fileNameTextArea.getText();
                        WaypointFileParser waypointFileParser = new WaypointFileParser( fileName );
                        Iterator iterator_waypoints = waypointFileParser.iterator();
-                       MapGUI mapGUI = new MapGUI(true);
+                       MapGUI mapGUI = new MapGUI(true,false);
                        mapGUI.setVisible(true);
                        mapGUI.mapImage = new MapImage(true);
                        lastGotoWaypoint=new Waypoint(0,0,0);
@@ -1321,14 +1321,14 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                   String fileName = mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.gui.fileNameTextArea.getText();
                   WaypointFileParser waypointFileParser = new WaypointFileParser( fileName );
                   Iterator waypoints = waypointFileParser.iterator();
-                  MapGUI mapGUI = new MapGUI(false);
+                  MapGUI mapGUI = new MapGUI(false,true);
                   mapGUI.setVisible(true);
                   mapGUI.mapImage = new MapImage(true);
                   while( waypoints.hasNext() ){
                       Waypoint wpt = (Waypoint)waypoints.next();
                       //mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.gui.nextWaypointLabel.setText( wpt.toString() );  
                       //wait to iRobot reach waypoint
-                      mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.Sleep(100);
+                      mrs.irobot.baloghkoys.MrsIrobotBaloghkoys.Sleep(mapGUI.replaySlider.getValue()*100);
                       mapGUI.mapImage.addWaypoint(wpt);
                       mapGUI.repaint();         
                   }
@@ -1435,7 +1435,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                        }
                        ArrayList<Waypoint> generated_waypoints = WaypointGenerator.vacuumSquare( square_side, speed);
                        Iterator<Waypoint> waypoints_iterator = generated_waypoints.iterator();
-                       MapGUI mapGUI = new MapGUI(true);
+                       MapGUI mapGUI = new MapGUI(true,false);
                        mapGUI.setVisible(true);
                        mapGUI.mapImage = new MapImage(true);
                        lastGotoWaypoint=new Waypoint(0,0,0);
@@ -1676,19 +1676,21 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
         if( !(deltaX == 0 && deltaY == 0) ){ 
             lastGotoWaypoint = wpt;
             int distance = (int)Math.sqrt(deltaX*deltaX + deltaY*deltaY);
-            double deltaAngle = -Math.atan2( deltaX, deltaY )/Math.PI*180.0;
-            System.err.print( "dX "+deltaX+" dY "+deltaY+" Alfa "+deltaAngle);
-            int rotateAngle = -(int)(deltaAngle-lastAngle);
+            double deltaAngle = -Math.atan2( deltaY, deltaX )/Math.PI*180.0+90;
+            double rotateAngle = (deltaAngle-lastAngle);
+            while( rotateAngle < 180 ) {
+                rotateAngle += 360;
+            }
+            while( rotateAngle > 180 ) {
+                rotateAngle -= 360;
+            }
             lastAngle = (int)deltaAngle;            
-            if( rotateAngle >       Math.abs(360.0-rotateAngle) )
-                rotateAngle = (int) Math.abs(360.0-rotateAngle); // otocenie o mensiu cast uhola napr 90 stupnov namiesto 270;            
-            System.err.println( " rotateAngle "+rotateAngle);            
-            Logger.log(String.format("Rotating %d Degrees by speed %d mm/s",(int)deltaAngle,wpt.getSpeed()/2),2);
-             this.lowLevelDrv.turn( wpt.getSpeed()/2, (int)rotateAngle, waypoints ); 
-            Logger.log(String.format("Moving forward %d mm by speed %d mm/s",(int)distance,wpt.getSpeed()),2);
-            this.lowLevelDrv.go_forward( wpt.getSpeed(), distance);
+            Logger.log(String.format("Rotating %d Degrees by speed %d mm/s",(int)rotateAngle,wpt.getSpeed()/2),1);
+            this.lowLevelDrv.turn( wpt.getSpeed()/2, (int)rotateAngle, waypoints ); 
+            Logger.log(String.format("Moving forward %d mm by speed %d mm/s",(int)distance,wpt.getSpeed()),1);
+            this.lowLevelDrv.go_forward( wpt.getSpeed(), distance, waypoints );
         }
-        Logger.log("Moving to waypoint "+wpt.toString()+" completed");
+        Logger.log("Moving to "+wpt.toString()+" completed");
         return true;
     }
 }

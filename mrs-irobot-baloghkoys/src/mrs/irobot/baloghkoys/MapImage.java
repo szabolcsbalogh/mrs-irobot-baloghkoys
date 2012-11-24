@@ -280,7 +280,13 @@ public class MapImage {
         while( adding );
         this.rescaling = true;
         this.SCALE = SCALE;
-        this.ROBOT_SCALE = 5.0/SCALE;
+        if( SCALE < 6 ) {
+            this.ROBOT_SCALE = 3.5/SCALE;
+        } else {
+            this.ROBOT_SCALE = 3.5/5.0;
+        }
+        lastX = WIDTH/2;
+        lastY = HEIGHT/2;
         // TODO redraw whole image
         image = new BufferedImage( WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB );
         Iterator<Waypoint> i = waypoints.iterator();

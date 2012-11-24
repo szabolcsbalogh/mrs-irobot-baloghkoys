@@ -30,13 +30,15 @@ public class WaypointGenerator {
                 y = 0;
             }
             waypoints.add( new Waypoint( x, y, speed ) );
-            x += ROBOT_DIAMETER;
             
-            if( (x > a_side) && (x != a_side) )
-                x = a_side;
-            else if( x == a_side ) {
+            if( x == a_side ) {
                 break;
             }            
+            x += ROBOT_DIAMETER;
+            
+            if( x > a_side ) {
+                x = a_side;
+            }
         }
         
         return waypoints;

@@ -19,9 +19,11 @@ public class MapGUI extends javax.swing.JFrame {
      * Create new window with map
      * @param showSaveButton if true shows save button
      */
-    public MapGUI(boolean showSaveButton ) {
+    public MapGUI(boolean showSaveButton, boolean showReplaySlider ) {
         initComponents();
         this.saveWaypointsButton.setVisible(showSaveButton);
+        this.replaySlider.setVisible(showReplaySlider);
+        this.replayLabel.setVisible(showReplaySlider);
     }
 
     /**
@@ -52,6 +54,9 @@ public class MapGUI extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         nextWaypointLabel = new javax.swing.JLabel();
         scaleSlider = new javax.swing.JSlider();
+        replaySlider = new javax.swing.JSlider();
+        jLabel2 = new javax.swing.JLabel();
+        replayLabel = new javax.swing.JLabel();
 
         setTitle("iRobot waypoints map");
 
@@ -81,8 +86,8 @@ public class MapGUI extends javax.swing.JFrame {
         nextWaypointLabel.setText("none");
 
         scaleSlider.setMajorTickSpacing(10);
-        scaleSlider.setMaximum(50);
-        scaleSlider.setMinimum(1);
+        scaleSlider.setMaximum(20);
+        scaleSlider.setMinimum(2);
         scaleSlider.setMinorTickSpacing(1);
         scaleSlider.setPaintTicks(true);
         scaleSlider.setSnapToTicks(true);
@@ -92,6 +97,25 @@ public class MapGUI extends javax.swing.JFrame {
                 scaleSliderStateChanged(evt);
             }
         });
+
+        replaySlider.setMajorTickSpacing(10);
+        replaySlider.setMaximum(20);
+        replaySlider.setMinimum(1);
+        replaySlider.setMinorTickSpacing(1);
+        replaySlider.setPaintTicks(true);
+        replaySlider.setSnapToTicks(true);
+        replaySlider.setValue(5);
+        replaySlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                replaySliderStateChanged(evt);
+            }
+        });
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel2.setText("Scale:");
+
+        replayLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        replayLabel.setText("Replay speed:");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -103,11 +127,16 @@ public class MapGUI extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(nextWaypointLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(27, 27, 27))
+                        .addComponent(nextWaypointLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(scaleSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 702, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(scaleSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(replayLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(replaySlider, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)))
+                .addGap(27, 27, 27)
                 .addComponent(saveWaypointsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -116,14 +145,20 @@ public class MapGUI extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(saveWaypointsButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
                             .addComponent(nextWaypointLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(scaleSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(scaleSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(replaySlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2)
+                            .addComponent(replayLabel))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(saveWaypointsButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -161,6 +196,10 @@ public class MapGUI extends javax.swing.JFrame {
         this.jPanel1.repaint();
     }//GEN-LAST:event_scaleSliderStateChanged
 
+    private void replaySliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_replaySliderStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_replaySliderStateChanged
+
     /**
      * @param args the command line arguments
      */
@@ -191,15 +230,18 @@ public class MapGUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MapGUI(false).setVisible(true);
+                new MapGUI(false,false).setVisible(true);
             }
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel nextWaypointLabel;
+    private javax.swing.JLabel replayLabel;
+    public javax.swing.JSlider replaySlider;
     private javax.swing.JButton saveWaypointsButton;
     private javax.swing.JSlider scaleSlider;
     // End of variables declaration//GEN-END:variables
