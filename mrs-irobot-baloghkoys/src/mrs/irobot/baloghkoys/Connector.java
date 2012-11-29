@@ -72,6 +72,9 @@ public class Connector {
         outStream = serPort.getOutputStream();
         serPort.setSerialPortParams(57600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1,
             SerialPort.PARITY_NONE);
+        serPort.setInputBufferSize(0);
+        serPort.setOutputBufferSize(0);
+        
         ret = true;
     }catch(Exception e){
             Logger.log("Could not open serial port "+ wantedPortName+": " + e.toString());

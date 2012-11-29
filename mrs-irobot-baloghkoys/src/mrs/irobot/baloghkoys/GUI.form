@@ -265,7 +265,7 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="buttonBackwardLowLevel" min="-2" pref="68" max="-2" attributes="0"/>
-                      <EmptySpace pref="134" max="32767" attributes="0"/>
+                      <EmptySpace pref="136" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -781,7 +781,7 @@
                           <Component id="replayFileButton" min="-2" max="-2" attributes="0"/>
                           <Component id="buttonStopAutomatic" min="-2" pref="48" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="62" max="32767" attributes="0"/>
+                      <EmptySpace pref="64" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -899,7 +899,7 @@
                   <Properties>
                     <Property name="columns" type="int" value="20"/>
                     <Property name="rows" type="int" value="5"/>
-                    <Property name="text" type="java.lang.String" value="C:\u005cDocuments and Settings\u005cuser\u005cDesktop\u005cmrs\u005cmrs-irobot-baloghkoys\u005cawaypoints_stvorec_50cm.txt" containsInvalidXMLChars="true"/>
+                    <Property name="text" type="java.lang.String" value="C:\u005cUsers\u005cSzabi\u005cDocuments\u005cwaypoints_stvorec_1m.txt" containsInvalidXMLChars="true"/>
                     <Property name="enabled" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection component="fromFileRadio" name="selected" type="property"/>
                     </Property>
@@ -1077,7 +1077,7 @@
                           <Component id="vacuumButton" min="-2" max="-2" attributes="0"/>
                           <Component id="buttonStopVacuuming" min="-2" pref="48" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="0" pref="299" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="301" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -1179,7 +1179,7 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="viewPanel" alignment="0" pref="290" max="32767" attributes="0"/>
+              <Component id="viewPanel" alignment="0" pref="284" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
@@ -1207,7 +1207,7 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="290" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="284" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">

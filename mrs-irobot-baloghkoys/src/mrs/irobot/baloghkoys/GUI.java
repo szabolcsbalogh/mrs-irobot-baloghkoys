@@ -305,7 +305,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                     .addComponent(buttonTurnRightAngleLowLevel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonBackwardLowLevel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(134, Short.MAX_VALUE))
+                .addContainerGap(136, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("LowLevel", jPanel5);
@@ -572,7 +572,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
 
         fileNameTextArea.setColumns(20);
         fileNameTextArea.setRows(5);
-        fileNameTextArea.setText("C:\\Documents and Settings\\user\\Desktop\\mrs\\mrs-irobot-baloghkoys\\awaypoints_stvorec_50cm.txt");
+        fileNameTextArea.setText("C:\\Users\\Szabi\\Documents\\waypoints_stvorec_1m.txt");
         fileNameTextArea.setEnabled(fromFileRadio.isSelected());
         jScrollPane2.setViewportView(fileNameTextArea);
 
@@ -731,7 +731,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                     .addComponent(goFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(replayFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonStopAutomatic, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(62, Short.MAX_VALUE))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Automatic", jPanel4);
@@ -828,7 +828,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(vacuumButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonStopVacuuming, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 299, Short.MAX_VALUE))
+                .addGap(0, 301, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Vacuum", jPanel1);
@@ -847,7 +847,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
         viewPanel.setLayout(viewPanelLayout);
         viewPanelLayout.setHorizontalGroup(
             viewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 290, Short.MAX_VALUE)
+            .addGap(0, 284, Short.MAX_VALUE)
         );
         viewPanelLayout.setVerticalGroup(
             viewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -858,7 +858,7 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
         jInternalFrame1.getContentPane().setLayout(jInternalFrame1Layout);
         jInternalFrame1Layout.setHorizontalGroup(
             jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(viewPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
+            .addComponent(viewPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE)
         );
         jInternalFrame1Layout.setVerticalGroup(
             jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1221,8 +1221,10 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
     }//GEN-LAST:event_yTextFieldActionPerformed
 
     private void buttonStopAutomaticActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonStopAutomaticActionPerformed
-        goWaypointsThread.interrupt();// este neviem ci to bude dobre
-        goWaypointsThread.stop();
+        if( goWaypointsThread != null ){
+            goWaypointsThread.interrupt();// este neviem ci to bude dobre
+            goWaypointsThread.stop();
+        }
         this.lowLevelDrv.stop();        
         Logger.log("Automatic control: Stop"); 
     }//GEN-LAST:event_buttonStopAutomaticActionPerformed
@@ -1398,6 +1400,10 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
     }//GEN-LAST:event_formKeyReleased
 
     private void resetPositionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetPositionButtonActionPerformed
+        lowLevelDrv.stop();
+        MrsIrobotBaloghkoys.Sleep(1000);
+        //lowLevelDrv.init();
+        MrsIrobotBaloghkoys.Sleep(1000);
         lowLevelDrv.sensors.query();
         lowLevelDrv.sensors.reset_angle();
         lowLevelDrv.sensors.reset_distance();
@@ -1669,14 +1675,19 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
     private int lastAngle = 0;
     
     private boolean goto_waypoint( Waypoint wpt ){        
-        //double deltaX = this.lowLevelDrv.sensors.get_x_position()-wpt.getX();
-        //double deltaY = this.lowLevelDrv.sensors.get_y_position()-wpt.getY();
-        double deltaX = wpt.getX()-lastGotoWaypoint.getX();
-        double deltaY = wpt.getY()-lastGotoWaypoint.getY();
+        
+        
+       Logger.log(String.format("from x:%4.2f y:%4.2f rot:%4d",this.lowLevelDrv.sensors.get_x_position(),this.lowLevelDrv.sensors.get_y_position(),this.lowLevelDrv.sensors.angle()),3);
+       Logger.log(String.format("to   x:   %4d y:   %4d",wpt.getX(),wpt.getY()),3);
+        
+        double deltaX =  (this.lowLevelDrv.sensors.get_x_position()-wpt.getX());
+        double deltaY =  (this.lowLevelDrv.sensors.get_y_position()-wpt.getY());
+      //  double deltaX = wpt.getX()-lastGotoWaypoint.getX();
+      //  double deltaY = wpt.getY()-lastGotoWaypoint.getY();
         if( !(deltaX == 0 && deltaY == 0) ){ 
             lastGotoWaypoint = wpt;
             int distance = (int)Math.sqrt(deltaX*deltaX + deltaY*deltaY);
-            double deltaAngle = -Math.atan2( deltaY, deltaX )/Math.PI*180.0+90;
+            double deltaAngle = Math.atan2( deltaY, deltaX )/Math.PI*180.0+90;
             double rotateAngle = (deltaAngle-lastAngle);
             while( rotateAngle < 180 ) {
                 rotateAngle += 360;
@@ -1684,13 +1695,17 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
             while( rotateAngle > 180 ) {
                 rotateAngle -= 360;
             }
-            lastAngle = (int)deltaAngle;            
-            Logger.log(String.format("Rotating %d Degrees by speed %d mm/s",(int)rotateAngle,wpt.getSpeed()/2),1);
+   //         lastAngle = (int)deltaAngle;            
+            Logger.log(String.format("Rotating %d Degrees by speed %d mm/s",(int)rotateAngle,wpt.getSpeed()/2),3);
             this.lowLevelDrv.turn( wpt.getSpeed()/2, (int)rotateAngle, waypoints ); 
-            Logger.log(String.format("Moving forward %d mm by speed %d mm/s",(int)distance,wpt.getSpeed()),1);
+            Logger.log(String.format("Moving forward %d mm by speed %d mm/s",(int)distance,wpt.getSpeed()),3);
             this.lowLevelDrv.go_forward( wpt.getSpeed(), distance, waypoints );
         }
         Logger.log("Moving to "+wpt.toString()+" completed");
+        
+        lastAngle = this.lowLevelDrv.sensors.angle();            
+     
+        
         return true;
     }
 }

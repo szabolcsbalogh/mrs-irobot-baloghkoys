@@ -10,7 +10,7 @@ package mrs.irobot.baloghkoys;
  */
 public class MrsIrobotBaloghkoys {
 
-    static String wantedPortName = ""; //"COM17";//"/dev/ttyS0";
+    static String wantedPortName = "COM31"; //"COM17";//"/dev/ttyS0";
         
     static GUI gui;
     
@@ -35,7 +35,7 @@ public class MrsIrobotBaloghkoys {
               
         SelectPortGUI portGUI = new SelectPortGUI();
         portGUI.setVisible(true);
-        portGUI.portsComboBox.setSelectedItem("COM8");
+        //portGUI.portsComboBox.setSelectedItem("COM8");
         
         while( wantedPortName.isEmpty() ){
             Sleep(100);
