@@ -10,6 +10,7 @@ public class LowLevelDrv {
     private Connector conn;
     public LowLevelSensors llsensors;
     public MidLevelSensors sensors;
+    private Waypoint lastWpt = null;
     
     /**
      * Constructor with communication interface of type Connector
@@ -211,99 +212,98 @@ public class LowLevelDrv {
         this.go_forward(velocity, dist, null);
     }
     
+    private void logWPT(ArrayList<Waypoint> waypointslog) {
+        Waypoint wpt = new Waypoint( (int)sensors.get_x_position(), (int)sensors.get_y_position(), sensors.angle(), sensors.getLast_reply());
+        if( !wpt.equals(lastWpt) && waypointslog != null) {
+            waypointslog.add(wpt);
+        }
+        this.lastWpt = wpt;
+    }
     
-    public void go_forward(int velocity, int dist, ArrayList<Waypoint> waypointslog) {
-        int direction = (velocity<0||dist<0 ? -1:1);
+    public void go_forward(int velocity, int distance, ArrayList<Waypoint> waypointslog) {
+        this.sensors.query();
+        int scalert = 3;
+        int scaler = 10;
+        int direction = (velocity<0||distance<0 ? -1:1);
+        int vel = direction*Math.abs(velocity);
+        int dist = direction*Math.abs(distance);
         int sdistance = this.sensors.distance();
-        int ddistance = this.sensors.distance() + direction*Math.abs(dist);
-        Waypoint lastWpt = null;
-        int vel = 0;
-        double integrator = 0;
-        double Kp = 2 , Ki = 8;
+        int ddistance = sdistance + direction* Math.abs(dist) - velocity*scalert/scaler;
         
-       while (Math.abs(ddistance - sensors.distance()) != 0) {
-            if(integrator*Ki > Math.abs(velocity) || integrator*Ki < -Math.abs(velocity)) {
-                ///mimo hranic
-                if(integrator*Ki > Math.abs(velocity) && ddistance - sensors.distance() < 0) {
-                    integrator += (double)(ddistance - sensors.distance()) * 15.0/1000.0;
-                }
-                if(integrator*Ki < -Math.abs(velocity) && ddistance - sensors.distance() > 0) {
-                    integrator += (double)(ddistance - sensors.distance()) * 15.0/1000.0;
-                }
-            } else {
-                integrator += (double)(ddistance - sensors.distance()) * 15.0/1000.0;
-            }
-            vel = (int)(Kp *(ddistance - sensors.distance())) + (int)(Ki*integrator);
-            if(Math.abs(vel) > Math.abs(velocity)) {
-                vel = (int)Math.signum(vel)*velocity;
-            }
-            System.err.print(String.format("dp: %d, %d %f\n", Math.abs(ddistance - sensors.distance()), vel, integrator));
-            this.go_forward(vel);
+        this.logWPT(waypointslog);
+        this.go_forward(velocity);
+        this.sleep(Math.abs((ddistance-sdistance)*1000/velocity));
+        this.logWPT(waypointslog);
+        this.go_forward(velocity/scaler);
+        this.sensors.query();
+        while(Math.abs(sdistance - this.sensors.distance()) < Math.abs(dist)) {
             this.sensors.query();
-            Waypoint wpt = new Waypoint( (int)sensors.get_x_position(), (int)sensors.get_y_position(), sensors.angle(), sensors.getLast_reply());
-            if( !wpt.equals(lastWpt) && waypointslog != null) {
-                waypointslog.add(wpt);
-            }
-            lastWpt = wpt;
+            this.logWPT(waypointslog);
         }
         this.stop();
-        System.err.print(String.format("gofw: %d, %d %f\n", Math.abs(ddistance - sensors.distance()), vel, integrator));
-        Logger.log(String.format("lldrv:goforward: s=%d, v=%d, error=%d",dist,velocity,ddistance-sensors.distance()));
+       /*
+        
+        */
+        //System.err.print(String.format("gofw: %d, %d %f\n", Math.abs(ddistance - sensors.distance()), vel, integrator));
+        Logger.log(String.format("lldrv:goforward: s=%d, v=%d, error=%d",distance,velocity,sdistance+distance-sensors.distance()));
     }
     
     public void turn(int velocity, int ang) {
         this.turn(velocity, ang, null);
     }
     
-    public void turn(int velocity, int ang, ArrayList<Waypoint> waypointslog ) {
-        int sangle = this.sensors.angle();
-        int direction = (velocity<0||ang<0 ? -1:1);
+    public void turn(int velocity, int angle, ArrayList<Waypoint> waypointslog ) {
+        //int direction = (velocity<0||angle<0 ? -1:1);
+        int scaler1 = 2;
+        int scaler2 = 4;
         /*
          * ang < 0 dir=-1 counterCW
          * ang > 0 dir=1 CW
          */
-        int dangle = sangle + direction*ang;
-        int vel = 0;
-        double integrator = 0;
-        double Kp = 2 , Ki= 40;
-        Waypoint lastWpt = null;
+        this.sensors.query();
+        this.logWPT(waypointslog);
+        int sangle = this.sensors.angle();
         
-        if( ang == 0 ) return;
+        if(angle == 0 ) return;
         
-        while(Math.abs(this.sensors.angle()-dangle) != 0) {
-            if(integrator*Ki > Math.abs(velocity) || integrator*Ki < -Math.abs(velocity)) {
-                ///mimo hranic
-                if(integrator*Ki > Math.abs(velocity) && dangle - sensors.angle() < 0) {
-                    integrator = (double)(dangle - this.sensors.angle()) * 15.0/1000.0;
-                }
-                if(integrator*Ki < -Math.abs(velocity) && dangle - sensors.angle() > 0) {
-                    integrator = (double)(dangle - this.sensors.angle()) * 15.0/1000.0;
-                }
-            } else {
-                integrator = (double)(dangle - this.sensors.angle()) * 15.0/1000.0;
+        if(angle > 0) {
+            this.turn_clockwise(velocity/scaler1);
+            while(Math.abs(sangle-sensors.angle()) < Math.abs(angle)) {
+                this.sensors.query();
+                this.logWPT(waypointslog);
             }
-            vel = (int)(Kp *(dangle - this.sensors.angle())) + (int)(Ki*integrator);
-            if(Math.abs(vel) > Math.abs(velocity)) {
-                vel = (int)Math.signum(vel)*velocity;
+        } else {
+            this.turn_counterclockwise(velocity/scaler2);
+            while(Math.abs(sangle-sensors.angle()) < Math.abs(angle)) {
+                this.sensors.query();
+                this.logWPT(waypointslog);
             }
-            if(vel < 0) {
-                this.turn_clockwise(Math.abs(vel));
-            }else{
-                this.turn_counterclockwise(Math.abs(vel));
+        }
+        if(angle > 0) {
+            this.turn_clockwise(velocity/scaler2);
+            while(Math.abs(sangle-sensors.angle()) < Math.abs(angle)) {
+                this.sensors.query();
+                this.logWPT(waypointslog);
             }
-            this.sensors.query();
-            System.err.print(String.format("turnWP: %d, %d %f\n", Math.abs(dangle  - sensors.angle()), vel, integrator));
-            System.err.print(String.format("turnWP2: %d, %d\n", sensors.angle(), this.sensors.angle()));
-            Waypoint wpt = new Waypoint( (int)sensors.get_x_position(), (int)sensors.get_y_position(), sensors.angle(), sensors.getLast_reply());
-            if( !wpt.equals(lastWpt) && waypointslog != null) {
-                waypointslog.add(wpt);
+        } else {
+            this.turn_counterclockwise(velocity/scaler2);
+            while(Math.abs(sangle-sensors.angle()) < Math.abs(angle)) {
+                this.sensors.query();
+                this.logWPT(waypointslog);
             }
-            lastWpt = wpt;
         }
         this.stop();
-        System.err.print(String.format("turnw: %d, %d %f\n", Math.abs(dangle  - sensors.angle()), vel, integrator));
-        Logger.log(String.format("lldrv:goforward: s=%d, v=%d, error=%d",ang,velocity,dangle-sensors.angle()));
+        Logger.log(String.format("lldrv:turn: s=%d, v=%d, error=%d",angle,velocity,sangle+angle-sensors.angle()));
     }
+    
+    private void sleep(int i) {
+        try {
+            Thread.sleep(i);
+        } catch (InterruptedException ex) {
+            System.err.println(ex.toString());
+        }
+    }
+    
 }
     
     

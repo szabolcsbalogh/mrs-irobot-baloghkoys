@@ -10,7 +10,7 @@ package mrs.irobot.baloghkoys;
  */
 public class MrsIrobotBaloghkoys {
 
-    static String wantedPortName = "COM31"; //"COM17";//"/dev/ttyS0";
+    static String wantedPortName = "COM29"; //"COM17";//"/dev/ttyS0";
         
     static GUI gui;
     
