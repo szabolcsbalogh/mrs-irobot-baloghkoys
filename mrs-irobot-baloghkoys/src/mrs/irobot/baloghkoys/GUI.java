@@ -1672,30 +1672,37 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
         this.lowLevelDrv.stop();            //TODO something more smart
     }
     
-    private int lastAngle = 0;
+    private int lastAngle = 0;                      //TODO znuluj ked sa nuluje vsetko
+    private final boolean REAL_POSITION=false;      //TODO CHANGE TO true
     
     private boolean goto_waypoint( Waypoint wpt ){        
         
+        double deltaX;
+        double deltaY; 
         
        Logger.log(String.format("from x:%4.2f y:%4.2f rot:%4d",this.lowLevelDrv.sensors.get_x_position(),this.lowLevelDrv.sensors.get_y_position(),this.lowLevelDrv.sensors.angle()),3);
        Logger.log(String.format("to   x:   %4d y:   %4d",wpt.getX(),wpt.getY()),3);
+
+       if(REAL_POSITION){
+            deltaX =  (this.lowLevelDrv.sensors.get_x_position()-wpt.getX());
+            deltaY =  (this.lowLevelDrv.sensors.get_y_position()-wpt.getY());
+       }else{
+            deltaX = wpt.getX()-lastGotoWaypoint.getX();
+            deltaY = wpt.getY()-lastGotoWaypoint.getY();
+       }
         
-        double deltaX =  (this.lowLevelDrv.sensors.get_x_position()-wpt.getX());
-        double deltaY =  (this.lowLevelDrv.sensors.get_y_position()-wpt.getY());
-      //  double deltaX = wpt.getX()-lastGotoWaypoint.getX();
-      //  double deltaY = wpt.getY()-lastGotoWaypoint.getY();
+        int distance = (int)Math.sqrt(deltaX*deltaX + deltaY*deltaY);
+        double deltaAngle = Math.atan2( deltaY, deltaX )/Math.PI*180.0-90;
+        
         if( !(deltaX == 0 && deltaY == 0) ){ 
             lastGotoWaypoint = wpt;
-            int distance = (int)Math.sqrt(deltaX*deltaX + deltaY*deltaY);
-            double deltaAngle = Math.atan2( deltaY, deltaX )/Math.PI*180.0+90;
             double rotateAngle = (deltaAngle-lastAngle);
             while( rotateAngle < 180 ) {
                 rotateAngle += 360;
             }
             while( rotateAngle > 180 ) {
                 rotateAngle -= 360;
-            }
-   //         lastAngle = (int)deltaAngle;            
+            }         
             Logger.log(String.format("Rotating %d Degrees by speed %d mm/s",(int)rotateAngle,wpt.getSpeed()/2),3);
             this.lowLevelDrv.turn( wpt.getSpeed()/2, (int)rotateAngle, waypoints ); 
             Logger.log(String.format("Moving forward %d mm by speed %d mm/s",(int)distance,wpt.getSpeed()),3);
@@ -1703,7 +1710,11 @@ public class GUI extends javax.swing.JFrame implements KeyListener {
         }
         Logger.log("Moving to "+wpt.toString()+" completed");
         
-        lastAngle = this.lowLevelDrv.sensors.angle();            
+        if(REAL_POSITION){
+            lastAngle = this.lowLevelDrv.sensors.angle()-90;   //TODO TENTO UHOL TREBA PRISPOSOBIT, LEBO TEN NESEDEL A PRETO TO NESLO!!!  
+        }else{
+            lastAngle = (int)deltaAngle;             
+        }
      
         
         return true;
